@@ -12,7 +12,7 @@ Abstrae la comunicación entre los servicios SOAP del BCCR_  y python creando cl
     authclient = ClienteAutenticador(1,1) # negocio, entidad
                                              
     if authclient.validar_servicio():
-        data = authclient.solicitar_autenticacion('8-0888-0888')
+        data = authclient.solicitar_autenticacion('08-0888-0888')
     else:
         # warnings.warn("Auth BCCR No disponible", RuntimeWarning)
         data = authclient.DEFAULT_ERROR
@@ -22,12 +22,20 @@ Abstrae la comunicación entre los servicios SOAP del BCCR_  y python creando cl
 Instalación
 ##############
 
+.. note:: 
+    Solo ha sido probado en python 3.
+
 Instale mediante pypi
 
 .. code:: bash
 
     pip install pyfva
 
+o usando el repositorio 
+
+.. code:: bash
+
+    pip install git+https://github.com/solvo/crdist.git
 
 Parámetros de ambiente
 #############################

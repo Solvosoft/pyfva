@@ -12,6 +12,7 @@ Bievenido a la documentación de pyfva's
    :maxdepth: 2
    :caption: Contents:
 
+   instalacion
    tutorial
    clientes
    formatos
