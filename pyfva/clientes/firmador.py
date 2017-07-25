@@ -7,10 +7,13 @@ from pyfva.soap.firmador import FirmadorSoapServiceStub,\
     RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma, RecibaLaSolicitudDeFirmaODF,\
     RecibaLaSolicitudDeFirmaMSOffice, ValideElServicio,\
     ElSuscriptorEstaConectado, SolicitudDeFirma
-import warnings
+
 from pyfva.soap import settings
 
 from datetime import datetime
+import logging
+
+logger = logging.getLogger('pyfva')
 
 
 class ClienteFirmador(object):
@@ -61,6 +64,10 @@ class ClienteFirmador(object):
             **id_solicitud:** Número de identificación de la solicitud
         """
 
+        logger.info("Firmador: firme %s %s %s" %
+                    (identidad, formato, hash_doc))
+        logger.debug("Firmador: firme %r" % (locals(), ))
+
         algoritmo_hash = algoritmo_hash.title()
         if formato == 'xml':
             dev = self.firme_xml(identidad, documento,
@@ -72,8 +79,10 @@ class ClienteFirmador(object):
             dev = self.firme_msoffice(
                 identidad, documento, algoritmo_hash, hash_doc, resumen)
         else:
-            warnings.warn("Formato de documento inválido", RuntimeWarning)
+            logger.error("Formato de documento inválido")
             dev = self.DEFAULT_ERROR
+
+        logger.debug("Firmador: firme result %r" % (dev, ))
         return dev
 
     def firme_xml(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen=''):
@@ -86,12 +95,18 @@ class ClienteFirmador(object):
             de firme, además los resultados retornados son también idénticos.
         """
 
+        logger.info("Firmador: firme_xml %s %s" %
+                    (identidad,  hash_doc))
+        logger.debug("Firmador: firme_xml %r" % (locals(), ))
+
         request = self._construya_solicitud(
             identidad, documento, algoritmo_hash, hash_doc, resumen)
         try:
             dev = self._firme_xml(request)
-        except:
+        except Exception as e:
+            logger.error("Firmador: firmando en xml %s" % (e, ))
             dev = self.DEFAULT_ERROR
+        logger.debug("Firmador: firme_xml result %r" % (dev, ))
         return dev
 
     def firme_odf(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen=''):
@@ -103,12 +118,20 @@ class ClienteFirmador(object):
             Los parámetros exceptuando formato (no existe en este método) son idénticos que los 
             de firme, además los resultados retornados son también idénticos.
         """
+
+        logger.info("Firmador: firme_odf %s %s" %
+                    (identidad,  hash_doc))
+        logger.debug("Firmador: firme_odf %r" % (locals(), ))
+
         request = self._construya_solicitud(
             identidad, documento, algoritmo_hash, hash_doc, resumen)
         try:
             dev = self._firme_odf(request)
-        except:
+        except Exception as e:
+            logger.error("Firmador: firmando en odf %s" % (e,))
             dev = self.DEFAULT_ERROR
+
+        logger.debug("Firmador: firme_odf result %r" % (dev, ))
         return dev
 
     def firme_msoffice(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen=''):
@@ -120,12 +143,20 @@ class ClienteFirmador(object):
             Los parámetros exceptuando formato (no existe en este método) son idénticos que los 
             de firme, además los resultados retornados son también idénticos.
         """
+
+        logger.info("Firmador: firme_msoffice %s %s" %
+                    (identidad,  hash_doc))
+        logger.debug("Firmador: firme_msoffice %r" % (locals(), ))
+
         request = self._construya_solicitud(
             identidad, documento, algoritmo_hash, hash_doc, resumen)
         try:
             dev = self._firme_msoffice(request)
-        except:
+        except Exception as e:
+            logger.error("Firmador: firmando en msoffice %s" % (e, ))
             dev = self.DEFAULT_ERROR
+
+        logger.debug("Firmador: firme_msoffice result %r" % (dev, ))
         return dev
 
     def suscriptor_conectado(self, identificacion):
@@ -135,14 +166,18 @@ class ClienteFirmador(object):
         :returns: True si la tarjeta del suscriptor está conectada, False si no lo está.
         """
 
-        return self._suscriptor_conectado(identificacion)
+        dev = self._suscriptor_conectado(identificacion)
+        logger.debug("Firmador: suscriptor conectado %r" % (dev, ))
+        return dev
 
     def validar_servicio(self):
         """Verifica si el servicio está disponible
 
         :returns: True si el servicio está disponible, False si no lo está.
         """
-        return self._validar_servicio()
+        dev = self._validar_servicio()
+        logger.debug("Firmador: validar servicio %r" % (dev, ))
+        return dev
 
     def extrae_resultado(self, solicitud,  resultado):
         """Convierte la infromación obtenida del servicio SOAP a python
@@ -165,7 +200,8 @@ class ClienteFirmador(object):
         """
         try:
             data = self._extrae_resultado(solicitud,  resultado)
-        except:
+        except Exception as e:
+            logger.error("Firmador: extrayendo resultados %s" % (e, ))
             data = self.DEFAULT_ERROR
         return data
 
@@ -225,8 +261,8 @@ class ClienteFirmador(object):
             status = stub.ElSuscriptorEstaConectado(options)
             dev = status.soap_body.ElSuscriptorEstaConectadoResult
         except Exception as e:
-            warnings.warn("Servicio de firmado fallando en usuario conectado %s" %
-                          (e,), RuntimeWarning)
+            logger.error(
+                "Firmador: Servicio de firmado fallando en usuario conectado%s" % (e, ))
             dev = False
         return dev
 
@@ -237,8 +273,7 @@ class ClienteFirmador(object):
             status = stub.ValideElServicio(option)
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
-            warnings.warn("servicio de firmado fallando %s" %
-                          (e,), RuntimeWarning)
-
+            logger.error(
+                "Firmador: Servicio de firmado fallando %s" % (e, ))
             dev = False
         return dev

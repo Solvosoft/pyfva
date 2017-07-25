@@ -3,13 +3,17 @@ Created on 19 jul. 2017
 
 @author: luis
 '''
-import warnings
+
 from pyfva.soap.validador_certificado import ValideElServicio as ValideServicioCertificado,\
     ValidadorDeCertificadoSoapServiceStub,\
     SoliciteLaValidacionDeCetificadoDeAutenticacion
 from pyfva.soap.validador_documento import ValideElServicio as ValideServicioDocumento,\
     ValidadorDeDocumentoSoapServiceStub, ValideElDocumentoXmlEnvelopedCoFirma
 from pyfva.soap import settings
+
+import logging
+
+logger = logging.getLogger('pyfva')
 
 
 class ClienteValidador(object):
@@ -70,11 +74,16 @@ class ClienteValidador(object):
             [ {'identificacion': "8-0888-0888", 'fecha_firma': datetime.now(),
             'nombre': "Juanito Mora Porras"}, ... ]      
         """
+
+        logger.debug("Validador: validar_documento_xml %r" % (locals(), ))
         try:
             dev = self._validar_documento_xml(documento)
-        except:
+        except Exception as e:
+            logger.error("Validador: validando documento xml %s" % (e, ))
             dev = self.DEFAULT_DOCUMENTO_ERROR
 
+        logger.debug("Validador: validar_documento_xml resultado %r" %
+                     (dev, ))
         return dev
 
     def validar_certificado_autenticacion(self, certificado):
@@ -100,11 +109,16 @@ class ClienteValidador(object):
                 **fin_vigencia:** Fecha de finalización de la vigencia del certificado
         """
 
+        logger.debug(
+            "Validador: validar_certificado_autenticacion %r" % (locals(), ))
         try:
             dev = self._validar_certificado_autenticacion(certificado)
-        except:
+        except Exception as e:
+            logger.error("Validador: validando certificado %s" % (e, ))
             dev = self.DEFAULT_CERTIFICATE_ERROR
 
+        logger.debug(
+            "Validador: validar_certificado_autenticacion result %r" % (dev, ))
         return dev
 
     def validar_servicio(self, servicio):
@@ -114,11 +128,15 @@ class ClienteValidador(object):
         :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible
         """
 
+        logger.info("Validador: Validar servicio %s" % (servicio, ))
+        dev = False
         if servicio.lower() == 'certificado':
-            return self._validar_servicio_certificado()
-        if servicio.lower() == 'documento':
-            return self._validar_servicio_documento()
-        return False
+            dev = self._validar_servicio_certificado()
+        elif servicio.lower() == 'documento':
+            dev = self._validar_servicio_documento()
+
+        logger.debug("Validador: Validar servicio %s %r" % (servicio, dev))
+        return dev
 
     # Private methods
     def _validar_documento_xml(self, documento):
@@ -130,8 +148,7 @@ class ClienteValidador(object):
             dev = self._extract_documento_xml(
                 status.soap_body.ValideElDocumentoXmlEnvelopedCoFirmaResult)
         except Exception as e:
-            warnings.warn("Servicio de documento XML fallando %s" %
-                          (e,), RuntimeWarning)
+            logger.error("Validador: validando  xml %s" % (e, ))
             dev = self.DEFAULT_DOCUMENT_ERROR
 
         return dev
@@ -186,9 +203,8 @@ class ClienteValidador(object):
             status = stub.ValideElServicio(option)
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
-            warnings.warn("Servicio de validado de certificado fallando %s" %
-                          (e,), RuntimeWarning)
-
+            logger.error(
+                "Validador: Servicio de validado de certificado fallando %s" % (e, ))
             dev = False
         return dev
 
@@ -199,8 +215,8 @@ class ClienteValidador(object):
             status = stub.ValideElServicio(option)
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
-            warnings.warn("servicio de validado de documentos fallando %s" %
-                          (e,), RuntimeWarning)
-
+            logger.error(
+                "Validador: Servicio de validado de documentos fallando %s" % (e, ))
             dev = False
+
         return dev

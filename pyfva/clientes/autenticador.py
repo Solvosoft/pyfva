@@ -9,8 +9,10 @@ from pyfva.soap.autenticador import AutenticadorSoapServiceStub,\
     RecibaLaSolicitudDeAutenticacion, SolicitudDeAutenticacion, ValideElServicio
 
 from datetime import datetime
-import warnings
 from pyfva.soap import settings
+import logging
+
+logger = logging.getLogger('pyfva')
 
 
 class ClienteAutenticador(object):
@@ -58,17 +60,27 @@ class ClienteAutenticador(object):
             **id_solicitud:** Número de identificación de la solicitud
 
         """
-
+        logger.info("Autenticador: Solicitar_autenticacion %s" %
+                    (identificacion, ))
         request = SolicitudDeAutenticacion.create(
             self.negocio,
             datetime.now(),
             self.entidad,
             identificacion
         )
+
+        logger.debug("Autenticador: Solicitar_autenticacion Fin %d %s %d %s" % (
+            self.negocio,
+            datetime.now().isoformat(),
+            self.entidad,
+            identificacion
+        ))
         try:
             dev = self._solicitar_autenticacion(request)
         except:
             dev = self.DEFAULT_ERROR
+
+        logger.debug("Autenticador: Solicitar_autenticacion %r" % (dev,))
         return dev
 
     def validar_servicio(self):
@@ -77,7 +89,12 @@ class ClienteAutenticador(object):
 
         :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible
         """
-        return self._validar_servicio()
+
+        dev = self._validar_servicio()
+        logger.debug("Autenticador: validar_servicio %r" %
+                     (dev, ))
+
+        return dev
 
     def extrae_resultado(self, solicitud,  resultado):
         """Convierte la infromación obtenida del servicio SOAP a python
@@ -101,7 +118,8 @@ class ClienteAutenticador(object):
 
         try:
             data = self._extrae_resultado(solicitud,  resultado)
-        except:
+        except Exception as e:
+            logger.error('Autenticador: extrayendo datos %s' % (e, ))
             data = self.DEFAULT_ERROR
         return data
 
@@ -131,8 +149,7 @@ class ClienteAutenticador(object):
             status = stub.ValideElServicio(option)
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
-            warnings.warn("servicio de autenticacion fallando %s" %
-                          (e,), RuntimeWarning)
-
+            logger.error("Autenticador: servicio validar autenticacion fallando %s" %
+                         (e,))
             dev = False
         return dev

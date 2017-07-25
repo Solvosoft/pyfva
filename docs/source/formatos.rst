@@ -1,4 +1,4 @@
-Formátos y códigos
+Formatos y códigos
 =====================
 
 Acá se describe los formatos y los códigos utilizados por el BCCR en sus comunicaciones, los cuales además son usados por pyfva

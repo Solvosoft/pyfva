@@ -5,8 +5,11 @@ Created on 20 jul. 2017
 '''
 from pyfva.soap.verificador import ValideElServicio, VerificadorSoapServiceStub,\
     ExisteUnaSolicitudDeFirmaCompleta
-import warnings
+
 from pyfva.soap import settings
+
+import logging
+logger = logging.getLogger('pyfva')
 
 
 class ClienteVerificador(object):
@@ -49,10 +52,17 @@ class ClienteVerificador(object):
             **existe_firma:** Retorna True si hay un proceso de firma activo o False si no.
 
         """
+        logger.info("Verificador: existe solicitud de firma completa %s" %
+                    (identificacion, ))
         try:
             dev = self._existe_solicitud_de_firma_completa(identificacion)
-        except:
+        except Exception as e:
+            logger.error(
+                "Verificador: existe_solicitud_de_firma_completa %s" % (e, ))
             dev = self.DEFAULT_ERROR
+
+        logger.debug("Verificador: existe solicitud de firma completa %s %r" %
+                     (identificacion, dev))
         return dev
 
     def validar_servicio(self):
@@ -61,7 +71,10 @@ class ClienteVerificador(object):
 
         :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible
         """
-        return self._validar_servicio()
+        dev = self._validar_servicio()
+        logger.debug("Verificador: validar servicio %r" %
+                     (dev,))
+        return dev
 
     # Private methods
     def _existe_solicitud_de_firma_completa(self, identificacion):
@@ -87,8 +100,8 @@ class ClienteVerificador(object):
             status = stub.ValideElServicio(option)
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
-            warnings.warn("servicio de verificación fallando %s" %
-                          (e,), RuntimeWarning)
+            logger.error("Verificador: Servicio de verificación fallando %s" %
+                         (e,))
 
             dev = False
         return dev
