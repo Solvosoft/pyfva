@@ -14,9 +14,15 @@ from pyfva.soap import settings
 
 
 class ClienteAutenticador(object):
+    """Permite autenticar una persona utilizando los servicios del BCCR
+
+    .. note:: 
+        Recuerde la política del banco es *no nos llame, nosotros lo llamamos*
+
+    :param negocio: número de identificación del negocio (provisto por el BCCR)
+    :param entidad: número de identificación de la entidad (provisto por el BCCR)
     """
-    Permite autenticar una persona utilizando los servicios del BCCR
-    """
+
     DEFAULT_ERROR = {
         'codigo_error': 2,
         'codigo_verificacion': 'N/D',
@@ -31,19 +37,25 @@ class ClienteAutenticador(object):
         self.entidad = entidad
 
     def solicitar_autenticacion(self, identificacion):
-        """
-        Solicita al BCCR la autenticación de la identificacion
+        """Solicita al BCCR la autenticación de la identificacion, 
+        recuerde, la política del BCCR es: *no nos llame, nosotros lo llamamos*,
+        por lo que los valores devueltos corresponden al estado de la petición y 
+        no al resultado de la firma
 
-        Params:
-           identificacion: número de identificación de la persona
-           negocio: número de identificación del negocio (provisto por el BCCR)
-           entidad: número de identificación de la entidad (provisto por el BCCR)
+        :param identificacion: número de identificación de la persona ver  `Formato identificacion <formatos.html#formato-de-identificacion>`_.
 
-        Return:
-            codigo_error: Número con el código de error 1 es éxito
-            codigo_verificacion: str con el código de verificación de la trasacción
-            tiempo_maximo: Tiempo máximo de duración de la solicitud en segundos
-            id_solicitud: Número de identificación de la solicitud
+        Retorna una diccionario con los siguientes elementos, en caso de error retorna
+        **DEFAULT_ERROR**.
+
+
+        :returns:   
+            **codigo_error:** Número con el código de error 1 es éxito
+
+            **codigo_verificacion:** str con el código de verificación de la trasacción, se muestra al usuario
+
+            **tiempo_maximo:** Tiempo máximo de duración de la solicitud en segundos
+
+            **id_solicitud:** Número de identificación de la solicitud
 
         """
 
@@ -61,14 +73,34 @@ class ClienteAutenticador(object):
 
     def validar_servicio(self):
         """
-        Valida si el servicio está disponible.  Retorna True si lo está o 
-        False si ocurrió algún error contactando al BCCR o el servicio no está disponible
+        Valida si el servicio está disponible.  
+
+        :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible
         """
         return self._validar_servicio()
 
-    def extract_result(self, request,  result):
+    def extrae_resultado(self, solicitud,  resultado):
+        """Convierte la infromación obtenida del servicio SOAP a python
+
+        :param solicitud:  Objeto de solicitud del tipo *pyfva.soap.autenticador.SolicitudDeAutenticacion*
+        :param resultado: Objeto de respuesta del tipo *pyfva.soap.autenticador.RecibaLaSolicitudDeAutenticacionResult* 
+
+        Retorna una diccionario con los siguientes elementos, en caso de error retorna
+        **DEFAULT_ERROR**.
+
+        :returns:   
+            **codigo_error:** Número con el código de error 1 es éxito
+
+            **codigo_verificacion:** str con el código de verificación de la trasacción
+
+            **tiempo_maximo:** Tiempo máximo de duración de la solicitud en segundos
+
+            **id_solicitud:** Número de identificación de la solicitud
+
+        """
+
         try:
-            data = self._extract_result(request,  result)
+            data = self._extrae_resultado(solicitud,  resultado)
         except:
             data = self.DEFAULT_ERROR
         return data
@@ -80,10 +112,10 @@ class ClienteAutenticador(object):
 
         status = stub.RecibaLaSolicitudDeAutenticacion(options)
 
-        return self.extract_result(
+        return self.extrae_resultado(
             request, status.soap_body.RecibaLaSolicitudDeAutenticacionResult)
 
-    def _extract_result(self, request, result):
+    def _extrae_resultado(self, request, result):
         data = {
             'codigo_error': result.CodigoDeError,
             'codigo_verificacion': result.CodigoDeVerificacion,

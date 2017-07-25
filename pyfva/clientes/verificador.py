@@ -10,6 +10,16 @@ from pyfva.soap import settings
 
 
 class ClienteVerificador(object):
+    """Verifica si una firma ha sido completada
+
+    .. note:: 
+        Los parámetros negocio y entidad de momento no son requeridos, pero puede que en un futuro cercano
+        lo sean, por lo que se recomienda suministrarlos.
+
+    :param negocio: número de identificación del negocio (provisto por el BCCR)
+    :param entidad: número de identificación de la entidad (provisto por el BCCR)
+    """
+
     DEFAULT_ERROR = {
         'codigo_error': 2,
         'existe_firma': False,
@@ -24,6 +34,21 @@ class ClienteVerificador(object):
         self.entidad = entidad
 
     def existe_solicitud_de_firma_completa(self, identificacion):
+        """Verifica si una solicitud de firma ha sida completada por el usuario en el sistema del BCCR
+
+        :param identificacion: número de identificación de la persona
+
+        Retorna una diccionario con los siguientes elementos, en caso de error retorna
+        **DEFAULT_ERROR**.
+
+        :returns:   
+            **codigo_error:** Número con el código de error 1 es éxito
+
+            **exitosa:** True si fue exitosa, False si no lo fue
+
+            **existe_firma:** Retorna True si hay un proceso de firma activo o False si no.
+
+        """
         try:
             dev = self._existe_solicitud_de_firma_completa(identificacion)
         except:
@@ -31,6 +56,11 @@ class ClienteVerificador(object):
         return dev
 
     def validar_servicio(self):
+        """
+        Valida si el servicio está disponible.  
+
+        :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible
+        """
         return self._validar_servicio()
 
     # Private methods

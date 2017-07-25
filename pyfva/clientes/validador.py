@@ -13,8 +13,21 @@ from pyfva.soap import settings
 
 
 class ClienteValidador(object):
+    """Permite validar una firma o un documento utilizando los servicios del BCCR
+
+    .. note:: 
+        Este servicio solo valida documento XML, por lo que no debe usarlo para odf o msoffice.
+        Se espera que en un futuro pueda soportar los demás formatos.
+
+    .. note:: 
+        Los parámetros negocio y entidad de momento no son requeridos, pero puede que en un futuro cercano
+        lo sean, por lo que se recomienda suministrarlos.
+
+    :param negocio: número de identificación del negocio (provisto por el BCCR)
+    :param entidad: número de identificación de la entidad (provisto por el BCCR)
+    """
     DEFAULT_CERTIFICATE_ERROR = {
-        'cod_error': 2,
+        'codigo_error': 2,
         'exitosa': False,
         'certificado': None
 
@@ -34,6 +47,29 @@ class ClienteValidador(object):
         self.entidad = entidad
 
     def validar_documento_xml(self, documento):
+        """Valida si el documento está firmado correctamente.
+
+        :param documento: documento xml en base64
+
+        Retorna una diccionario con los siguientes elementos, en caso de error retorna
+        **DEFAULT_DOCUMENT_ERROR**.
+
+        .. note:: 
+            Observe que en caso de no ser exitosa la operación los atributos 'advertencias', 'errores_encontrados' y 'firmantes' retornarán None
+
+        :returns:   
+
+            **exitosa:** True si fue exitoso el verificado del documento, False si no lo fue
+
+            **advertencias:** Lista de advertencias encontradas durante el proceso de validadación, algo como: ["adv1", "adv2"]
+
+            **errores_encontrados:** Lista de errores encontrados y su respectivo detalle, ej  
+            [("código de error", "Detalle del error"), ...]
+
+            **firmantes:** Lista de información del los firmantes, ej 
+            [ {'identificacion': "8-0888-0888", 'fecha_firma': datetime.now(),
+            'nombre': "Juanito Mora Porras"}, ... ]      
+        """
         try:
             dev = self._validar_documento_xml(documento)
         except:
@@ -42,6 +78,28 @@ class ClienteValidador(object):
         return dev
 
     def validar_certificado_autenticacion(self, certificado):
+        """Valida si el certificado de autenticación es válido y no está revocado.
+
+        :param certificado: Certificado en base64
+
+        Retorna una diccionario con los siguientes elementos, en caso de error retorna
+        **DEFAULT_CERTIFICATE_ERROR**.
+
+        :returns:   
+            **codigo_error:** Número con el código de error 1 es éxito
+
+            **exitosa:** True si fue exitosa, False si no lo fue
+
+            **certificado:** Si la operación no fue exitosa retorna None, si lo fue retorna un diccionario con:
+                **identificacion:** Número de identificación del suscriptor dueño del certificado
+
+                **nombre:**  Nombre completo del suscriptor dueño del certificado
+
+                **inicio_vigencia:** Fecha de inicio del vigencia del certificado
+
+                **fin_vigencia:** Fecha de finalización de la vigencia del certificado
+        """
+
         try:
             dev = self._validar_certificado_autenticacion(certificado)
         except:
@@ -50,7 +108,12 @@ class ClienteValidador(object):
         return dev
 
     def validar_servicio(self, servicio):
-        """ servicio puede ser 'certificado' o 'documento' """
+        """Valida si el servicio está disponible.  
+
+        :param servicio: tipo de servicio a validar, puede ser 'certificado' o 'documento'
+        :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible
+        """
+
         if servicio.lower() == 'certificado':
             return self._validar_servicio_certificado()
         if servicio.lower() == 'documento':
@@ -101,7 +164,7 @@ class ClienteValidador(object):
 
     def _extract_certificado_autenticacion(self, result):
         dev = {
-            'cod_error': result.CodigoDeError,
+            'codigo_error': result.CodigoDeError,
             'exitosa': result.FueExitosa,
             'certificado': None
 
