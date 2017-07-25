@@ -10,6 +10,7 @@ from pyfva.soap.autenticador import AutenticadorSoapServiceStub,\
 
 from datetime import datetime
 import warnings
+from pyfva.soap import settings
 
 
 class ClienteAutenticador(object):
@@ -23,7 +24,9 @@ class ClienteAutenticador(object):
         'id_solicitud': 0
     }
 
-    def __init__(self, negocio, entidad):
+    def __init__(self,
+                 negocio=settings.DEFAULT_BUSSINESS,
+                 entidad=settings.DEFAULT_ENTITY):
         self.negocio = negocio
         self.entidad = entidad
 

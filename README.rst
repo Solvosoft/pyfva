@@ -1,12 +1,30 @@
 pyfva
 #######
 
-Cliente para conectar instituciones con BCCR FVA.
+Cliente para conectar instituciones con BCCR_ FVA.
+
+Abstrae la comunicación entre los servicios SOAP del BCCR_  y python creando clientes de fácil uso, por ejemplo si se desea autenticar a una persona se realizaría como
+
+.. code:: python
+
+    from pyfva.clientes.autenticador import ClienteAutenticador
+
+    authclient = ClienteAutenticador(1,1) # negocio, entidad
+                                             
+    if authclient.validar_servicio():
+        data = authclient.solicitar_autenticacion('8-0888-0888')
+    else:
+        # warnings.warn("Auth BCCR No disponible", RuntimeWarning)
+        data = authclient.DEFAULT_ERROR
+
+.. _BCCR: http://www.bccr.fi.cr/
 
 Instalación
 ##############
 
-.. code::bash
+Instale mediante pypi
+
+.. code:: bash
 
     pip install pyfva
 

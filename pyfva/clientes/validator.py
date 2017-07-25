@@ -9,6 +9,7 @@ from pyfva.soap.validador_certificado import ValideElServicio as ValideServicioC
     SoliciteLaValidacionDeCetificadoDeAutenticacion
 from pyfva.soap.validador_documento import ValideElServicio as ValideServicioDocumento,\
     ValidadorDeDocumentoSoapServiceStub, ValideElDocumentoXmlEnvelopedCoFirma
+from pyfva.soap import settings
 
 
 class ClienteValidador(object):
@@ -26,7 +27,9 @@ class ClienteValidador(object):
         'firmantes': None,
     }
 
-    def __init__(self, negocio=None, entidad=None):
+    def __init__(self,
+                 negocio=settings.DEFAULT_BUSSINESS,
+                 entidad=settings.DEFAULT_ENTITY):
         self.negocio = negocio
         self.entidad = entidad
 

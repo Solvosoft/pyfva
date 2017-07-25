@@ -6,6 +6,7 @@ Created on 20 jul. 2017
 from pyfva.soap.verificador import ValideElServicio, VerificadorSoapServiceStub,\
     ExisteUnaSolicitudDeFirmaCompleta
 import warnings
+from pyfva.soap import settings
 
 
 class ClienteVerificador(object):
@@ -16,7 +17,9 @@ class ClienteVerificador(object):
 
     }
 
-    def __init__(self, negocio=None, entidad=None):
+    def __init__(self,
+                 negocio=settings.DEFAULT_BUSSINESS,
+                 entidad=settings.DEFAULT_ENTITY):
         self.negocio = negocio
         self.entidad = entidad
 

@@ -8,6 +8,7 @@ from pyfva.soap.firmador import FirmadorSoapServiceStub,\
     RecibaLaSolicitudDeFirmaMSOffice, ValideElServicio,\
     ElSuscriptorEstaConectado, SolicitudDeFirma
 import warnings
+from pyfva.soap import settings
 
 from datetime import datetime
 
@@ -20,7 +21,9 @@ class ClienteFirmador(object):
         'id_solicitud': 0
     }
 
-    def __init__(self, negocio, entidad):
+    def __init__(self,
+                 negocio=settings.DEFAULT_BUSSINESS,
+                 entidad=settings.DEFAULT_ENTITY):
         self.negocio = negocio
         self.entidad = entidad
 
