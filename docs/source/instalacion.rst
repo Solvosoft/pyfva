@@ -6,7 +6,7 @@ Instalación
 -------------------
 
 .. note:: 
-    Solo ha sido probado en python 3.
+    Solo ha sido probado en python 3 en Debian 9.
 
 Instale mediante pypi
 
@@ -18,7 +18,24 @@ o usando el repositorio
 
 .. code:: bash
 
-    pip install git+https://github.com/solvo/crdist.git
+    pip install -e "git+https://github.com/FlightDataServices/soapfish.git#egg=soapfish"
+    pip install -e "git+https://github.com/solvo/pyfva.git#egg=pyfva"
+
+
+Instalación Windows 
+------------------------
+
+Pyfva se desarrolla y prueba en Linux por lo que se recomienda encarecidamente usarlo, aún así debería ser compatible con Windows.
+
+Los siguientes pasos corresponden a como lograrlo instalar
+
+* Instale python 3 desde https://www.python.org/downloads/, (versión usada 3.5.3)
+* Instale git  descargandolo desde https://git-scm.com/download/win 
+
+Es recomendable usar la terminal provista por git
+
+* pip install -e "git+https://github.com/FlightDataServices/soapfish.git#egg=soapfish"
+* pip install pyfva
 
 
 Parámetros de ambiente
