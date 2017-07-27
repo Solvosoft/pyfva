@@ -12,6 +12,8 @@ STUB_HOST = "localhost:8001"
 #RECEPTOR_HOST = "http://localhost:8000/"
 RECEPTOR_HOST = 'http://bccr.fva.cr/'
 
+RECEPTOR_CLIENT = 'pyfva.receptor.client'
+
 DEFAULT_BUSSINESS = 1
 DEFAULT_ENTITY = 1
 
@@ -27,7 +29,8 @@ def load_settings(settings):
                  'STUB_HOST',
                  'RECEPTOR_HOST',
                  'DEFAULT_BUSSINESS',
-                 'DEFAULT_ENTITY']:
+                 'DEFAULT_ENTITY',
+                 'RECEPTOR_CLIENT']:
 
         if hasattr(settings, name):
             setattr(thismodule, name,

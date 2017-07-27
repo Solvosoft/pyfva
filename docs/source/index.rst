@@ -15,6 +15,7 @@ Bievenido a la documentación de pyfva's
    instalacion
    tutorial
    clientes
+   receptor
    formatos
 
 

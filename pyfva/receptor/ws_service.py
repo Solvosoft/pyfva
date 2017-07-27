@@ -11,6 +11,10 @@ from soapfish import soap, xsd
 BaseHeader = xsd.ComplexType
 from pyfva.soap import settings
 
+from pyfva import load_module_responder
+
+receptorclient = load_module_responder(settings.RECEPTOR_CLIENT)
+
 ##############################################################################
 # Schemas
 
@@ -87,13 +91,22 @@ Schema_c49e7 = xsd.Schema(
 
 
 def NotifiqueLaRespuesta(request, NotifiqueLaRespuesta):
-    # TODO: Put your implementation here.
-    return NotifiqueLaRespuestaResponse
+    result = NotifiqueLaRespuesta.elResultado
+
+    data = {
+        'id_solicitud': result.IdDeLaSolicitud,
+        'documento': result.DocumentoFirmado,
+        'fue_exitosa': result.FueExitosa,
+        'codigo_error': result.CodigoDeError
+    }
+
+    dev = receptorclient.reciba_notificacion(data)
+    return NotifiqueLaRespuestaResponse()
 
 
 def ValideElServicio(request, ValideElServicio):
-    # TODO: Put your implementation here.
-    return ValideElServicioResponse
+    dev = receptorclient.valide_servicio()
+    return ValideElServicioResponse.create(dev)
 
 
 ##############################################################################

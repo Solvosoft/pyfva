@@ -50,3 +50,4 @@ Los valores por defecto son:
 * RECEPTOR_HOST = 'http://bccr.fva.cr/'
 * DEFAULT_BUSSINESS = 1
 * DEFAULT_ENTITY = 1
+* RECEPTOR_CLIENT = 'pyfva.receptor.client'
