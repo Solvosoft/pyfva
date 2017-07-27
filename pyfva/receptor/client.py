@@ -4,7 +4,7 @@ por ejemplo en django y agrear lo siguiente en urls.py
 
 .. code:: python
 
-    from pyfva.receptor.ws_client import ResultadoDeSolicitudSoap_SERVICE
+    from pyfva.receptor.ws_service import ResultadoDeSolicitudSoap_SERVICE
     from soapfish.django_ import django_dispatcher
     dispatcher = django_dispatcher(ResultadoDeSolicitudSoap_SERVICE)
 
