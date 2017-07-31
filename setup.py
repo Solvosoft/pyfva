@@ -24,7 +24,7 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 # Dynamically calculate the version based on django.VERSION.
-version = '0.0.2'
+version = '0.0.3'
 
 setup(
     author='Luis Zarate Montero',
