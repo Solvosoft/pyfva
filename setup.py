@@ -23,8 +23,19 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-# Dynamically calculate the version based on django.VERSION.
-version = '0.0.3'
+
+version = '0.0.5'
+
+
+
+from setuptools.command.install import install
+import pip
+class my_install(install):
+    def run(self):
+        install.run(self)
+        pip.main(['install', "git+https://github.com/soapteam/soapfish.git#egg=soapfish-0.5.2", '-q'])
+
+
 
 setup(
     author='Luis Zarate Montero',
@@ -37,11 +48,8 @@ setup(
     license='GNU General Public License',
     platforms=['OS Independent'],
     classifiers=CLASSIFIERS,
-    install_requires=['soapfish'],
-    dependency_links=[
-        "git+https://github.com/soapteam/soapfish.git#egg=soapfish-0.5.2"
-    ],
     packages=find_packages(),
     include_package_data=True,
-    zip_safe=False
+    zip_safe=False,
+    cmdclass={'install': my_install},
 )

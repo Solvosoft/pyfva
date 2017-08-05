@@ -213,3 +213,88 @@ ERRORES_VERIFICACION = (
     (2, 'La entidad no se encuentra registrada.'),
     (3, 'La entidad se encuentra en estado inactiva.')
 )
+
+
+
+def span_text(text, max_char=48):
+    needed = max_char - len(text)
+    dev = text
+    if needed:
+         dev = text + " "*needed
+    return dev
+
+
+
+def show_constants():
+    __doc__="""
+Códigos usados en pyfva
+=========================
+
+.. note:: 
+    Los códigos aquí descritos son los usados por pyFVA pero no son los oficiales del FVA del BCCR ya que todavía no son públicos, aún así se intenta
+    ser 100%% compatible con los códigos oficiales, por lo que estos son una buena referencia
+
+
+HASH_METHODS
+---------------
+
+=======\t============
+Código\tDescripción 
+=======\t============
+%s
+=======\t============
+
+ERRORES_AL_SOLICITAR_FIRMA
+----------------------------
+
+=======\t============
+Código\tDescripción 
+=======\t============
+%s
+=======\t============
+
+ERRORES_AL_NOTIFICAR_FIRMA
+----------------------------
+
+=======\t============
+Código\tDescripción 
+=======\t============
+%s
+=======\t============
+
+
+ERRORES_VALIDA_CERTIFICADO
+----------------------------
+
+=======\t============
+Código\tDescripción 
+=======\t============
+%s
+=======\t============
+
+ERRORES_VALIDA_DOCUMENTO
+--------------------------
+
+=======\t============
+Código\tDescripción 
+=======\t============
+%s
+=======\t============
+
+ERRORES_EN_DOCUMENTO
+----------------------
+
+===============================================\t============
+Código\tDescripción 
+===============================================\t============
+%s
+===============================================\t============
+
+    """%("\n".join(["%s\t%s"%(x, y) for x, y in HASH_METHODS]), 
+"\n".join(["%s\t%s"%(x, y) for x, y in ERRORES_AL_SOLICITAR_FIRMA]), 
+"\n".join(["%s\t%s"%(x, y) for x, y in ERRORES_AL_NOTIFICAR_FIRMA]), 
+"\n".join(["%s\t%s"%(x, y) for x, y in ERRORES_VALIDA_CERTIFICADO]), 
+"\n".join(["%s\t%s"%(x, y) for x, y in ERRORES_VALIDA_DOCUMENTO]), 
+"\n".join(["%s\t%s"%(span_text(x), y) for x, y in ERRORES_EN_DOCUMENTO]), 
+)
+    return __doc__
