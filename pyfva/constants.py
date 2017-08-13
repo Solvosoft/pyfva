@@ -215,18 +215,26 @@ ERRORES_VERIFICACION = (
 )
 
 
+def get_text_representation(error, code):
+    errors = dict(error)
+    if code in errors:
+        return errors[code]
+    return ''
+
 
 def span_text(text, max_char=48):
     needed = max_char - len(text)
     dev = text
     if needed:
-         dev = text + " "*needed
+        dev = text + " " * needed
     return dev
 
 
-
 def show_constants():
-    __doc__="""
+    # use como python -c "from pyfva.constants import
+    # show_constants;print(show_constants())" >
+    # ./docs/source/formatos_en_fva.rst
+    __doc__ = """
 Códigos usados en pyfva
 =========================
 
@@ -290,11 +298,15 @@ Código\tDescripción
 %s
 ===============================================\t============
 
-    """%("\n".join(["%s\t%s"%(x, y) for x, y in HASH_METHODS]), 
-"\n".join(["%s\t%s"%(x, y) for x, y in ERRORES_AL_SOLICITAR_FIRMA]), 
-"\n".join(["%s\t%s"%(x, y) for x, y in ERRORES_AL_NOTIFICAR_FIRMA]), 
-"\n".join(["%s\t%s"%(x, y) for x, y in ERRORES_VALIDA_CERTIFICADO]), 
-"\n".join(["%s\t%s"%(x, y) for x, y in ERRORES_VALIDA_DOCUMENTO]), 
-"\n".join(["%s\t%s"%(span_text(x), y) for x, y in ERRORES_EN_DOCUMENTO]), 
-)
+    """ % ("\n".join(["%s\t%s" % (x, y) for x, y in HASH_METHODS]),
+           "\n".join(["%s\t%s" % (x, y)
+                      for x, y in ERRORES_AL_SOLICITAR_FIRMA]),
+           "\n".join(["%s\t%s" % (x, y)
+                      for x, y in ERRORES_AL_NOTIFICAR_FIRMA]),
+           "\n".join(["%s\t%s" % (x, y)
+                      for x, y in ERRORES_VALIDA_CERTIFICADO]),
+           "\n".join(["%s\t%s" % (x, y) for x, y in ERRORES_VALIDA_DOCUMENTO]),
+           "\n".join(["%s\t%s" % (span_text(x), y)
+                      for x, y in ERRORES_EN_DOCUMENTO]),
+           )
     return __doc__
