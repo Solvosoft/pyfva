@@ -12,6 +12,8 @@ from pyfva.soap.validador_documento import ValideElServicio as ValideServicioDoc
 from pyfva.soap import settings
 
 import logging
+from pyfva.constants import get_text_representation, ERRORES_VALIDA_DOCUMENTO,\
+    ERRORES_VALIDA_CERTIFICADO
 
 logger = logging.getLogger('pyfva')
 
@@ -32,6 +34,7 @@ class ClienteValidador(object):
     """
     DEFAULT_CERTIFICATE_ERROR = {
         'codigo_error': 2,
+        'texto_codigo_error': get_text_representation(ERRORES_VALIDA_CERTIFICADO, 2),
         'exitosa': False,
         'certificado': None
 
@@ -39,6 +42,8 @@ class ClienteValidador(object):
 
     DEFAULT_DOCUMENT_ERROR = {
         'exitosa': False,
+        'codigo_error': 2,
+        'texto_codigo_error': get_text_representation(ERRORES_VALIDA_DOCUMENTO, 2),
         'advertencias': None,
         'errores_encontrados': None,
         'firmantes': None,
@@ -154,20 +159,22 @@ class ClienteValidador(object):
         return dev
 
     def _extract_documento_xml(self, result):
-        if not result.FueExitosa:
-            return self.DEFAULT_DOCUMENT_ERROR
 
         dev = {}
         dev.update(self.DEFAULT_DOCUMENT_ERROR)
+        dev['codigo_error'] = 1 if result.FueExitosa else 2
+        dev['texto_codigo_error'] = get_text_representation(
+            ERRORES_VALIDA_DOCUMENTO, dev['codigo_error']),
         dev['exitosa'] = result.FueExitosa
-        dev['advertencias'] = result.Advertencias.string
-        dev['errores_encontrados'] = [(error.Codigo, error.Detalle)
-                                      for error in result.ErroresEncontrados.ErrorDeDocumento]
-        dev['firmantes'] = [
-            {'identificacion': x.Cedula,
-                'fecha_firma': x.FechaDeFirma,
-                'nombre': x.NombreCompleto} for x in
-            result.Firmantes.Firmante]
+        if result.FueExitosa:
+            dev['advertencias'] = result.Advertencias.string
+            dev['errores_encontrados'] = [(error.Codigo, error.Detalle)
+                                          for error in result.ErroresEncontrados.ErrorDeDocumento]
+            dev['firmantes'] = [
+                {'identificacion': x.Cedula,
+                    'fecha_firma': x.FechaDeFirma,
+                    'nombre': x.NombreCompleto} for x in
+                result.Firmantes.Firmante]
 
         return dev
 
@@ -182,6 +189,7 @@ class ClienteValidador(object):
     def _extract_certificado_autenticacion(self, result):
         dev = {
             'codigo_error': result.CodigoDeError,
+            'texto_codigo_error': get_text_representation(ERRORES_VALIDA_CERTIFICADO, result.CodigoDeError),
             'exitosa': result.FueExitosa,
             'certificado': None
 

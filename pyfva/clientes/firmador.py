@@ -12,6 +12,7 @@ from pyfva.soap import settings
 
 from datetime import datetime
 import logging
+from pyfva.constants import ERRORES_AL_SOLICITAR_FIRMA, get_text_representation
 
 logger = logging.getLogger('pyfva')
 
@@ -28,6 +29,7 @@ class ClienteFirmador(object):
 
     DEFAULT_ERROR = {
         'codigo_error': 2,
+        'texto_codigo_error': get_text_representation(ERRORES_AL_SOLICITAR_FIRMA, 2),
         'codigo_verificacion': 'N/D',
         'tiempo_maximo': 1,
         'id_solicitud': 0
@@ -223,6 +225,7 @@ class ClienteFirmador(object):
     def _extrae_resultado(self, request, result):
         data = {
             'codigo_error': result.CodigoDeError,
+            'texto_codigo_error': get_text_representation(ERRORES_AL_SOLICITAR_FIRMA, result.CodigoDeError),
             'codigo_verificacion': result.CodigoDeVerificacion,
             'tiempo_maximo': result.TiempoMaximoDeFirmaEnSegundos,
             'id_solicitud': result.IdDeLaSolicitud

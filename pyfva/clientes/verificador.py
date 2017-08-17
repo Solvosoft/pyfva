@@ -9,6 +9,7 @@ from pyfva.soap.verificador import ValideElServicio, VerificadorSoapServiceStub,
 from pyfva.soap import settings
 
 import logging
+from pyfva.constants import get_text_representation, ERRORES_VERIFICACION
 logger = logging.getLogger('pyfva')
 
 
@@ -25,6 +26,7 @@ class ClienteVerificador(object):
 
     DEFAULT_ERROR = {
         'codigo_error': 2,
+        'texto_codigo_error': get_text_representation(ERRORES_VERIFICACION, 2),
         'existe_firma': False,
         'fue_exitosa': False
 
@@ -89,6 +91,10 @@ class ClienteVerificador(object):
         dev = {}
         dev.update(self.DEFAULT_ERROR)
         dev['codigo_error'] = result.CodigoDeError
+        dev['texto_codigo_error'] = get_text_representation(
+            ERRORES_VERIFICACION, result.CodigoDeError),
+        dev['texto_codigo_error'] = get_text_representation(
+            ERRORES_VERIFICACION, result.CodigoDeError),
         dev['existe_firma'] = result.FueExitosa
         dev['fue_exitosa'] = result.ExisteUnaFirmaCompleta
         return dev
