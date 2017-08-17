@@ -67,6 +67,9 @@ class ClienteValidador(object):
             Observe que en caso de no ser exitosa la operación los atributos 'advertencias', 'errores_encontrados' y 'firmantes' retornarán None
 
         :returns:   
+            **codigo_error:** Número con el código de error 1 es éxito
+
+            **texto_codigo_error:** Descripción del error
 
             **exitosa:** True si fue exitoso el verificado del documento, False si no lo fue
 
@@ -101,6 +104,8 @@ class ClienteValidador(object):
 
         :returns:   
             **codigo_error:** Número con el código de error 1 es éxito
+
+            **texto_codigo_error:** Descripción del error
 
             **exitosa:** True si fue exitosa, False si no lo fue
 

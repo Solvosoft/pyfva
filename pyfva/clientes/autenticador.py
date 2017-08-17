@@ -55,6 +55,8 @@ class ClienteAutenticador(object):
         :returns:   
             **codigo_error:** Número con el código de error 1 es éxito
 
+            **texto_codigo_error:** Descripción del error
+
             **codigo_verificacion:** str con el código de verificación de la trasacción, se muestra al usuario
 
             **tiempo_maximo:** Tiempo máximo de duración de la solicitud en segundos
@@ -109,6 +111,8 @@ class ClienteAutenticador(object):
 
         :returns:   
             **codigo_error:** Número con el código de error 1 es éxito
+
+            **texto_codigo_error:** Descripción del error
 
             **codigo_verificacion:** str con el código de verificación de la trasacción
 

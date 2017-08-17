@@ -49,6 +49,8 @@ class ClienteVerificador(object):
         :returns:   
             **codigo_error:** Número con el código de error 1 es éxito
 
+            **texto_codigo_error:** Descripción del error
+
             **exitosa:** True si fue exitosa, False si no lo fue
 
             **existe_firma:** Retorna True si hay un proceso de firma activo o False si no.
