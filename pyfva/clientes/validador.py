@@ -8,12 +8,14 @@ from pyfva.soap.validador_certificado import ValideElServicio as ValideServicioC
     ValidadorDeCertificadoSoapServiceStub,\
     SoliciteLaValidacionDeCetificadoDeAutenticacion
 from pyfva.soap.validador_documento import ValideElServicio as ValideServicioDocumento,\
-    ValidadorDeDocumentoSoapServiceStub, ValideElDocumentoXmlEnvelopedCoFirma
+    ValidadorDeDocumentoSoapServiceStub, ValideElDocumentoXmlEnvelopedCoFirma,\
+    ValideElDocumentoXmlEnvelopedContraFirma, ValideElDocumentoMSOffice, ValideElDocumentoOdf
 from pyfva.soap import settings
 
 import logging
 from pyfva.constants import get_text_representation, ERRORES_VALIDA_DOCUMENTO,\
     ERRORES_VALIDA_CERTIFICADO
+import traceback
 
 logger = logging.getLogger('pyfva')
 
@@ -55,10 +57,11 @@ class ClienteValidador(object):
         self.negocio = negocio
         self.entidad = entidad
 
-    def validar_documento_xml(self, documento):
+    def validar_documento(self, documento, formato):
         """Valida si el documento está firmado correctamente.
 
         :param documento: documento xml en base64
+        :param formato: tipo de documento a validar (cofirma, contrafirma, msoffice, odf).
 
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_DOCUMENT_ERROR**.
@@ -81,17 +84,29 @@ class ClienteValidador(object):
             **firmantes:** Lista de información del los firmantes, ej 
             [ {'identificacion': "8-0888-0888", 'fecha_firma': datetime.now(),
             'nombre': "Juanito Mora Porras"}, ... ]      
-        """
-
-        logger.debug("Validador: validar_documento_xml %r" % (locals(), ))
+        """        
+        logger.debug("Validador: validar_documento_%s %r" % (formato, locals() ))
         try:
-            dev = self._validar_documento_xml(documento)
+            
+            if formato == 'cofirma':
+                dev = self._validar_documento_cofirma(documento)
+            elif formato == 'contrafirma':
+                dev = self._validar_documento_contrafirma(documento)
+            elif formato == 'msoffice':
+                dev = self._validar_documento_msoffice(documento)
+            elif formato == 'odf':
+                dev = self._validar_documento_odf(documento)
+            else:
+                logger.error("Validador: validando documento %s %r" % (
+                    formato, 
+                    "No existe formato especificado"))
+                dev = self.DEFAULT_DOCUMENTO_ERROR                
         except Exception as e:
-            logger.error("Validador: validando documento xml %s" % (e, ))
+            logger.error("Validador: validando documento %s %r" % (formato, e))
             dev = self.DEFAULT_DOCUMENTO_ERROR
 
-        logger.debug("Validador: validar_documento_xml resultado %r" %
-                     (dev, ))
+        logger.debug("Validador: validar_documento_%s resultado %r" %
+                     (formato, dev))
         return dev
 
     def validar_certificado_autenticacion(self, certificado):
@@ -149,7 +164,9 @@ class ClienteValidador(object):
         return dev
 
     # Private methods
-    def _validar_documento_xml(self, documento):
+    
+    
+    def _validar_documento_cofirma(self, documento):
         stub = ValidadorDeDocumentoSoapServiceStub()
         options = ValideElDocumentoXmlEnvelopedCoFirma()
         options.elDocumentoXml = documento
@@ -158,10 +175,55 @@ class ClienteValidador(object):
             dev = self._extract_documento_xml(
                 status.soap_body.ValideElDocumentoXmlEnvelopedCoFirmaResult)
         except Exception as e:
-            logger.error("Validador: validando  xml %s" % (e, ))
+            logger.error("Validador: validando  cofirma %s" % (e, ))
             dev = self.DEFAULT_DOCUMENT_ERROR
 
         return dev
+
+    def _validar_documento_contrafirma(self, documento):
+        stub = ValidadorDeDocumentoSoapServiceStub()
+        options = ValideElDocumentoXmlEnvelopedContraFirma()
+        options.elDocumentoXml = documento
+        try:
+            status = stub.ValideElDocumentoXmlEnvelopedContraFirma(options)
+            dev = self._extract_documento_xml(
+                status.soap_body.ValideElDocumentoXmlEnvelopedContraFirmaResult)
+        except Exception as e:
+            traceback.print_exc()
+            logger.error("Validador: validando contrafirma %s" % (e, ))
+            dev = self.DEFAULT_DOCUMENT_ERROR
+
+        return dev
+    
+    def _validar_documento_msoffice(self, documento):
+        stub = ValidadorDeDocumentoSoapServiceStub()
+        options = ValideElDocumentoMSOffice()
+        options.elDocumentoOffice = documento
+        try:
+            status = stub.ValideElDocumentoMSOffice(options)
+            dev = self._extract_documento_xml(
+                status.soap_body.ValideElDocumentoMSOfficeResult)
+        except Exception as e:
+            logger.error("Validador: validando  MSOffice %s" % (e, ))
+            dev = self.DEFAULT_DOCUMENT_ERROR
+
+        return dev
+
+    def _validar_documento_odf(self, documento):
+        stub = ValidadorDeDocumentoSoapServiceStub()
+        options = ValideElDocumentoOdf()
+        options.elDocumentoOdf = documento
+        try:
+            status = stub.ValideElDocumentoOdf(options)
+            dev = self._extract_documento_xml(
+                status.soap_body.ValideElDocumentoOdfResult)
+        except Exception as e:
+            logger.error("Validador: validando  ODF %s" % (e, ))
+            dev = self.DEFAULT_DOCUMENT_ERROR
+
+        return dev
+
+
 
     def _extract_documento_xml(self, result):
 

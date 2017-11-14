@@ -6,7 +6,8 @@ Created on 19 jul. 2017
 from pyfva.soap.firmador import FirmadorSoapServiceStub,\
     RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma, RecibaLaSolicitudDeFirmaODF,\
     RecibaLaSolicitudDeFirmaMSOffice, ValideElServicio,\
-    ElSuscriptorEstaConectado, SolicitudDeFirma
+    ElSuscriptorEstaConectado, SolicitudDeFirma,\
+    RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma
 
 from pyfva.soap import settings
 
@@ -41,17 +42,18 @@ class ClienteFirmador(object):
         self.negocio = negocio
         self.entidad = entidad
 
-    def firme(self, identidad, documento, formato, algoritmo_hash='Sha512', hash_doc=None, resumen=''):
+    def firme(self, identidad, documento, formato, algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
         """
         Firma cualquier documento enviado distinguiendo por el parámtetro formato cual método de firma llamar
 
         :param identidad: Identidad del suscriptor a firmar
         :param documento: Documento a firmar en base64
-        :param formato: Formato del documento, puede ser *xml*, *odf*, *msoffice*
+        :param formato: Formato del documento, puede ser *xml_cofirma*, *xml_contrafirma*, *odf*, *msoffice*
         :param algoritmo_hash: Algoritmo utilizado para calcular el hash_doc, puede ser *sha256*, *sha384*, *sha512*
         :param hash_doc: hash del documento aplicando el algoritmo hash
         :param resumen: Información resumida para mostar al suscriptor que describe el documento
-
+        :param id_funcionalidad: Identificación de la funcionalidad del programa externo, se usa para dar seguimiento a la operación, * No obligatorio
+        
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_ERROR**.
 
@@ -73,15 +75,16 @@ class ClienteFirmador(object):
         logger.debug("Firmador: firme %r" % (locals(), ))
 
         algoritmo_hash = algoritmo_hash.title()
-        if formato == 'xml':
+        if formato in ['xml_cofirma', 'xml_contrafirma']:
+            _type = formato.replace('xml_', '')
             dev = self.firme_xml(identidad, documento,
-                                 algoritmo_hash, hash_doc, resumen)
+                                 algoritmo_hash, hash_doc, resumen, id_funcionalidad, _type)
         elif formato == 'odf':
             dev = self.firme_odf(identidad, documento,
-                                 algoritmo_hash, hash_doc, resumen)
+                                 algoritmo_hash, hash_doc, resumen, id_funcionalidad)
         elif formato == 'msoffice':
             dev = self.firme_msoffice(
-                identidad, documento, algoritmo_hash, hash_doc, resumen)
+                identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
         else:
             logger.error("Formato de documento inválido")
             dev = self.DEFAULT_ERROR
@@ -89,7 +92,8 @@ class ClienteFirmador(object):
         logger.debug("Firmador: firme result %r" % (dev, ))
         return dev
 
-    def firme_xml(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen=''):
+    def firme_xml(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='', 
+                  id_funcionalidad=-1, _type='cofirma'):
         """
         Firma un documento XML, 
 
@@ -99,21 +103,21 @@ class ClienteFirmador(object):
             de firme, además los resultados retornados son también idénticos.
         """
 
-        logger.info("Firmador: firme_xml %s %s" %
-                    (identidad,  hash_doc))
+        logger.info("Firmador: firme_xml %s %s %s" %
+                    (_type, identidad,  hash_doc))
         logger.debug("Firmador: firme_xml %r" % (locals(), ))
 
         request = self._construya_solicitud(
-            identidad, documento, algoritmo_hash, hash_doc, resumen)
+            identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
         try:
-            dev = self._firme_xml(request)
+            dev = self._firme_xml(request, _type)
         except Exception as e:
-            logger.error("Firmador: firmando en xml %s" % (e, ))
+            logger.error("Firmador: firmando en xml %s %s" % (_type, e))
             dev = self.DEFAULT_ERROR
-        logger.debug("Firmador: firme_xml result %r" % (dev, ))
+        logger.debug("Firmador: firme_xml result %s %r" % (_type, dev, ))
         return dev
 
-    def firme_odf(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen=''):
+    def firme_odf(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
         """
         Firma un documento del tipo ODF.
 
@@ -128,7 +132,7 @@ class ClienteFirmador(object):
         logger.debug("Firmador: firme_odf %r" % (locals(), ))
 
         request = self._construya_solicitud(
-            identidad, documento, algoritmo_hash, hash_doc, resumen)
+            identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
         try:
             dev = self._firme_odf(request)
         except Exception as e:
@@ -138,7 +142,7 @@ class ClienteFirmador(object):
         logger.debug("Firmador: firme_odf result %r" % (dev, ))
         return dev
 
-    def firme_msoffice(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen=''):
+    def firme_msoffice(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
         """
         Firma un documento del tipo Microsoft office.
 
@@ -153,7 +157,7 @@ class ClienteFirmador(object):
         logger.debug("Firmador: firme_msoffice %r" % (locals(), ))
 
         request = self._construya_solicitud(
-            identidad, documento, algoritmo_hash, hash_doc, resumen)
+            identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
         try:
             dev = self._firme_msoffice(request)
         except Exception as e:
@@ -211,16 +215,18 @@ class ClienteFirmador(object):
             data = self.DEFAULT_ERROR
         return data
 
-    def _construya_solicitud(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen=''):
+    def _construya_solicitud(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
         request = SolicitudDeFirma.create(
             self.negocio,
             datetime.now(),
             algoritmo_hash,
+            id_funcionalidad,
             self.entidad
         )
         request.Documento = documento
         request.HashDocumento = hash_doc
         request.IdentificacionDelSuscriptor = identidad
+        request.IdFuncionalidad=id_funcionalidad
         request.ResumenDocumento = resumen
 
         return request
@@ -236,14 +242,21 @@ class ClienteFirmador(object):
         }
         return data
 
-    def _firme_xml(self, request):
+    def _firme_xml(self, request, _type):
         stub = FirmadorSoapServiceStub()
-        options = RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma()
-        options.laSolicitud = request
-        status = stub.RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma(options)
-        return self.extrae_resultado(request,
+        if _type=='cofirma':
+            options = RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma()
+            options.laSolicitud = request
+            status = stub.RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma(options)
+            return self.extrae_resultado(request,
                                      status.soap_body.RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirmaResult)
-
+        elif _type=='contrafirma':
+            options = RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma()
+            options.laSolicitud = request
+            status = stub.RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma(options)
+            return self.extrae_resultado(request,
+                                     status.soap_body.RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirmaResult)
+            
     def _firme_odf(self, request):
         stub = FirmadorSoapServiceStub()
         options = RecibaLaSolicitudDeFirmaODF()

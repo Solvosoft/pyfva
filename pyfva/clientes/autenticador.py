@@ -40,14 +40,15 @@ class ClienteAutenticador(object):
         self.negocio = negocio
         self.entidad = entidad
 
-    def solicitar_autenticacion(self, identificacion):
+    def solicitar_autenticacion(self, identificacion, id_funcionalidad=-1):
         """Solicita al BCCR la autenticación de la identificacion, 
         recuerde, la política del BCCR es: *no nos llame, nosotros lo llamamos*,
         por lo que los valores devueltos corresponden al estado de la petición y 
         no al resultado de la firma
 
         :param identificacion: número de identificación de la persona ver  `Formato identificacion <formatos.html#formato-de-identificacion>`_.
-
+        :param id_funcionalidad: Identificación de la funcionalidad del programa externo, se usa para dar seguimiento a la operación, * No obligatorio
+        
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_ERROR**.
 
@@ -69,6 +70,7 @@ class ClienteAutenticador(object):
         request = SolicitudDeAutenticacion.create(
             self.negocio,
             datetime.now(),
+            id_funcionalidad,
             self.entidad,
             identificacion
         )

@@ -86,16 +86,15 @@ Al validar un **documento XML** use lo siguiente:
     client = ClienteValidador()
     if client.validar_servicio('documento'):
 
-        data = client.validar_documento_xml(
-            """DG2vdmllPgogIDx...2bWU++g==""")
+        data = client.validar_documento(
+            """DG2vdmllPgogIDx...2bWU++g==""", 'cofirma')
 
     else:
         warnings.warn(
             "Validar documento BCCR No disponible", RuntimeWarning)
         data = client.DEFAULT_DOCUMENT_ERROR
 
-.. note:: 
-    Documentos ODF y Microsoft office no están soportados todavía.
+.. note:: Los posibles valores del segundo parámetro indican el tipo de documento, los valores son `cofirma`, `contrafirma`, `msoffice`, `odf`
 
 Verificación
 --------------
