@@ -94,9 +94,7 @@ class ClienteVerificador(object):
         dev.update(self.DEFAULT_ERROR)
         dev['codigo_error'] = result.CodigoDeError
         dev['texto_codigo_error'] = get_text_representation(
-            ERRORES_VERIFICACION, result.CodigoDeError),
-        dev['texto_codigo_error'] = get_text_representation(
-            ERRORES_VERIFICACION, result.CodigoDeError),
+            ERRORES_VERIFICACION, result.CodigoDeError) 
         dev['existe_firma'] = result.FueExitosa
         dev['fue_exitosa'] = result.ExisteUnaFirmaCompleta
         return dev

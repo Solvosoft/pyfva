@@ -19,7 +19,7 @@ Para solicitar a un suscriptor autenticación se debe usar el cliente ClienteAut
     authclient = ClienteAutenticador(1,1) # negocio, entidad
                                              
     if authclient.validar_servicio():
-        data = authclient.solicitar_autenticacion('08-0888-0888')
+        data = authclient.solicitar_autenticacion('08-0888-0888', id_funcionalidad=-1)
     else:
         warnings.warn("Autenticación BCCR No disponible", RuntimeWarning)
         data = authclient.DEFAULT_ERROR
@@ -44,10 +44,11 @@ De momento se puede firmar documentos en los formatos XML, Open Document Format 
         data = signclient.firme(
             '08-0888-0888',
             """PG1vdmllPgogIDx0...CjwvbW92aWU+Cg==""",
-            "xml",  # xml, odf, msoffice
+            "xml_cofirma",  # xml_cofirma, xml_contrafirma, odf, msoffice
             algoritmo_hash='Sha512',  # Sha256, Sha384, Sha512
             hash_doc="""637a7d07c5dbee59695aafbd3933b...bd3933b""",
-            resumen="este es un mensaje amigable sobre el documento")
+            resumen="este es un mensaje amigable sobre el documento",
+            id_funcionalidad=-1)
 
     else:
         warnings.warn("Firmador BCCR No disponible", RuntimeWarning)
