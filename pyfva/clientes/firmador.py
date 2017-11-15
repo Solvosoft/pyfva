@@ -27,7 +27,6 @@ class ClienteFirmador(object):
     * MSOffice: .docx, .xlsx y .pptx
     * ODF: .odt, .ods y .odp 
     
-
     .. note:: 
         Recuerde la política del banco es *no nos llame, nosotros lo llamamos*
 

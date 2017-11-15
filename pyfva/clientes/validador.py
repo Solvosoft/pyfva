@@ -13,8 +13,9 @@ from pyfva.soap.validador_documento import ValideElServicio as ValideServicioDoc
 from pyfva.soap import settings
 
 import logging
-from pyfva.constants import get_text_representation, ERRORES_VALIDA_DOCUMENTO,\
-    ERRORES_VALIDA_CERTIFICADO
+from pyfva.constants import get_text_representation, ERRORES_VALIDA_CERTIFICADO,\
+    ERRORES_VALIDAR_ODF, ERRORES_VALIDAR_MSOFFICE,\
+    ERRORES_VALIDAR_XMLCONTRAFIRMA, ERRORES_VALIDAR_XMLCOFIRMA
 import traceback
 
 logger = logging.getLogger('pyfva')
@@ -45,14 +46,15 @@ class ClienteValidador(object):
 
     }
 
-    DEFAULT_DOCUMENT_ERROR = {
+    def DEFAULT_DOCUMENT_ERROR(self, ERRORES_VALIDA):
+        return  {
         'exitosa': False,
         'codigo_error': 2,
-        'texto_codigo_error': get_text_representation(ERRORES_VALIDA_DOCUMENTO, 2),
+        'texto_codigo_error': get_text_representation(ERRORES_VALIDA, 2),
         'advertencias': None,
         'errores_encontrados': None,
         'firmantes': None,
-    }
+        }
 
     def __init__(self,
                  negocio=settings.DEFAULT_BUSSINESS,
@@ -176,10 +178,11 @@ class ClienteValidador(object):
         try:
             status = stub.ValideElDocumentoXmlEnvelopedCoFirma(options)
             dev = self._extract_documento_xml(
-                status.soap_body.ValideElDocumentoXmlEnvelopedCoFirmaResult)
+                status.soap_body.ValideElDocumentoXmlEnvelopedCoFirmaResult,
+                ERRORES_VALIDAR_XMLCOFIRMA)
         except Exception as e:
             logger.error("Validador: validando  cofirma %s" % (e, ))
-            dev = self.DEFAULT_DOCUMENT_ERROR
+            dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
 
         return dev
 
@@ -190,11 +193,12 @@ class ClienteValidador(object):
         try:
             status = stub.ValideElDocumentoXmlEnvelopedContraFirma(options)
             dev = self._extract_documento_xml(
-                status.soap_body.ValideElDocumentoXmlEnvelopedContraFirmaResult)
+                status.soap_body.ValideElDocumentoXmlEnvelopedContraFirmaResult,
+                ERRORES_VALIDAR_XMLCONTRAFIRMA)
         except Exception as e:
             traceback.print_exc()
             logger.error("Validador: validando contrafirma %s" % (e, ))
-            dev = self.DEFAULT_DOCUMENT_ERROR
+            dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCONTRAFIRMA)
 
         return dev
     
@@ -205,10 +209,11 @@ class ClienteValidador(object):
         try:
             status = stub.ValideElDocumentoMSOffice(options)
             dev = self._extract_documento_xml(
-                status.soap_body.ValideElDocumentoMSOfficeResult)
+                status.soap_body.ValideElDocumentoMSOfficeResult,
+                ERRORES_VALIDAR_MSOFFICE)
         except Exception as e:
             logger.error("Validador: validando  MSOffice %s" % (e, ))
-            dev = self.DEFAULT_DOCUMENT_ERROR
+            dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_MSOFFICE)
 
         return dev
 
@@ -219,22 +224,23 @@ class ClienteValidador(object):
         try:
             status = stub.ValideElDocumentoOdf(options)
             dev = self._extract_documento_xml(
-                status.soap_body.ValideElDocumentoOdfResult)
+                status.soap_body.ValideElDocumentoOdfResult,
+                ERRORES_VALIDAR_ODF)
         except Exception as e:
             logger.error("Validador: validando  ODF %s" % (e, ))
-            dev = self.DEFAULT_DOCUMENT_ERROR
+            dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_ODF)
 
         return dev
 
 
 
-    def _extract_documento_xml(self, result):
+    def _extract_documento_xml(self, result, ERRORES_VALIDACION):
 
         dev = {}
-        dev.update(self.DEFAULT_DOCUMENT_ERROR)
+        dev.update(self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDACION))
         dev['codigo_error'] = 1 if result.FueExitosa else 2
         dev['texto_codigo_error'] = get_text_representation(
-            ERRORES_VALIDA_DOCUMENTO, dev['codigo_error']),
+            ERRORES_VALIDACION, dev['codigo_error']),
         dev['exitosa'] = result.FueExitosa
         if result.FueExitosa:
             dev['advertencias'] = result.Advertencias.string
