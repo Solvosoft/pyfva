@@ -35,7 +35,14 @@ o usando el repositorio
 
 .. code:: bash
 
-    pip install git+https://github.com/solvo/crdist.git
+    pip install git+https://github.com/luisza/pyfva.git
+
+Documentación
+################
+
+Por supuesto la documentoación está aquí_
+
+.. _aquí: http://pyfva.readthedocs.io/
 
 Parámetros de ambiente
 #############################
@@ -45,9 +52,20 @@ Los siguientes parámetros pueden ser modificados usando variables de entorno o 
 Los valores por defecto son: 
 
 * FVA_HOST = "http://bccr.fva.cr/"
+* RECEPTOR_HOST = 'http://bccr.fva.cr/'
+
+Ambos son direcciones del esquema, deben ser iguales al esquema del servicio WSDL.
+
 * STUB_SCHEME = 'http'
 * STUB_HOST = "localhost:8001"
-* RECEPTOR_HOST = 'http://bccr.fva.cr/'
+
+Dirección y protocolo donde se ubica el servicio FVA.
+
 * DEFAULT_BUSSINESS = 1
 * DEFAULT_ENTITY = 1
+
+Números de identificación en el servicio FVA. (en el simulador no son usados).
+
 * RECEPTOR_CLIENT = 'pyfva.receptor.client'
+
+Cliente para recibir las respuestas del FVA.
