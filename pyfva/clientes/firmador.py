@@ -19,7 +19,14 @@ logger = logging.getLogger('pyfva')
 
 
 class ClienteFirmador(object):
-    """Permite firmar un documento utilizando los servicios del BCCR
+    """Permite firmar un documento utilizando los servicios del BCCR.
+    
+    Los documentos que se pueden firmar son:
+    
+    * XML: con cofirma y contrafirma
+    * MSOffice: .docx, .xlsx y .pptx
+    * ODF: .odt, .ods y .odp 
+    
 
     .. note:: 
         Recuerde la política del banco es *no nos llame, nosotros lo llamamos*

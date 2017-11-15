@@ -68,9 +68,9 @@ Al Validar un certificado use lo siguiente:
     from pyfva.clientes.validador import ClienteValidador
     import warnings
 
-    client = ClienteValidador()
-    if client.validar_servicio('certificado'):  
-        data = client.validar_certificado_autenticacion(
+    clientvalida = ClienteValidador()
+    if clientvalida.validar_servicio('certificado'):  
+        data = clientvalida.validar_certificado_autenticacion(
             """PG1vdmllPgogIDx...2aWU+Cg==""")
     else:
         warnings.warn(

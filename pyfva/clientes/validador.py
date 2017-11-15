@@ -22,11 +22,14 @@ logger = logging.getLogger('pyfva')
 
 class ClienteValidador(object):
     """Permite validar una firma o un documento utilizando los servicios del BCCR
-
-    .. note:: 
-        Este servicio solo valida documento XML, por lo que no debe usarlo para odf o msoffice.
-        Se espera que en un futuro pueda soportar los demás formatos.
-
+    
+    Los documentos que se pueden validar son:
+    
+    * Certificados digitales (CA nacional)
+    * XML: con cofirma y contrafirma
+    * MSOffice: .docx, .xlsx y .pptx
+    * ODF: .odt, .ods y .odp 
+    
     .. note:: 
         Los parámetros negocio y entidad de momento no son requeridos, pero puede que en un futuro cercano
         lo sean, por lo que se recomienda suministrarlos.
