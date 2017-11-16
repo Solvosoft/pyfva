@@ -105,10 +105,10 @@ class ClienteValidador(object):
                 logger.error("Validador: validando documento %s %r" % (
                     formato, 
                     "No existe formato especificado"))
-                dev = self.DEFAULT_DOCUMENTO_ERROR                
+                dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)                
         except Exception as e:
             logger.error("Validador: validando documento %s %r" % (formato, e))
-            dev = self.DEFAULT_DOCUMENTO_ERROR
+            dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
 
         logger.debug("Validador: validar_documento_%s resultado %r" %
                      (formato, dev))
