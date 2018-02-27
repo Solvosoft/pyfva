@@ -7,7 +7,7 @@ from pyfva.soap.firmador import FirmadorSoapServiceStub,\
     RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma, RecibaLaSolicitudDeFirmaODF,\
     RecibaLaSolicitudDeFirmaMSOffice, ValideElServicio,\
     ElSuscriptorEstaConectado, SolicitudDeFirma,\
-    RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma
+    RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma, RecibaLaSolicitudDeFirmaPdf
 
 from pyfva.soap import settings
 
@@ -26,6 +26,7 @@ class ClienteFirmador(object):
     * XML: con cofirma y contrafirma
     * MSOffice: .docx, .xlsx y .pptx
     * ODF: .odt, .ods y .odp 
+    * PDF: .pdf
     
     .. note:: 
         Recuerde la política del banco es *no nos llame, nosotros lo llamamos*
@@ -90,6 +91,9 @@ class ClienteFirmador(object):
                                  algoritmo_hash, hash_doc, resumen, id_funcionalidad)
         elif formato == 'msoffice':
             dev = self.firme_msoffice(
+                identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
+        elif formato == 'pdf':
+            dev = self.firme_pdf(
                 identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
         else:
             logger.error("Formato de documento inválido")
@@ -171,6 +175,31 @@ class ClienteFirmador(object):
             dev = self.DEFAULT_ERROR
 
         logger.debug("Firmador: firme_msoffice result %r" % (dev, ))
+        return dev
+
+    def firme_pdf(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
+        """
+        Firma un documento del tipo PDF.
+
+        .. note:: 
+
+            Los parámetros exceptuando formato (no existe en este método) son idénticos que los 
+            de firme, además los resultados retornados son también idénticos.
+        """
+
+        logger.info("Firmador: firme_pdf %s %s" %
+                    (identidad,  hash_doc))
+        logger.debug("Firmador: firme_pdf %r" % (locals(), ))
+
+        request = self._construya_solicitud(
+            identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
+        try:
+            dev = self._firme_pdf(request)
+        except Exception as e:
+            logger.error("Firmador: firmando en pdf %s" % (e, ))
+            dev = self.DEFAULT_ERROR
+
+        logger.debug("Firmador: firme_pdf result %r" % (dev, ))
         return dev
 
     def suscriptor_conectado(self, identificacion):
@@ -278,6 +307,14 @@ class ClienteFirmador(object):
         status = stub.RecibaLaSolicitudDeFirmaMSOffice(options)
         return self.extrae_resultado(request,
                                      status.soap_body.RecibaLaSolicitudDeFirmaMSOfficeResult)
+
+    def _firme_pdf(self, request):
+        stub = FirmadorSoapServiceStub()
+        options = RecibaLaSolicitudDeFirmaPdf()
+        options.laSolicitud = request
+        status = stub.RecibaLaSolicitudDeFirmaPdf(options)
+        return self.extrae_resultado(request,
+                                     status.soap_body.RecibaLaSolicitudDeFirmaPdfResult)
 
     def _suscriptor_conectado(self, identificacion):
         stub = FirmadorSoapServiceStub()

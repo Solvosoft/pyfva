@@ -22,7 +22,7 @@ else:
 
 signclient = ClienteFirmador(negocio=1, entidad=1)
 if signclient.validar_servicio():
-    for formato in ['xml_cofirma', 'xml_contrafirma', 'odf', 'msoffice']:
+    for formato in ['xml_cofirma', 'xml_contrafirma', 'odf', 'msoffice', 'pdf']:
         data = signclient.firme(
         '08-0888-0888',
         """PG1vdmllPgogIDx0...CjwvbW92aWU+Cg==""",
@@ -49,7 +49,7 @@ else:
     data = client.DEFAULT_CERTIFICATE_ERROR
 
 if clientvalida.validar_servicio('documento'):
-    for formato in ['cofirma', 'contrafirma', 'msoffice', 'odf']:
+    for formato in ['cofirma', 'contrafirma', 'msoffice', 'odf', 'pdf']:
         data = clientvalida.validar_documento("""DG2vdmllPgogIDx...2bWU++g==""", formato)
         print(formato, "\t-->\t", data)
 else:

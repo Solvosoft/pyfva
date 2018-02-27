@@ -103,4 +103,5 @@ ENV/
 .project
 .pydevproject
 .settings/
+WSDL
 

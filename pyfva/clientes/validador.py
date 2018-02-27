@@ -9,13 +9,16 @@ from pyfva.soap.validador_certificado import ValideElServicio as ValideServicioC
     SoliciteLaValidacionDeCetificadoDeAutenticacion
 from pyfva.soap.validador_documento import ValideElServicio as ValideServicioDocumento,\
     ValidadorDeDocumentoSoapServiceStub, ValideElDocumentoXmlEnvelopedCoFirma,\
-    ValideElDocumentoXmlEnvelopedContraFirma, ValideElDocumentoMSOffice, ValideElDocumentoOdf
+    ValideElDocumentoXmlEnvelopedContraFirma, ValideElDocumentoMSOffice, ValideElDocumentoOdf, \
+    ValideElDocumentoPdf
+    
 from pyfva.soap import settings
 
 import logging
 from pyfva.constants import get_text_representation, ERRORES_VALIDA_CERTIFICADO,\
     ERRORES_VALIDAR_ODF, ERRORES_VALIDAR_MSOFFICE,\
-    ERRORES_VALIDAR_XMLCONTRAFIRMA, ERRORES_VALIDAR_XMLCOFIRMA
+    ERRORES_VALIDAR_XMLCONTRAFIRMA, ERRORES_VALIDAR_XMLCOFIRMA,\
+    ERRORES_VALIDAR_PDF
 import traceback
 
 logger = logging.getLogger('pyfva')
@@ -30,6 +33,7 @@ class ClienteValidador(object):
     * XML: con cofirma y contrafirma
     * MSOffice: .docx, .xlsx y .pptx
     * ODF: .odt, .ods y .odp 
+    * PDF: .pdf
     
     .. note:: 
         Los parámetros negocio y entidad de momento no son requeridos, pero puede que en un futuro cercano
@@ -101,6 +105,8 @@ class ClienteValidador(object):
                 dev = self._validar_documento_msoffice(documento)
             elif formato == 'odf':
                 dev = self._validar_documento_odf(documento)
+            elif formato == 'pdf':
+                dev = self._validar_documento_pdf(documento)
             else:
                 logger.error("Validador: validando documento %s %r" % (
                     formato, 
@@ -232,6 +238,20 @@ class ClienteValidador(object):
 
         return dev
 
+    def _validar_documento_pdf(self, documento):
+        stub = ValidadorDeDocumentoSoapServiceStub()
+        options = ValideElDocumentoPdf()
+        options.elDocumentoOdf = documento
+        try:
+            status = stub.ValideElDocumentoPdf(options)
+            dev = self._extract_documento_xml(
+                status.soap_body.ValideElDocumentoPdfResult,
+                ERRORES_VALIDAR_PDF)
+        except Exception as e:
+            logger.error("Validador: validando  PDF %s" % (e, ))
+            dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_PDF)
+
+        return dev
 
 
     def _extract_documento_xml(self, result, ERRORES_VALIDACION):
