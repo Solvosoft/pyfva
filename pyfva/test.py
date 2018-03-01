@@ -46,7 +46,7 @@ if clientvalida.validar_servicio('certificado'):
 else:
     warnings.warn(
         "Validar certificado BCCR No disponible", RuntimeWarning)
-    data = client.DEFAULT_CERTIFICATE_ERROR
+    data = clientvalida.DEFAULT_CERTIFICATE_ERROR
 
 if clientvalida.validar_servicio('documento'):
     for formato in ['cofirma', 'contrafirma', 'msoffice', 'odf', 'pdf']:
@@ -55,7 +55,7 @@ if clientvalida.validar_servicio('documento'):
 else:
     warnings.warn(
         "Validar documento BCCR No disponible", RuntimeWarning)
-    data = client.DEFAULT_DOCUMENT_ERROR
+    data = clientvalida.DEFAULT_DOCUMENT_ERROR
 
 ## ---------------------VERIFICACIÓN ------------------------------##
 
@@ -66,4 +66,4 @@ else:
     warnings.warn(
     "Verificar firma completa BCCR No disponible",
     RuntimeWarning)
-    data = client.DEFAULT_ERROR
+    data = clientverifica.DEFAULT_ERROR

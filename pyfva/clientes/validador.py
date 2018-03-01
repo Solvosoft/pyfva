@@ -241,7 +241,7 @@ class ClienteValidador(object):
     def _validar_documento_pdf(self, documento):
         stub = ValidadorDeDocumentoSoapServiceStub()
         options = ValideElDocumentoPdf()
-        options.elDocumentoOdf = documento
+        options.elDocumentoPdf = documento
         try:
             status = stub.ValideElDocumentoPdf(options)
             dev = self._extract_documento_xml(
@@ -263,10 +263,18 @@ class ClienteValidador(object):
             ERRORES_VALIDACION, dev['codigo_error']),
         dev['exitosa'] = result.FueExitosa
         if result.FueExitosa:
-            dev['advertencias'] = result.Advertencias.string
-            dev['errores_encontrados'] = [(error.Codigo, error.Detalle)
+            dev['advertencias'] = None
+            dev['errores_encontrados'] = None
+            dev['firmantes'] = None
+            
+            if result.Advertencias:
+                dev['advertencias'] = result.Advertencias.string
+            
+            if result.ErroresEncontrados:
+                dev['errores_encontrados'] = [(error.Codigo, error.Detalle)
                                           for error in result.ErroresEncontrados.ErrorDeDocumento]
-            dev['firmantes'] = [
+            if result.Firmantes:
+                dev['firmantes'] = [
                 {'identificacion': x.Cedula,
                     'fecha_firma': x.FechaDeFirma,
                     'nombre': x.NombreCompleto} for x in

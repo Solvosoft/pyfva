@@ -53,12 +53,16 @@ class RespuestaDeLaSolicitud(xsd.ComplexType):
     ResumenDelDocumento = xsd.Element(xsd.String, minOccurs=0)
 
     @classmethod
-    def create(cls, CodigoDeError, TiempoMaximoDeFirmaEnSegundos, IdDeLaSolicitud, ResumenDelDocumento):
+    def create(cls, CodigoDeError, TiempoMaximoDeFirmaEnSegundos, IdDeLaSolicitud, 
+               CodigoDeVerificacion=None, ResumenDelDocumento=None):
         instance = cls()
         instance.CodigoDeError = CodigoDeError
         instance.TiempoMaximoDeFirmaEnSegundos = TiempoMaximoDeFirmaEnSegundos
         instance.IdDeLaSolicitud = IdDeLaSolicitud
-        instance.ResumenDelDocumento = ResumenDelDocumento
+        if CodigoDeVerificacion:
+            instance.CodigoDeVerificacion = CodigoDeVerificacion
+        if ResumenDelDocumento:
+            instance.ResumenDelDocumento = ResumenDelDocumento
         return instance
 
 

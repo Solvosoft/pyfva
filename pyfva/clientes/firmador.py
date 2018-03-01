@@ -7,7 +7,8 @@ from pyfva.soap.firmador import FirmadorSoapServiceStub,\
     RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma, RecibaLaSolicitudDeFirmaODF,\
     RecibaLaSolicitudDeFirmaMSOffice, ValideElServicio,\
     ElSuscriptorEstaConectado, SolicitudDeFirma,\
-    RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma, RecibaLaSolicitudDeFirmaPdf
+    RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma, RecibaLaSolicitudDeFirmaPdf,\
+    SolicitudDeFirmaPdf
 
 from pyfva.soap import settings
 
@@ -177,7 +178,8 @@ class ClienteFirmador(object):
         logger.debug("Firmador: firme_msoffice result %r" % (dev, ))
         return dev
 
-    def firme_pdf(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
+    def firme_pdf(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='', 
+                  id_funcionalidad=-1, lugar=None, razon=None):
         """
         Firma un documento del tipo PDF.
 
@@ -191,8 +193,9 @@ class ClienteFirmador(object):
                     (identidad,  hash_doc))
         logger.debug("Firmador: firme_pdf %r" % (locals(), ))
 
-        request = self._construya_solicitud(
-            identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
+        request = self._construya_solicitud_pdf(
+            identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad, 
+            lugar, razon)
         try:
             dev = self._firme_pdf(request)
         except Exception as e:
@@ -265,6 +268,29 @@ class ClienteFirmador(object):
         request.ResumenDocumento = resumen
 
         return request
+
+    def _construya_solicitud_pdf(self, identidad, documento, algoritmo_hash='Sha512', 
+                                 hash_doc=None, resumen='', id_funcionalidad=-1,
+                                 lugar=None, razon=None):
+        request = SolicitudDeFirmaPdf.create(
+            self.negocio,
+            datetime.now(),
+            algoritmo_hash,
+            id_funcionalidad,
+            self.entidad
+        )
+        request.Documento = documento
+        request.HashDocumento = hash_doc
+        request.IdentificacionDelSuscriptor = identidad
+        request.IdFuncionalidad=id_funcionalidad
+        request.ResumenDocumento = resumen
+        if lugar:
+            request.Lugar = lugar
+        if razon:
+            request.RazonDeFirma = razon
+
+        return request
+
 
     # Private methods
     def _extrae_resultado(self, request, result):

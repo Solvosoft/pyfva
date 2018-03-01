@@ -147,7 +147,8 @@ class ClienteAutenticador(object):
             'texto_codigo_error': get_text_representation(ERRORES_AL_SOLICITAR_FIRMA, result.CodigoDeError),
             'codigo_verificacion': result.CodigoDeVerificacion,
             'tiempo_maximo': result.TiempoMaximoDeFirmaEnSegundos,
-            'id_solicitud': result.IdDeLaSolicitud
+            'id_solicitud': result.IdDeLaSolicitud,
+            'resumen': result.ResumenDelDocumento
         }
         return data
 
