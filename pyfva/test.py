@@ -4,7 +4,8 @@ from pyfva.clientes.validador import ClienteValidador
 from pyfva.clientes.verificador import ClienteVerificador
 
 import warnings
-
+import logging
+logging.basicConfig(filename='pyfva.log',level=logging.DEBUG)
 
 ## ---------------------AUTENTICACIÓN ------------------------------##
 

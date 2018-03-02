@@ -255,30 +255,28 @@ class ClienteValidador(object):
 
 
     def _extract_documento_xml(self, result, ERRORES_VALIDACION):
-
         dev = {}
         dev.update(self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDACION))
         dev['codigo_error'] = 1 if result.FueExitosa else 2
         dev['texto_codigo_error'] = get_text_representation(
             ERRORES_VALIDACION, dev['codigo_error']),
         dev['exitosa'] = result.FueExitosa
-        if result.FueExitosa:
-            dev['advertencias'] = None
-            dev['errores_encontrados'] = None
-            dev['firmantes'] = None
-            
-            if result.Advertencias:
-                dev['advertencias'] = result.Advertencias.string
-            
-            if result.ErroresEncontrados:
-                dev['errores_encontrados'] = [(error.Codigo, error.Detalle)
-                                          for error in result.ErroresEncontrados.ErrorDeDocumento]
-            if result.Firmantes:
-                dev['firmantes'] = [
-                {'identificacion': x.Cedula,
-                    'fecha_firma': x.FechaDeFirma,
-                    'nombre': x.NombreCompleto} for x in
-                result.Firmantes.Firmante]
+        dev['advertencias'] = None
+        dev['errores_encontrados'] = None
+        dev['firmantes'] = None
+        
+        if result.Advertencias:
+            dev['advertencias'] = result.Advertencias.string
+                    
+        if result.ErroresEncontrados:
+            dev['errores_encontrados'] = [(error.Codigo, error.Detalle)
+                                      for error in result.ErroresEncontrados.ErrorDeDocumento]
+        if result.Firmantes:
+            dev['firmantes'] = [
+            {'identificacion': x.Cedula,
+                'fecha_firma': x.FechaDeFirma,
+                'nombre': x.NombreCompleto} for x in
+            result.Firmantes.Firmante]
 
         return dev
 
