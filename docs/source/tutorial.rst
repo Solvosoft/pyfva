@@ -29,7 +29,14 @@ El formato de la identificación debe respetar los formatos de codificación del
 Firma
 ------------
 
-De momento se puede firmar documentos en los formatos XML, Open Document Format (ODF) y Microsoft Office.  Para ello debe utilizar el ClienteFirmador, por ejemplo:
+De momento se puede firmar documentos en los formatos con un tamaño menor a 20 MB(20480 Kb). 
+
+- XML  (cofirma y contrafirma)
+- Open Document Format (.odt, .ods y .odp) 
+- Microsoft Office (.docx, .xlsx y .pptx) 
+- Portable Document Format (pdf)
+
+Para ello debe utilizar el ClienteFirmador, por ejemplo:
 
 .. code:: python 
 
@@ -44,7 +51,7 @@ De momento se puede firmar documentos en los formatos XML, Open Document Format 
         data = signclient.firme(
             '08-0888-0888',
             """PG1vdmllPgogIDx0...CjwvbW92aWU+Cg==""",
-            "xml_cofirma",  # xml_cofirma, xml_contrafirma, odf, msoffice
+            "xml_cofirma",  # xml_cofirma, xml_contrafirma, odf, msoffice, pdf
             algoritmo_hash='Sha512',  # Sha256, Sha384, Sha512
             hash_doc="""637a7d07c5dbee59695aafbd3933b...bd3933b""",
             resumen="este es un mensaje amigable sobre el documento",
@@ -95,7 +102,7 @@ Al validar un **documento XML** use lo siguiente:
             "Validar documento BCCR No disponible", RuntimeWarning)
         data = client.DEFAULT_DOCUMENT_ERROR
 
-.. note:: Los posibles valores del segundo parámetro indican el tipo de documento, los valores son `cofirma`, `contrafirma`, `msoffice`, `odf`
+.. note:: Los posibles valores del segundo parámetro indican el tipo de documento, los valores son `cofirma`, `contrafirma`, `msoffice`, `odf`, `pdf`.
 
 Verificación
 --------------

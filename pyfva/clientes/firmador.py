@@ -56,7 +56,7 @@ class ClienteFirmador(object):
 
         :param identidad: Identidad del suscriptor a firmar
         :param documento: Documento a firmar en base64
-        :param formato: Formato del documento, puede ser *xml_cofirma*, *xml_contrafirma*, *odf*, *msoffice*
+        :param formato: Formato del documento, puede ser *xml_cofirma*, *xml_contrafirma*, *odf*, *msoffice*, *pdf*
         :param algoritmo_hash: Algoritmo utilizado para calcular el hash_doc, puede ser *sha256*, *sha384*, *sha512*
         :param hash_doc: hash del documento aplicando el algoritmo hash
         :param resumen: Información resumida para mostar al suscriptor que describe el documento
