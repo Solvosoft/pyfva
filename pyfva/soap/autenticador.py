@@ -53,7 +53,7 @@ class RespuestaDeLaSolicitud(xsd.ComplexType):
     ResumenDelDocumento = xsd.Element(xsd.String, minOccurs=0)
 
     @classmethod
-    def create(cls, CodigoDeError, TiempoMaximoDeFirmaEnSegundos, IdDeLaSolicitud, 
+    def create(cls, CodigoDeError, TiempoMaximoDeFirmaEnSegundos, IdDeLaSolicitud,
                CodigoDeVerificacion=None, ResumenDelDocumento=None):
         instance = cls()
         instance.CodigoDeError = CodigoDeError
@@ -113,8 +113,10 @@ Schema_c49e7 = xsd.Schema(
     simpleTypes=[],
     attributeGroups=[],
     groups=[],
-    complexTypes=[SolicitudDeAutenticacion, ExtensionDataObject, RespuestaDeLaSolicitud],
-    elements={'RecibaLaSolicitudDeAutenticacion': xsd.Element(RecibaLaSolicitudDeAutenticacion()), 'RecibaLaSolicitudDeAutenticacionResponse': xsd.Element(RecibaLaSolicitudDeAutenticacionResponse()), 'ValideElServicio': xsd.Element(ValideElServicio()), 'ValideElServicioResponse': xsd.Element(ValideElServicioResponse())},
+    complexTypes=[SolicitudDeAutenticacion,
+                  ExtensionDataObject, RespuestaDeLaSolicitud],
+    elements={'RecibaLaSolicitudDeAutenticacion': xsd.Element(RecibaLaSolicitudDeAutenticacion()), 'RecibaLaSolicitudDeAutenticacionResponse': xsd.Element(
+        RecibaLaSolicitudDeAutenticacionResponse()), 'ValideElServicio': xsd.Element(ValideElServicio()), 'ValideElServicioResponse': xsd.Element(ValideElServicioResponse())},
 )
 
 
@@ -151,7 +153,7 @@ ValideElServicio_method = xsd.Method(
 AutenticadorSoap_SERVICE = soap.Service(
     name='AutenticadorSoap',
     targetNamespace=settings.FVA_HOST,
-    location='${scheme}://${host}/WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/Autenticador.asmx',
+    location='${scheme}://${host}/Autenticador.asmx',
     schemas=[Schema_c49e7],
     version=soap.SOAPVersion.SOAP12,
     methods=[RecibaLaSolicitudDeAutenticacion_method, ValideElServicio_method],

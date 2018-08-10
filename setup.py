@@ -24,8 +24,7 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 
-version = '0.0.13'
-
+version = '0.0.14'
 
 
 setup(
@@ -45,4 +44,4 @@ setup(
     zip_safe=False,
 )
 
-print("Install dependecy from https://github.com/luisza/soapfish/archive/v0.5.2.tar.gz")
+print("Install dependecy from https://github.com/Solvosoft/soapfish/archive/v0.6.0.zip")
