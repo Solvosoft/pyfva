@@ -75,7 +75,7 @@ class ClienteAutenticador(object):
             identificacion
         )
 
-        logger.debug("Autenticador: Solicitar_autenticacion Fin %d %s %d %s" % (
+        logger.debug("Autenticador: Solicitar_autenticacion Fin %r %r %r %r" % (
             self.negocio,
             datetime.now().isoformat(),
             self.entidad,

@@ -108,12 +108,12 @@ class ClienteValidador(object):
             elif formato == 'pdf':
                 dev = self._validar_documento_pdf(documento)
             else:
-                logger.error("Validador: validando documento %s %r" % (
+                logger.error("Validador: validando documento %r %r" % (
                     formato, 
                     "No existe formato especificado"))
                 dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)                
         except Exception as e:
-            logger.error("Validador: validando documento %s %r" % (formato, e))
+            logger.error("Validador: validando documento %r %r" % (formato, e))
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
 
         logger.debug("Validador: validar_documento_%s resultado %r" %
@@ -150,7 +150,7 @@ class ClienteValidador(object):
         try:
             dev = self._validar_certificado_autenticacion(certificado)
         except Exception as e:
-            logger.error("Validador: validando certificado %s" % (e, ))
+            logger.error("Validador: validando certificado %r" % (e, ))
             dev = self.DEFAULT_CERTIFICATE_ERROR
 
         logger.debug(
@@ -164,14 +164,14 @@ class ClienteValidador(object):
         :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible
         """
 
-        logger.info("Validador: Validar servicio %s" % (servicio, ))
+        logger.info("Validador: Validar servicio %r" % (servicio, ))
         dev = False
         if servicio.lower() == 'certificado':
             dev = self._validar_servicio_certificado()
         elif servicio.lower() == 'documento':
             dev = self._validar_servicio_documento()
 
-        logger.debug("Validador: Validar servicio %s %r" % (servicio, dev))
+        logger.debug("Validador: Validar servicio %r %r" % (servicio, dev))
         return dev
 
     # Private methods
@@ -187,7 +187,7 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoXmlEnvelopedCoFirmaResult,
                 ERRORES_VALIDAR_XMLCOFIRMA)
         except Exception as e:
-            logger.error("Validador: validando  cofirma %s" % (e, ))
+            logger.error("Validador: validando  cofirma %r" % (e, ))
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
 
         return dev
@@ -203,7 +203,7 @@ class ClienteValidador(object):
                 ERRORES_VALIDAR_XMLCONTRAFIRMA)
         except Exception as e:
             traceback.print_exc()
-            logger.error("Validador: validando contrafirma %s" % (e, ))
+            logger.error("Validador: validando contrafirma %r" % (e, ))
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCONTRAFIRMA)
 
         return dev
@@ -218,7 +218,7 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoMSOfficeResult,
                 ERRORES_VALIDAR_MSOFFICE)
         except Exception as e:
-            logger.error("Validador: validando  MSOffice %s" % (e, ))
+            logger.error("Validador: validando  MSOffice %r" % (e, ))
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_MSOFFICE)
 
         return dev
@@ -233,7 +233,7 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoOdfResult,
                 ERRORES_VALIDAR_ODF)
         except Exception as e:
-            logger.error("Validador: validando  ODF %s" % (e, ))
+            logger.error("Validador: validando  ODF %r" % (e, ))
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_ODF)
 
         return dev
@@ -248,7 +248,7 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoPdfResult,
                 ERRORES_VALIDAR_PDF)
         except Exception as e:
-            logger.error("Validador: validando  PDF %s" % (e, ))
+            logger.error("Validador: validando  PDF %r" % (e, ))
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_PDF)
 
         return dev

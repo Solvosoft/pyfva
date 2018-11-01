@@ -78,7 +78,7 @@ class ClienteFirmador(object):
             **id_solicitud:** Número de identificación de la solicitud
         """
 
-        logger.info("Firmador: firme %s %s %s" %
+        logger.info("Firmador: firme %r %r %r" %
                     (identidad, formato, hash_doc))
         logger.debug("Firmador: firme %r" % (locals(), ))
 
@@ -114,7 +114,7 @@ class ClienteFirmador(object):
             de firme, además los resultados retornados son también idénticos.
         """
 
-        logger.info("Firmador: firme_xml %s %s %s" %
+        logger.info("Firmador: firme_xml %r %r %r" %
                     (_type, identidad,  hash_doc))
         logger.debug("Firmador: firme_xml %r" % (locals(), ))
 
@@ -123,9 +123,9 @@ class ClienteFirmador(object):
         try:
             dev = self._firme_xml(request, _type)
         except Exception as e:
-            logger.error("Firmador: firmando en xml %s %s" % (_type, e))
+            logger.error("Firmador: firmando en xml %r %r" % (_type, e))
             dev = self.DEFAULT_ERROR
-        logger.debug("Firmador: firme_xml result %s %r" % (_type, dev, ))
+        logger.debug("Firmador: firme_xml result %r %r" % (_type, dev, ))
         return dev
 
     def firme_odf(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
@@ -138,7 +138,7 @@ class ClienteFirmador(object):
             de firme, además los resultados retornados son también idénticos.
         """
 
-        logger.info("Firmador: firme_odf %s %s" %
+        logger.info("Firmador: firme_odf %r %r" %
                     (identidad,  hash_doc))
         logger.debug("Firmador: firme_odf %r" % (locals(), ))
 
@@ -147,7 +147,7 @@ class ClienteFirmador(object):
         try:
             dev = self._firme_odf(request)
         except Exception as e:
-            logger.error("Firmador: firmando en odf %s" % (e,))
+            logger.error("Firmador: firmando en odf %r" % (e,))
             dev = self.DEFAULT_ERROR
 
         logger.debug("Firmador: firme_odf result %r" % (dev, ))
@@ -163,7 +163,7 @@ class ClienteFirmador(object):
             de firme, además los resultados retornados son también idénticos.
         """
 
-        logger.info("Firmador: firme_msoffice %s %s" %
+        logger.info("Firmador: firme_msoffice %r %r" %
                     (identidad,  hash_doc))
         logger.debug("Firmador: firme_msoffice %r" % (locals(), ))
 
@@ -172,7 +172,7 @@ class ClienteFirmador(object):
         try:
             dev = self._firme_msoffice(request)
         except Exception as e:
-            logger.error("Firmador: firmando en msoffice %s" % (e, ))
+            logger.error("Firmador: firmando en msoffice %r" % (e, ))
             dev = self.DEFAULT_ERROR
 
         logger.debug("Firmador: firme_msoffice result %r" % (dev, ))
@@ -189,7 +189,7 @@ class ClienteFirmador(object):
             de firme, además los resultados retornados son también idénticos.
         """
 
-        logger.info("Firmador: firme_pdf %s %s" %
+        logger.info("Firmador: firme_pdf %r %r" %
                     (identidad,  hash_doc))
         logger.debug("Firmador: firme_pdf %r" % (locals(), ))
 
@@ -199,7 +199,7 @@ class ClienteFirmador(object):
         try:
             dev = self._firme_pdf(request)
         except Exception as e:
-            logger.error("Firmador: firmando en pdf %s" % (e, ))
+            logger.error("Firmador: firmando en pdf %r" % (e, ))
             dev = self.DEFAULT_ERROR
 
         logger.debug("Firmador: firme_pdf result %r" % (dev, ))
@@ -249,7 +249,7 @@ class ClienteFirmador(object):
         try:
             data = self._extrae_resultado(solicitud,  resultado)
         except Exception as e:
-            logger.error("Firmador: extrayendo resultados %s" % (e, ))
+            logger.error("Firmador: extrayendo resultados %r" % (e, ))
             data = self.DEFAULT_ERROR
         return data
 
