@@ -50,7 +50,8 @@ class ClienteFirmador(object):
         self.negocio = negocio
         self.entidad = entidad
 
-    def firme(self, identidad, documento, formato, algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
+    def firme(self, identidad, documento, formato, algoritmo_hash='Sha512', hash_doc=None, 
+                    resumen='', id_funcionalidad=-1, lugar=None, razon=None):
         """
         Firma cualquier documento enviado distinguiendo por el parámtetro formato cual método de firma llamar
 
@@ -61,7 +62,9 @@ class ClienteFirmador(object):
         :param hash_doc: hash del documento aplicando el algoritmo hash
         :param resumen: Información resumida para mostar al suscriptor que describe el documento
         :param id_funcionalidad: Identificación de la funcionalidad del programa externo, se usa para dar seguimiento a la operación, * No obligatorio
-        
+        :param lugar:  Lugar donde se realizó la firma (solo PDF)
+        :param razon:  Razon de firma para PDF (solo PDF)
+
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_ERROR**.
 
@@ -95,7 +98,10 @@ class ClienteFirmador(object):
                 identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
         elif formato == 'pdf':
             dev = self.firme_pdf(
-                identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
+                identidad, documento, algoritmo_hash=algoritmo_hash, 
+                hash_doc=hash_doc, resumen=resumen, 
+                id_funcionalidad=id_funcionalidad,
+                lugar=lugar, razon=razon)
         else:
             logger.error("Formato de documento inválido")
             dev = self.DEFAULT_ERROR
