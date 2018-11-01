@@ -17,6 +17,31 @@ RECEPTOR_CLIENT = 'pyfva.receptor.client'
 DEFAULT_BUSSINESS = 1
 DEFAULT_ENTITY = 1
 
+SERVICE_URLS = {
+    'autenticacion': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/Autenticador.asmx',
+    'firma': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/Firmador.asmx',
+    'valida_certificado': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeCertificado.asmx',
+    'valida_documento': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeDocumento.asmx',
+    'verifica': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/Verificador.asmx'
+}
+
+SERVICE_URLS = {
+    'autenticacion': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/Autenticador.asmx',
+    'firma': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/Firmador.asmx',
+    'valida_certificado': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeCertificado.asmx',
+    'valida_documento': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeDocumento.asmx',
+    'verifica': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/Verificador.asmx'
+}
+
+TEST_SERVICE_URLS = {
+    'autenticacion': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/Autenticador.asmx',
+    'firma': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/Firmador.asmx',
+    'valida_certificado': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/ValidadorDeCertificado.asmx',
+    'valida_documento': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/ValidadorDeDocumento.asmx',
+    'verifica': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/Verificador.asmx'
+}
+
+
 import sys
 import os
 
@@ -41,6 +66,8 @@ def load_settings(settings):
                     settings[name]
                     )
 
+    if hasattr(settings, "FVA_TESTURLS") or "FVA_TESTURLS" in settings:
+        setattr(thismodule, 'SERVICE_URLS', TEST_SERVICE_URLS )        
 
 try:
     from django.conf import settings as djsettings

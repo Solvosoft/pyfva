@@ -6,7 +6,7 @@ Created on 19 jul. 2017
 
 from pyfva.soap.validador_certificado import ValideElServicio as ValideServicioCertificado,\
     ValidadorDeCertificadoSoapServiceStub,\
-    SoliciteLaValidacionDeCetificadoDeAutenticacion
+    SoliciteLaValidacionDelCertificadoDeAutenticacion
 from pyfva.soap.validador_documento import ValideElServicio as ValideServicioDocumento,\
     ValidadorDeDocumentoSoapServiceStub, ValideElDocumentoXmlEnvelopedCoFirma,\
     ValideElDocumentoXmlEnvelopedContraFirma, ValideElDocumentoMSOffice, ValideElDocumentoOdf, \
@@ -282,10 +282,10 @@ class ClienteValidador(object):
 
     def _validar_certificado_autenticacion(self, certificado):
         stub = ValidadorDeCertificadoSoapServiceStub()
-        options = SoliciteLaValidacionDeCetificadoDeAutenticacion()
+        options = SoliciteLaValidacionDelCertificadoDeAutenticacion()
         options.elCertificadoDeAutenticacion = certificado
-        status = stub.SoliciteLaValidacionDeCetificadoDeAutenticacion(options)
-        result = status.soap_body.SoliciteLaValidacionDeCetificadoDeAutenticacionResult
+        status = stub.SoliciteLaValidacionDelCertificadoDeAutenticacion(options)
+        result = status.soap_body.SoliciteLaValidacionDelCertificadoDeAutenticacionResult
         return self._extract_certificado_autenticacion(result)
 
     def _extract_certificado_autenticacion(self, result):
@@ -299,6 +299,7 @@ class ClienteValidador(object):
         if result.FueExitosa:
             cert = result.InformacionDelCertificado
             dev['certificado'] = {
+                'tipo_identificacion': cert.TipoDeIdentificacion,
                 'identificacion': cert.Identificacion or 'N/D',
                 'nombre': cert.NombreCompleto or 'N/D',
                 'inicio_vigencia': cert.FechaInicioDeLaVigencia,

@@ -37,19 +37,21 @@ class InformacionDelCertificado(xsd.ComplexType):
     INHERITANCE = None
     INDICATOR = xsd.Sequence
     Identificacion = xsd.Element(xsd.String, minOccurs=0)
+    TipoDeIdentificacion = xsd.Element(xsd.Int, minOccurs=1)
     NombreCompleto = xsd.Element(xsd.String, minOccurs=0)
     FechaInicioDeLaVigencia = xsd.Element(xsd.DateTime, minOccurs=1)
     FechaFinalDeLaVigencia = xsd.Element(xsd.DateTime, minOccurs=1)
 
     @classmethod
-    def create(cls, FechaInicioDeLaVigencia, FechaFinalDeLaVigencia):
+    def create(cls, TipoDeIdentificacion, FechaInicioDeLaVigencia, FechaFinalDeLaVigencia):
         instance = cls()
+        instance.TipoDeIdentificacion = TipoDeIdentificacion
         instance.FechaInicioDeLaVigencia = FechaInicioDeLaVigencia
         instance.FechaFinalDeLaVigencia = FechaFinalDeLaVigencia
         return instance
 
 
-class SoliciteLaValidacionDeCetificadoDeAutenticacion(xsd.ComplexType):
+class SoliciteLaValidacionDelCertificadoDeAutenticacion(xsd.ComplexType):
     INHERITANCE = None
     INDICATOR = xsd.Sequence
     elCertificadoDeAutenticacion = xsd.Element(xsd.Base64Binary, minOccurs=0)
@@ -60,10 +62,10 @@ class SoliciteLaValidacionDeCetificadoDeAutenticacion(xsd.ComplexType):
         return instance
 
 
-class SoliciteLaValidacionDeCetificadoDeAutenticacionResponse(xsd.ComplexType):
+class SoliciteLaValidacionDelCertificadoDeAutenticacionResponse(xsd.ComplexType):
     INHERITANCE = None
     INDICATOR = xsd.Sequence
-    SoliciteLaValidacionDeCetificadoDeAutenticacionResult = xsd.Element(ResultadoDeLaSolicitud, minOccurs=0)
+    SoliciteLaValidacionDelCertificadoDeAutenticacionResult = xsd.Element(ResultadoDeLaSolicitud, minOccurs=0)
 
     @classmethod
     def create(cls):
@@ -96,7 +98,7 @@ Schema_c49e7 = xsd.Schema(
     attributeGroups=[],
     groups=[],
     complexTypes=[ResultadoDeLaSolicitud, InformacionDelCertificado],
-    elements={'SoliciteLaValidacionDeCetificadoDeAutenticacion': xsd.Element(SoliciteLaValidacionDeCetificadoDeAutenticacion()), 'SoliciteLaValidacionDeCetificadoDeAutenticacionResponse': xsd.Element(SoliciteLaValidacionDeCetificadoDeAutenticacionResponse()), 'ValideElServicio': xsd.Element(ValideElServicio()), 'ValideElServicioResponse': xsd.Element(ValideElServicioResponse())},
+    elements={'SoliciteLaValidacionDelCertificadoDeAutenticacion': xsd.Element(SoliciteLaValidacionDelCertificadoDeAutenticacion()), 'SoliciteLaValidacionDelCertificadoDeAutenticacionResponse': xsd.Element(SoliciteLaValidacionDelCertificadoDeAutenticacionResponse()), 'ValideElServicio': xsd.Element(ValideElServicio()), 'ValideElServicioResponse': xsd.Element(ValideElServicioResponse())},
 )
 
 
@@ -104,13 +106,13 @@ Schema_c49e7 = xsd.Schema(
 # Methods
 
 
-SoliciteLaValidacionDeCetificadoDeAutenticacion_method = xsd.Method(
-    soapAction=settings.FVA_HOST + 'SoliciteLaValidacionDeCetificadoDeAutenticacion',
-    input='SoliciteLaValidacionDeCetificadoDeAutenticacion',
+SoliciteLaValidacionDelCertificadoDeAutenticacion_method = xsd.Method(
+    soapAction=settings.FVA_HOST + 'SoliciteLaValidacionDelCertificadoDeAutenticacion',
+    input='SoliciteLaValidacionDelCertificadoDeAutenticacion',
     inputPartName='parameters',
-    output='SoliciteLaValidacionDeCetificadoDeAutenticacionResponse',
+    output='SoliciteLaValidacionDelCertificadoDeAutenticacionResponse',
     outputPartName='parameters',
-    operationName='SoliciteLaValidacionDeCetificadoDeAutenticacion',
+    operationName='SoliciteLaValidacionDelCertificadoDeAutenticacion',
     style='document',
 )
 
@@ -133,10 +135,10 @@ ValideElServicio_method = xsd.Method(
 ValidadorDeCertificadoSoap_SERVICE = soap.Service(
     name='ValidadorDeCertificadoSoap',
     targetNamespace=settings.FVA_HOST,
-    location='${scheme}://${host}/WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeCertificado.asmx',
+    location='${scheme}://${host}/'+settings.SERVICE_URLS['valida_certificado'],
     schemas=[Schema_c49e7],
     version=soap.SOAPVersion.SOAP12,
-    methods=[SoliciteLaValidacionDeCetificadoDeAutenticacion_method, ValideElServicio_method],
+    methods=[SoliciteLaValidacionDelCertificadoDeAutenticacion_method, ValideElServicio_method],
 )
 
 
@@ -149,8 +151,8 @@ class ValidadorDeCertificadoSoapServiceStub(soap.Stub):
     SCHEME = settings.STUB_SCHEME
     HOST = settings.STUB_HOST
 
-    def SoliciteLaValidacionDeCetificadoDeAutenticacion(self, SoliciteLaValidacionDeCetificadoDeAutenticacion, header=None):
-        return self.call('SoliciteLaValidacionDeCetificadoDeAutenticacion', SoliciteLaValidacionDeCetificadoDeAutenticacion, header=header)
+    def SoliciteLaValidacionDelCertificadoDeAutenticacion(self, SoliciteLaValidacionDelCertificadoDeAutenticacion, header=None):
+        return self.call('SoliciteLaValidacionDelCertificadoDeAutenticacion', SoliciteLaValidacionDelCertificadoDeAutenticacion, header=header)
 
     def ValideElServicio(self, ValideElServicio, header=None):
         return self.call('ValideElServicio', ValideElServicio, header=header)

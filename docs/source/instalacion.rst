@@ -6,7 +6,7 @@ Instalación
 -------------------
 
 .. note:: 
-    Solo ha sido probado en python 3 en Debian 9.
+    Solo ha sido probado en python 3 en Debian 9 y Centos 7.5 con python3.6 .
 
 Instale mediante pypi
 
@@ -18,7 +18,7 @@ o usando el repositorio
 
 .. code:: bash
 
-    pip install -e "git+https://github.com/FlightDataServices/soapfish.git#egg=soapfish"
+    pip install "https://github.com/Solvosoft/soapfish/archive/v0.6.0.zip"
     pip install -e "git+https://github.com/solvo/pyfva.git#egg=pyfva"
 
 
@@ -34,7 +34,7 @@ Los siguientes pasos corresponden a como lograrlo instalar
 
 Es recomendable usar la terminal provista por git
 
-* pip install -e "git+https://github.com/FlightDataServices/soapfish.git#egg=soapfish"
+* pip install "https://github.com/Solvosoft/soapfish/archive/v0.6.0.zip"
 * pip install pyfva
 
 
@@ -52,6 +52,7 @@ Los valores por defecto son:
 * DEFAULT_BUSSINESS = 1
 * DEFAULT_ENTITY = 1
 * RECEPTOR_CLIENT = 'pyfva.receptor.client'
+* FVA_TESTURLS = ''
 
 Para usarse en una consola en linux use por ejemplo:
 
@@ -61,7 +62,32 @@ Para usarse en una consola en linux use por ejemplo:
 
 y luego ejecute el programa que hace uso de pyfva.
 
+En el caso de utilizar el entorno de pruebas se requiere especificar true, la no existencia de la variable representa,
+el uso de las URL para producción.
+
+.. code:: bash
+
+    export FVA_TESTURLS="true"
+
+.. note:: 
+    No usar FVA_TESTURLS="true" cuando se use con el simulador, ya que este de momento no soporta las rutas de prueba.
+
 En caso de usarse en conjunto con django puede agregar los parámetros en settings.py y serán cargados automáticamente.
 
 .. note:: 
     Las variables de entorno tiene prioridad con respecto a las variables en settings de django
+
+
+Comunicación SSL 
+--------------------------
+
+Para entablar comunicación entre la entidad y el BCCR se requiere autenticación mutua, para esto debe indicar a nivel de entorno que las rutas de los certificados a utilizar.
+
+.. code:: bash
+
+    export REQUESTS_CA_PATH=ca_nacional_de_CR.pem
+    export REQUESTS_CERT_PATH=bccr_agent.pem
+    export REQUESTS_KEY_PATH=bccr_agent_key.pem
+
+Por limitaciones de `requests` la llave privada debe estar en plano, por lo que se recomienda proteger especialmente ese archivo contra accesos indebidos.
+
