@@ -19,8 +19,8 @@ ENTIDAD_NO_REGISTRADA = 4
 ERRORES_AL_SOLICITAR_FIRMA = (
 (0, "Solicitud recibida correctamente."),
 (1, "Ha ocurrido algún problema al solicitar la firma o autenticación."),
-(3, "Solicitud con campos incompletos."),
-(4, "Existe una diferencia no permitida entre la fecha y hora del cliente y la del servidor. La fecha/hora de la solicitud no debe tener una diferencia de más de 60 segundos de la fecha/hora del servidor."),
+(2, "Solicitud con campos incompletos."),
+(3, "Existe una diferencia no permitida entre la fecha y hora del cliente y la del servidor. La fecha/hora de la solicitud no debe tener una diferencia de más de 60 segundos de la fecha/hora del servidor."),
 (ENTIDAD_NO_REGISTRADA, "La entidad no se encuentra registrada."),
 (5, "La entidad se encuentra en estado inactiva."),
 (6, "El negocio no pertenece a la entidad solicitante."),
