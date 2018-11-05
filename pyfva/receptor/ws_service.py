@@ -30,14 +30,17 @@ class ResultadoDeFirma(xsd.ComplexType):
         xsd.Base64Binary, minOccurs=1, nillable=True)
     FueExitosa = xsd.Element(xsd.Boolean, minOccurs=1)
     CodigoDeError = xsd.Element(xsd.Int, minOccurs=1)
+    IDAlgoritmoHashDocumentoFirmado = xsd.Element(xsd.Int, minOccurs=1)
 
     @classmethod
-    def create(cls, IdDeLaSolicitud, DocumentoFirmado, FueExitosa, CodigoDeError):
+    def create(cls, IdDeLaSolicitud, DocumentoFirmado, FueExitosa, 
+               CodigoDeError, HashFirmado):
         instance = cls()
         instance.IdDeLaSolicitud = IdDeLaSolicitud
         instance.DocumentoFirmado = DocumentoFirmado
         instance.FueExitosa = FueExitosa
         instance.CodigoDeError = CodigoDeError
+        instance.IDAlgoritmoHashDocumentoFirmado = HashFirmado
         return instance
 
 
@@ -97,7 +100,8 @@ def NotifiqueLaRespuesta(request, NotifiqueLaRespuesta):
         'id_solicitud': result.IdDeLaSolicitud,
         'documento': result.DocumentoFirmado,
         'fue_exitosa': result.FueExitosa,
-        'codigo_error': result.CodigoDeError
+        'codigo_error': result.CodigoDeError,
+        'hash_document': result.IDAlgoritmoHashDocumentoFirmado
     }
 
     dev = receptorclient.reciba_notificacion(data)
@@ -144,7 +148,7 @@ ValideElServicio_method = xsd.Method(
 ResultadoDeSolicitudSoap_SERVICE = soap.Service(
     name='ResultadoDeSolicitudSoap',
     targetNamespace=settings.RECEPTOR_HOST,
-    location='${scheme}://${host}/wcfv2/Bccr.Sinpe.Fva.EntidadDePruebas.Notificador/ResultadoDeSolicitud.asmx',
+    location='${scheme}://${host}/'+settings.WS_URL_NOTIFICATION,
     schemas=[Schema_c49e7],
     version=soap.SOAPVersion.SOAP12,
     methods=[NotifiqueLaRespuesta_method, ValideElServicio_method],

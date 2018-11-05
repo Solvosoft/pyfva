@@ -41,6 +41,7 @@ TEST_SERVICE_URLS = {
     'verifica': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/Verificador.asmx'
 }
 
+WS_URL_NOTIFICATION='wcfv2/Bccr.Sinpe.Fva.EntidadDePruebas.Notificador/ResultadoDeSolicitud.asmx'
 
 import sys
 import os
@@ -55,7 +56,8 @@ def load_settings(settings):
                  'RECEPTOR_HOST',
                  'DEFAULT_BUSSINESS',
                  'DEFAULT_ENTITY',
-                 'RECEPTOR_CLIENT']:
+                 'RECEPTOR_CLIENT',
+                 'WS_URL_NOTIFICATION']:
 
         if hasattr(settings, name):
             setattr(thismodule, name,
