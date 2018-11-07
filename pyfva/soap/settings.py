@@ -36,12 +36,12 @@ SERVICE_URLS = {
 TEST_SERVICE_URLS = {
     'autenticacion': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/Autenticador.asmx',
     'firma': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/Firmador.asmx',
-    'valida_certificado': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/ValidadorDeCertificado.asmx',
-    'valida_documento': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/ValidadorDeDocumento.asmx',
+    'valida_certificado': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeCertificado.asmx',
+    'valida_documento': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeDocumento.asmx',
     'verifica': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/Verificador.asmx'
 }
 
-WS_URL_NOTIFICATION='wcfv2/Bccr.Sinpe.Fva.EntidadDePruebas.Notificador/ResultadoDeSolicitud.asmx'
+WS_URL_NOTIFICATION = 'wcfv2/Bccr.Sinpe.Fva.EntidadDePruebas.Notificador/ResultadoDeSolicitud.asmx'
 
 import sys
 import os
@@ -69,7 +69,8 @@ def load_settings(settings):
                     )
 
     if hasattr(settings, "FVA_TESTURLS") or "FVA_TESTURLS" in settings:
-        setattr(thismodule, 'SERVICE_URLS', TEST_SERVICE_URLS )        
+        setattr(thismodule, 'SERVICE_URLS', TEST_SERVICE_URLS)
+
 
 try:
     from django.conf import settings as djsettings
