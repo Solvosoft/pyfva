@@ -27,8 +27,9 @@ class ClienteAutenticador(object):
     """
 
     DEFAULT_ERROR = {
-        'codigo_error': 2,
-        'texto_codigo_error': get_text_representation(ERRORES_AL_SOLICITAR_FIRMA, 2),
+        'codigo_error': 1,
+        'texto_codigo_error': get_text_representation(
+            ERRORES_AL_SOLICITAR_FIRMA, 1),
         'codigo_verificacion': 'N/D',
         'tiempo_maximo': 1,
         'id_solicitud': 0
@@ -48,13 +49,13 @@ class ClienteAutenticador(object):
 
         :param identificacion: número de identificación de la persona ver  `Formato identificacion <formatos.html#formato-de-identificacion>`_.
         :param id_funcionalidad: Identificación de la funcionalidad del programa externo, se usa para dar seguimiento a la operación, * No obligatorio
-        
+
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_ERROR**.
 
 
         :returns:   
-            **codigo_error:** Número con el código de error 1 es éxito
+            **codigo_error:** Número con el código de error 0 es éxito
 
             **texto_codigo_error:** Descripción del error
 
@@ -112,7 +113,7 @@ class ClienteAutenticador(object):
         **DEFAULT_ERROR**.
 
         :returns:   
-            **codigo_error:** Número con el código de error 1 es éxito
+            **codigo_error:** Número con el código de error 0 es éxito
 
             **texto_codigo_error:** Descripción del error
 
@@ -144,7 +145,8 @@ class ClienteAutenticador(object):
     def _extrae_resultado(self, request, result):
         data = {
             'codigo_error': result.CodigoDeError,
-            'texto_codigo_error': get_text_representation(ERRORES_AL_SOLICITAR_FIRMA, result.CodigoDeError),
+            'texto_codigo_error': get_text_representation(
+                ERRORES_AL_SOLICITAR_FIRMA, result.CodigoDeError),
             'codigo_verificacion': result.CodigoDeVerificacion,
             'tiempo_maximo': result.TiempoMaximoDeFirmaEnSegundos,
             'id_solicitud': result.IdDeLaSolicitud,

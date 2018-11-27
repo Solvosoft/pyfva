@@ -33,7 +33,7 @@ class ResultadoDeFirma(xsd.ComplexType):
     IDAlgoritmoHashDocumentoFirmado = xsd.Element(xsd.Int, minOccurs=1)
 
     @classmethod
-    def create(cls, IdDeLaSolicitud, DocumentoFirmado, FueExitosa, 
+    def create(cls, IdDeLaSolicitud, DocumentoFirmado, FueExitosa,
                CodigoDeError, HashFirmado):
         instance = cls()
         instance.IdDeLaSolicitud = IdDeLaSolicitud

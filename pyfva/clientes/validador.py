@@ -11,7 +11,7 @@ from pyfva.soap.validador_documento import ValideElServicio as ValideServicioDoc
     ValidadorDeDocumentoSoapServiceStub, ValideElDocumentoXmlEnvelopedCoFirma,\
     ValideElDocumentoXmlEnvelopedContraFirma, ValideElDocumentoMSOffice, ValideElDocumentoOdf, \
     ValideElDocumentoPdf
-    
+
 from pyfva.soap import settings
 
 import logging
@@ -26,15 +26,15 @@ logger = logging.getLogger('pyfva')
 
 class ClienteValidador(object):
     """Permite validar una firma o un documento utilizando los servicios del BCCR
-    
+
     Los documentos que se pueden validar son:
-    
+
     * Certificados digitales (CA nacional)
     * XML: con cofirma y contrafirma
     * MSOffice: .docx, .xlsx y .pptx
     * ODF: .odt, .ods y .odp 
     * PDF: .pdf
-    
+
     .. note:: 
         Los parámetros negocio y entidad de momento no son requeridos, pero puede que en un futuro cercano
         lo sean, por lo que se recomienda suministrarlos.
@@ -43,21 +43,22 @@ class ClienteValidador(object):
     :param entidad: número de identificación de la entidad (provisto por el BCCR)
     """
     DEFAULT_CERTIFICATE_ERROR = {
-        'codigo_error': 2,
-        'texto_codigo_error': get_text_representation(ERRORES_VALIDA_CERTIFICADO, 2),
+        'codigo_error': 1,
+        'texto_codigo_error': get_text_representation(
+            ERRORES_VALIDA_CERTIFICADO, 1),
         'exitosa': False,
         'certificado': None
 
     }
 
     def DEFAULT_DOCUMENT_ERROR(self, ERRORES_VALIDA):
-        return  {
-        'exitosa': False,
-        'codigo_error': 2,
-        'texto_codigo_error': get_text_representation(ERRORES_VALIDA, 2),
-        'advertencias': None,
-        'errores_encontrados': None,
-        'firmantes': None,
+        return {
+            'exitosa': False,
+            'codigo_error': 1,
+            'texto_codigo_error': get_text_representation(ERRORES_VALIDA, 1),
+            'advertencias': None,
+            'errores_encontrados': None,
+            'firmantes': None,
         }
 
     def __init__(self,
@@ -79,7 +80,7 @@ class ClienteValidador(object):
             Observe que en caso de no ser exitosa la operación los atributos 'advertencias', 'errores_encontrados' y 'firmantes' retornarán None
 
         :returns:   
-            **codigo_error:** Número con el código de error 1 es éxito
+            **codigo_error:** Número con el código de error 0 es éxito
 
             **texto_codigo_error:** Descripción del error
 
@@ -93,10 +94,11 @@ class ClienteValidador(object):
             **firmantes:** Lista de información del los firmantes, ej 
             [ {'identificacion': "8-0888-0888", 'fecha_firma': datetime.now(),
             'nombre': "Juanito Mora Porras"}, ... ]      
-        """        
-        logger.debug("Validador: validar_documento_%s %r" % (formato, locals() ))
+        """
+        logger.debug("Validador: validar_documento_%s %r" %
+                     (formato, locals()))
         try:
-            
+
             if formato == 'cofirma':
                 dev = self._validar_documento_cofirma(documento)
             elif formato == 'contrafirma':
@@ -109,9 +111,9 @@ class ClienteValidador(object):
                 dev = self._validar_documento_pdf(documento)
             else:
                 logger.error("Validador: validando documento %r %r" % (
-                    formato, 
+                    formato,
                     "No existe formato especificado"))
-                dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)                
+                dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
         except Exception as e:
             logger.error("Validador: validando documento %r %r" % (formato, e))
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
@@ -129,7 +131,7 @@ class ClienteValidador(object):
         **DEFAULT_CERTIFICATE_ERROR**.
 
         :returns:   
-            **codigo_error:** Número con el código de error 1 es éxito
+            **codigo_error:** Número con el código de error 0 es éxito
 
             **texto_codigo_error:** Descripción del error
 
@@ -175,8 +177,7 @@ class ClienteValidador(object):
         return dev
 
     # Private methods
-    
-    
+
     def _validar_documento_cofirma(self, documento):
         stub = ValidadorDeDocumentoSoapServiceStub()
         options = ValideElDocumentoXmlEnvelopedCoFirma()
@@ -207,7 +208,7 @@ class ClienteValidador(object):
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCONTRAFIRMA)
 
         return dev
-    
+
     def _validar_documento_msoffice(self, documento):
         stub = ValidadorDeDocumentoSoapServiceStub()
         options = ValideElDocumentoMSOffice()
@@ -253,30 +254,29 @@ class ClienteValidador(object):
 
         return dev
 
-
     def _extract_documento_xml(self, result, ERRORES_VALIDACION):
         dev = {}
         dev.update(self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDACION))
-        dev['codigo_error'] = 1 if result.FueExitosa else 2
+        dev['codigo_error'] = 0 if result.FueExitosa else 1
         dev['texto_codigo_error'] = get_text_representation(
             ERRORES_VALIDACION, dev['codigo_error']),
         dev['exitosa'] = result.FueExitosa
         dev['advertencias'] = None
         dev['errores_encontrados'] = None
         dev['firmantes'] = None
-        
+
         if result.Advertencias:
             dev['advertencias'] = result.Advertencias.string
-                    
+
         if result.ErroresEncontrados:
             dev['errores_encontrados'] = [(error.Codigo, error.Detalle)
-                                      for error in result.ErroresEncontrados.ErrorDeDocumento]
+                                          for error in result.ErroresEncontrados.ErrorDeDocumento]
         if result.Firmantes:
             dev['firmantes'] = [
-            {'identificacion': x.Cedula,
-                'fecha_firma': x.FechaDeFirma,
-                'nombre': x.NombreCompleto} for x in
-            result.Firmantes.Firmante]
+                {'identificacion': x.Cedula,
+                 'fecha_firma': x.FechaDeFirma,
+                 'nombre': x.NombreCompleto} for x in
+                result.Firmantes.Firmante]
 
         return dev
 
@@ -284,14 +284,16 @@ class ClienteValidador(object):
         stub = ValidadorDeCertificadoSoapServiceStub()
         options = SoliciteLaValidacionDelCertificadoDeAutenticacion()
         options.elCertificadoDeAutenticacion = certificado
-        status = stub.SoliciteLaValidacionDelCertificadoDeAutenticacion(options)
+        status = stub.SoliciteLaValidacionDelCertificadoDeAutenticacion(
+            options)
         result = status.soap_body.SoliciteLaValidacionDelCertificadoDeAutenticacionResult
         return self._extract_certificado_autenticacion(result)
 
     def _extract_certificado_autenticacion(self, result):
         dev = {
             'codigo_error': result.CodigoDeError,
-            'texto_codigo_error': get_text_representation(ERRORES_VALIDA_CERTIFICADO, result.CodigoDeError),
+            'texto_codigo_error': get_text_representation(
+                ERRORES_VALIDA_CERTIFICADO, result.CodigoDeError),
             'exitosa': result.FueExitosa,
             'certificado': None
 
