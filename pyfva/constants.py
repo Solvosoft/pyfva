@@ -8,6 +8,13 @@ HASH_METHODS = (
     ('Sha256', 'Sha256'),
     ('Sha512', 'Sha512'),
 )
+
+HASH_ID = {
+    'sha256': 1,
+    'sha384': 2,
+    'sha512': 3
+}
+
 TIPO_IDENTIFICACION = (
    (1, "Identificación Nacional"),
    (2, "DIMEX"), 

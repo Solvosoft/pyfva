@@ -7,14 +7,15 @@ from pyfva.soap.firmador import FirmadorSoapServiceStub,\
     RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma, RecibaLaSolicitudDeFirmaODF,\
     RecibaLaSolicitudDeFirmaMSOffice, ValideElServicio,\
     ElSuscriptorEstaConectado, SolicitudDeFirma,\
-    RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma, RecibaLaSolicitudDeFirmaPdf,\
-    SolicitudDeFirmaPdf
+    RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma, \
+    RecibaLaSolicitudDeFirmaPdf, SolicitudDeFirmaPdf
 
 from pyfva.soap import settings
 
 from datetime import datetime
 import logging
-from pyfva.constants import ERRORES_AL_SOLICITAR_FIRMA, get_text_representation
+from pyfva.constants import ERRORES_AL_SOLICITAR_FIRMA, \
+    get_text_representation, HASH_ID
 
 logger = logging.getLogger('pyfva')
 
@@ -90,13 +91,16 @@ class ClienteFirmador(object):
         if formato in ['xml_cofirma', 'xml_contrafirma']:
             _type = formato.replace('xml_', '')
             dev = self.firme_xml(identidad, documento,
-                                 algoritmo_hash, hash_doc, resumen, id_funcionalidad, _type)
+                                 algoritmo_hash, hash_doc, resumen,
+                                 id_funcionalidad, _type)
         elif formato == 'odf':
             dev = self.firme_odf(identidad, documento,
-                                 algoritmo_hash, hash_doc, resumen, id_funcionalidad)
+                                 algoritmo_hash, hash_doc, resumen,
+                                 id_funcionalidad)
         elif formato == 'msoffice':
             dev = self.firme_msoffice(
-                identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
+                identidad, documento, algoritmo_hash, hash_doc, resumen,
+                id_funcionalidad)
         elif formato == 'pdf':
             dev = self.firme_pdf(
                 identidad, documento, algoritmo_hash=algoritmo_hash,
@@ -260,11 +264,12 @@ class ClienteFirmador(object):
             data = self.DEFAULT_ERROR
         return data
 
-    def _construya_solicitud(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
+    def _construya_solicitud(self, identidad, documento,
+                             algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
         request = SolicitudDeFirma.create(
             self.negocio,
             datetime.now(),
-            algoritmo_hash,
+            HASH_ID[algoritmo_hash.lower()],
             id_funcionalidad,
             self.entidad
         )
@@ -282,7 +287,7 @@ class ClienteFirmador(object):
         request = SolicitudDeFirmaPdf.create(
             self.negocio,
             datetime.now(),
-            algoritmo_hash,
+            HASH_ID[algoritmo_hash.lower()],
             id_funcionalidad,
             self.entidad
         )

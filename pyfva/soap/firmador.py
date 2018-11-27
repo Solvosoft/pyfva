@@ -77,9 +77,10 @@ class SolicitudDeFirmaPdf(SolicitudDeFirma):
     RazonDeFirma = xsd.Element(xsd.String, minOccurs=0)
 
     @classmethod
-    def create(cls, CodNegocio, FechaDeReferenciaDeLaEntidad, 
-	IDAlgoritmoHash, IdFuncionalidad, IdReferenciaEntidad,
-	Lugar = None, RazonDeFirma = None):
+    def create(cls, CodNegocio, FechaDeReferenciaDeLaEntidad,
+                IDAlgoritmoHash, IdFuncionalidad, IdReferenciaEntidad,
+	            Lugar = None, 
+                RazonDeFirma = None):
         instance = cls()
         instance.CodNegocio = CodNegocio
         instance.FechaDeReferenciaDeLaEntidad = FechaDeReferenciaDeLaEntidad
