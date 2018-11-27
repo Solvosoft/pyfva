@@ -101,7 +101,7 @@ def NotifiqueLaRespuesta(request, NotifiqueLaRespuesta):
         'documento': result.DocumentoFirmado,
         'fue_exitosa': result.FueExitosa,
         'codigo_error': result.CodigoDeError,
-        'hash_document': result.IDAlgoritmoHashDocumentoFirmado
+        'hash_docfirmado': result.IDAlgoritmoHashDocumentoFirmado
     }
 
     dev = receptorclient.reciba_notificacion(data)
