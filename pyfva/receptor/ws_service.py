@@ -31,16 +31,20 @@ class ResultadoDeFirma(xsd.ComplexType):
     FueExitosa = xsd.Element(xsd.Boolean, minOccurs=1)
     CodigoDeError = xsd.Element(xsd.Int, minOccurs=1)
     IDAlgoritmoHashDocumentoFirmado = xsd.Element(xsd.Int, minOccurs=1)
+    HashDocumentoFirmado = xsd.Element(
+        xsd.Base64Binary, minOccurs=0, nillable=True)
 
     @classmethod
     def create(cls, IdDeLaSolicitud, DocumentoFirmado, FueExitosa,
-               CodigoDeError, HashFirmado):
+               CodigoDeError, HashFirmado, HashDocumentoFirmado=None):
         instance = cls()
         instance.IdDeLaSolicitud = IdDeLaSolicitud
         instance.DocumentoFirmado = DocumentoFirmado
         instance.FueExitosa = FueExitosa
         instance.CodigoDeError = CodigoDeError
         instance.IDAlgoritmoHashDocumentoFirmado = HashFirmado
+        if HashDocumentoFirmado is not None:
+            instance.HashDocumentoFirmado = HashDocumentoFirmado
         return instance
 
 
@@ -101,7 +105,8 @@ def NotifiqueLaRespuesta(request, NotifiqueLaRespuesta):
         'documento': result.DocumentoFirmado,
         'fue_exitosa': result.FueExitosa,
         'codigo_error': result.CodigoDeError,
-        'hash_docfirmado': result.IDAlgoritmoHashDocumentoFirmado
+        'hash_docfirmado': result.HashDocumentoFirmado,
+        'hash_id': result.IDAlgoritmoHashDocumentoFirmado
     }
 
     dev = receptorclient.reciba_notificacion(data)

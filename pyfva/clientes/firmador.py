@@ -15,7 +15,7 @@ from pyfva.soap import settings
 from datetime import datetime
 import logging
 from pyfva.constants import ERRORES_AL_SOLICITAR_FIRMA, \
-    get_text_representation, HASH_ID
+    get_text_representation
 
 logger = logging.getLogger('pyfva')
 
@@ -269,7 +269,7 @@ class ClienteFirmador(object):
         request = SolicitudDeFirma.create(
             self.negocio,
             datetime.now(),
-            HASH_ID[algoritmo_hash.lower()],
+            algoritmo_hash,
             id_funcionalidad,
             self.entidad
         )
@@ -287,7 +287,7 @@ class ClienteFirmador(object):
         request = SolicitudDeFirmaPdf.create(
             self.negocio,
             datetime.now(),
-            HASH_ID[algoritmo_hash.lower()],
+            algoritmo_hash,
             id_funcionalidad,
             self.entidad
         )
