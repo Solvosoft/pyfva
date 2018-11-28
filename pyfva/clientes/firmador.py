@@ -52,6 +52,10 @@ class ClienteFirmador(object):
         self.negocio = negocio
         self.entidad = entidad
 
+
+    def get_now(self):
+        return datetime.now()
+
     def firme(self, identidad, documento, formato, algoritmo_hash='Sha512', hash_doc=None,
               resumen='', id_funcionalidad=-1, lugar=None, razon=None):
         """
@@ -268,7 +272,7 @@ class ClienteFirmador(object):
                              algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
         request = SolicitudDeFirma.create(
             self.negocio,
-            datetime.now(),
+            self.get_now(),
             algoritmo_hash,
             id_funcionalidad,
             self.entidad
@@ -286,7 +290,7 @@ class ClienteFirmador(object):
                                  lugar=None, razon=None):
         request = SolicitudDeFirmaPdf.create(
             self.negocio,
-            datetime.now(),
+            self.get_now(),
             algoritmo_hash,
             id_funcionalidad,
             self.entidad

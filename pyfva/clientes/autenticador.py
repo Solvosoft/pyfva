@@ -41,6 +41,9 @@ class ClienteAutenticador(object):
         self.negocio = negocio
         self.entidad = entidad
 
+    def get_now(self):
+        return datetime.now()
+
     def solicitar_autenticacion(self, identificacion, id_funcionalidad=-1):
         """Solicita al BCCR la autenticación de la identificacion, 
         recuerde, la política del BCCR es: *no nos llame, nosotros lo llamamos*,
@@ -70,7 +73,7 @@ class ClienteAutenticador(object):
                     (identificacion, ))
         request = SolicitudDeAutenticacion.create(
             self.negocio,
-            datetime.now(),
+            self.get_now(),
             id_funcionalidad,
             self.entidad,
             identificacion
@@ -78,7 +81,7 @@ class ClienteAutenticador(object):
 
         logger.debug("Autenticador: Solicitar_autenticacion Fin %r %r %r %r" % (
             self.negocio,
-            datetime.now().isoformat(),
+            self.get_now().isoformat(),
             self.entidad,
             identificacion
         ))
