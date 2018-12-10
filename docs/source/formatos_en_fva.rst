@@ -50,14 +50,15 @@ Código	Descripción
 4	El suscriptor se encuentra desconectado para recibir una solicitud de firma.
 5	El documento XML de la solicitud contiene una marca de bytes (BOM) no permitido.
 6	El documento de la solicitud es inválido.
-7	El hash de la solicitud es incorrecto.
-8	El certificado del suscriptor está revocado.
-9	El certificado del suscriptor está vencido.
-10	Existe una solicitud de firma en proceso para el cliente.
-11	No se pudo notificar a la entidad.
-12	El código de verificación es incorrecto
-13	El suscriptor bloqueo el pin de la tarjeta
-14	El documento no es válido para ser contrafirmado.
+7	Error no definido en el estandar
+8	El hash de la solicitud es incorrecto.
+9	El certificado del suscriptor está revocado.
+10	El certificado del suscriptor está vencido.
+11	Existe una solicitud de firma en proceso para el cliente.
+12	No se pudo notificar a la entidad.
+13	El código de verificación es incorrecto
+14	El suscriptor bloqueo el pin de la tarjeta
+15	El documento no es válido para ser contrafirmado.
 =======	============
 
 
