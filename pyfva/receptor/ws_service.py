@@ -33,10 +33,13 @@ class ResultadoDeFirma(xsd.ComplexType):
     IDAlgoritmoHashDocumentoFirmado = xsd.Element(xsd.Int, minOccurs=1)
     HashDocumentoFirmado = xsd.Element(
         xsd.Base64Binary, minOccurs=0, nillable=True)
+    HashDelDocumentoFirmadoEnBytes = xsd.Element(
+        xsd.Base64Binary, minOccurs=0, nillable=True)
 
     @classmethod
     def create(cls, IdDeLaSolicitud, DocumentoFirmado, FueExitosa,
-               CodigoDeError, HashFirmado, HashDocumentoFirmado=None):
+               CodigoDeError, HashFirmado, HashDocumentoFirmado=None, 
+               HashDelDocumentoFirmadoEnBytes=None):
         instance = cls()
         instance.IdDeLaSolicitud = IdDeLaSolicitud
         instance.DocumentoFirmado = DocumentoFirmado
@@ -45,6 +48,9 @@ class ResultadoDeFirma(xsd.ComplexType):
         instance.IDAlgoritmoHashDocumentoFirmado = HashFirmado
         if HashDocumentoFirmado is not None:
             instance.HashDocumentoFirmado = HashDocumentoFirmado
+
+        if HashDelDocumentoFirmadoEnBytes is not None:
+            instance.HashDelDocumentoFirmadoEnBytes = HashDelDocumentoFirmadoEnBytes
         return instance
 
 
