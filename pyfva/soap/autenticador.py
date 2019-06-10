@@ -51,10 +51,11 @@ class RespuestaDeLaSolicitud(xsd.ComplexType):
     TiempoMaximoDeFirmaEnSegundos = xsd.Element(xsd.Int, minOccurs=1)
     IdDeLaSolicitud = xsd.Element(xsd.Int, minOccurs=1)
     ResumenDelDocumento = xsd.Element(xsd.String, minOccurs=0)
+    InformacionSuscriptorDesconectado = xsd.Element(__name__ + '.InformacionSuscriptorDesconectado', minOccurs=0)
 
     @classmethod
     def create(cls, CodigoDeError, TiempoMaximoDeFirmaEnSegundos, IdDeLaSolicitud,
-               CodigoDeVerificacion=None, ResumenDelDocumento=None):
+               CodigoDeVerificacion=None, ResumenDelDocumento=None, InformacionSuscriptorDesconectado=None):
         instance = cls()
         instance.CodigoDeError = CodigoDeError
         instance.TiempoMaximoDeFirmaEnSegundos = TiempoMaximoDeFirmaEnSegundos
@@ -63,6 +64,22 @@ class RespuestaDeLaSolicitud(xsd.ComplexType):
             instance.CodigoDeVerificacion = CodigoDeVerificacion
         if ResumenDelDocumento:
             instance.ResumenDelDocumento = ResumenDelDocumento
+        if InformacionSuscriptorDesconectado:
+            instance.InformacionSuscriptorDesconectado = InformacionSuscriptorDesconectado
+
+        return instance
+
+
+class InformacionSuscriptorDesconectado(xsd.ComplexType):
+    INHERITANCE = None
+    INDICATOR = xsd.Sequence
+    HaIniciadoSesionEnElFirmador = xsd.Element(xsd.Boolean, minOccurs=1)
+    RutaDeDescargaDelFirmador = xsd.Element(xsd.String, minOccurs=0)
+
+    @classmethod
+    def create(cls, HaIniciadoSesionEnElFirmador):
+        instance = cls()
+        instance.HaIniciadoSesionEnElFirmador = HaIniciadoSesionEnElFirmador
         return instance
 
 
@@ -114,7 +131,7 @@ Schema_c49e7 = xsd.Schema(
     attributeGroups=[],
     groups=[],
     complexTypes=[SolicitudDeAutenticacion,
-                  ExtensionDataObject, RespuestaDeLaSolicitud],
+                  ExtensionDataObject, RespuestaDeLaSolicitud, InformacionSuscriptorDesconectado],
     elements={'RecibaLaSolicitudDeAutenticacion': xsd.Element(RecibaLaSolicitudDeAutenticacion()), 'RecibaLaSolicitudDeAutenticacionResponse': xsd.Element(
         RecibaLaSolicitudDeAutenticacionResponse()), 'ValideElServicio': xsd.Element(ValideElServicio()), 'ValideElServicioResponse': xsd.Element(ValideElServicioResponse())},
 )

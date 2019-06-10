@@ -155,6 +155,9 @@ class ClienteAutenticador(object):
             'id_solicitud': result.IdDeLaSolicitud,
             'resumen': result.ResumenDelDocumento
         }
+        if result.InformacionSuscriptorDesconectado:
+            data['iniciado_en_firmador'] = result.InformacionSuscriptorDesconectado.HaIniciadoSesionEnElFirmador
+            data['ruta_descarga'] = result.InformacionSuscriptorDesconectado.RutaDeDescargaDelFirmador
         return data
 
     def _validar_servicio(self):

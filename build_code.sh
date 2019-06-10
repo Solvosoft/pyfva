@@ -25,3 +25,8 @@ meld pyfva/soap/validador_certificado.py  tmp/validadordecertificado.py
 python -m soapfish.wsdl2py -c WSDL/ValidadorDeDocumento.xml > tmp/validadordedocumento.py
 meld pyfva/soap/validador_documento.py tmp/validadordedocumento.py
 
+# Cliente receptor en las aplicaciones
+python -m soapfish.wsdl2py -c WSDL/Receptor.xml > tmp/receptor.py
+meld pyfva/receptor/ws_service.py tmp/receptor.py
+
+

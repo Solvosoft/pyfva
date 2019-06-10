@@ -8,6 +8,7 @@
 ##############################################################################
 
 from soapfish import soap, xsd
+
 BaseHeader = xsd.ComplexType
 from pyfva.soap import settings
 
@@ -31,21 +32,19 @@ class ResultadoDeFirma(xsd.ComplexType):
     FueExitosa = xsd.Element(xsd.Boolean, minOccurs=1)
     CodigoDeError = xsd.Element(xsd.Int, minOccurs=1)
     IDAlgoritmoHashDocumentoFirmado = xsd.Element(xsd.Int, minOccurs=1)
-    HashDocumentoFirmado = xsd.Element(
-        xsd.Base64Binary, minOccurs=0, nillable=True)
-    HashDelDocumentoFirmadoEnBytes = xsd.Element(
-        xsd.Base64Binary, minOccurs=0, nillable=True)
+    HashDocumentoFirmado = xsd.Element(xsd.String, minOccurs=0)
+    HashDelDocumentoFirmadoEnBytes = xsd.Element(xsd.Base64Binary, minOccurs=0)
 
     @classmethod
     def create(cls, IdDeLaSolicitud, DocumentoFirmado, FueExitosa,
-               CodigoDeError, HashFirmado, HashDocumentoFirmado=None, 
+               CodigoDeError, IDAlgoritmoHashDocumentoFirmado, HashDocumentoFirmado=None, 
                HashDelDocumentoFirmadoEnBytes=None):
         instance = cls()
         instance.IdDeLaSolicitud = IdDeLaSolicitud
         instance.DocumentoFirmado = DocumentoFirmado
         instance.FueExitosa = FueExitosa
         instance.CodigoDeError = CodigoDeError
-        instance.IDAlgoritmoHashDocumentoFirmado = HashFirmado
+        instance.IDAlgoritmoHashDocumentoFirmado = IDAlgoritmoHashDocumentoFirmado
         if HashDocumentoFirmado is not None:
             instance.HashDocumentoFirmado = HashDocumentoFirmado
 
@@ -112,7 +111,8 @@ def NotifiqueLaRespuesta(request, NotifiqueLaRespuesta):
         'fue_exitosa': result.FueExitosa,
         'codigo_error': result.CodigoDeError,
         'hash_docfirmado': result.HashDocumentoFirmado,
-        'hash_id': result.IDAlgoritmoHashDocumentoFirmado
+        'hash_id': result.IDAlgoritmoHashDocumentoFirmado,
+        'hash_bytes': result.HashDelDocumentoFirmadoEnBytes
     }
 
     dev = receptorclient.reciba_notificacion(data)
