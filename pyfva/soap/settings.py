@@ -3,7 +3,8 @@ Created on 24 jul. 2017
 
 @author: luis
 '''
-
+import logging
+from collections import Iterable
 
 FVA_HOST = "http://bccr.fva.cr/"
 # FVA_HOST = 'http://bccr.fva.cr/'
@@ -46,10 +47,9 @@ WS_URL_NOTIFICATION = 'wcfv2/Bccr.Sinpe.Fva.EntidadDePruebas.Notificador/Resulta
 import sys
 import os
 
-
+logger = logging.getLogger('pyfva')
 def load_settings(settings):
     thismodule = sys.modules[__name__]
-
     for name in ['FVA_HOST',
                  'STUB_SCHEME',
                  'STUB_HOST',
@@ -59,23 +59,24 @@ def load_settings(settings):
                  'RECEPTOR_CLIENT',
                  'WS_URL_NOTIFICATION']:
 
+
         if hasattr(settings, name):
             setattr(thismodule, name,
                     getattr(settings, name)
                     )
-        elif name in settings:
+        elif isinstance(settings, os._Environ) and name in settings:
             setattr(thismodule, name,
                     settings[name]
                     )
 
-    if hasattr(settings, "FVA_TESTURLS") or "FVA_TESTURLS" in settings:
+    if hasattr(settings, "FVA_TESTURLS") or ( isinstance(settings, os._Environ) and "FVA_TESTURLS" in settings):
         setattr(thismodule, 'SERVICE_URLS', TEST_SERVICE_URLS)
-
 
 try:
     from django.conf import settings as djsettings
     load_settings(djsettings)
-except:
-    pass
+except Exception as e:
+    logger.debug(e)
+    logger.info("No django configuration detected, using environment")
 
 load_settings(os.environ)
