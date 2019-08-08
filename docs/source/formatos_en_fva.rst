@@ -14,7 +14,7 @@ HASH_METHODS
 Código	Descripción 
 =======	============
 Sha256	Sha256
-Sha256	Sha256
+Sha384	Sha384
 Sha512	Sha512
 =======	============
 
