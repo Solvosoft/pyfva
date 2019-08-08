@@ -28,7 +28,7 @@ ERRORES_AL_SOLICITAR_FIRMA = (
 (7, "El tamaño del resumen de la solicitud de firma es no valido, este debe ser mayor a 1 y menor a  250 caracteres."),
 (8, "El tamaño de la razón de firma de la solicitud de firma PAdES es inválida, este debe ser mayor a 1 y menor a  125 caracteres."),
 (9, "El suscriptor se encuentra desconectado para recibir una solicitud."),
-(10, "El formato de la identificación enviado no es válido, este debe tener un formato para un nacional 0#-####-#### para un DIDI 5########### para un DIMEX 1###########")
+(10, "El formato de la identificación enviado no es válido, este debe tener un formato para un nacional 0#-####-#### para un DIDI 5########### para un DIMEX 1###########"),
 (11, "El tamaño del lugar de firma de la solicitud de firma PAdES es inválida, este debe ser mayor a 1 y menor a  150 caracteres."),
 )
 
