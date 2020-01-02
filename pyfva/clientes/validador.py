@@ -13,15 +13,13 @@ from pyfva.soap.validador_documento import ValideElServicio as ValideServicioDoc
     ValideElDocumentoPdf
 
 from pyfva.soap import settings
-
-import logging
 from pyfva.constants import get_text_representation, ERRORES_VALIDA_CERTIFICADO,\
     ERRORES_VALIDAR_ODF, ERRORES_VALIDAR_MSOFFICE,\
     ERRORES_VALIDAR_XMLCONTRAFIRMA, ERRORES_VALIDAR_XMLCOFIRMA,\
     ERRORES_VALIDAR_PDF
 import traceback
 
-logger = logging.getLogger('pyfva')
+from pyfva import logger
 
 
 class ClienteValidador(object):
@@ -95,8 +93,8 @@ class ClienteValidador(object):
             [ {'identificacion': "8-0888-0888", 'fecha_firma': datetime.now(),
             'nombre': "Juanito Mora Porras"}, ... ]      
         """
-        logger.debug("Validador: validar_documento_%s %r" %
-                     (formato, locals()))
+        logger.debug({'message':"Validador: validar_documento", 'data':
+            {'format': formato, 'data': repr(locals())}, 'location': __file__})
         try:
 
             if formato == 'cofirma':
@@ -110,16 +108,17 @@ class ClienteValidador(object):
             elif formato == 'pdf':
                 dev = self._validar_documento_pdf(documento)
             else:
-                logger.error("Validador: validando documento %r %r" % (
-                    formato,
-                    "No existe formato especificado"))
+                logger.error({'message':"Validador: validando documento", 'data':
+                    {'format': formato,
+                    'message':"No existe formato especificado"}, 'location': __file__})
                 dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
         except Exception as e:
-            logger.error("Validador: validando documento %r %r" % (formato, e))
+            logger.error({'message':"Validador: validando documento",
+                         'data': {'format': formato, 'message':  e}, 'location': __file__})
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
 
-        logger.debug("Validador: validar_documento_%s resultado %r" %
-                     (formato, dev))
+        logger.info({'message': "Validador: validar_documento", 'data':
+            {'format': formato, 'result': dev}, 'location': __file__})
         return dev
 
     def validar_certificado_autenticacion(self, certificado):
@@ -147,16 +146,18 @@ class ClienteValidador(object):
                 **fin_vigencia:** Fecha de finalización de la vigencia del certificado
         """
 
-        logger.debug(
-            "Validador: validar_certificado_autenticacion %r" % (locals(), ))
+        logger.debug({'message':
+            "Validador: validar_certificado_autenticacion", 'data': repr(locals()),
+                      'location': __file__})
         try:
             dev = self._validar_certificado_autenticacion(certificado)
         except Exception as e:
-            logger.error("Validador: validando certificado %r" % (e, ))
+            logger.error({'message': "Validador: validando certificado",
+                          'data': e, 'location': __file__})
             dev = self.DEFAULT_CERTIFICATE_ERROR
 
-        logger.debug(
-            "Validador: validar_certificado_autenticacion result %r" % (dev, ))
+        logger.info({'message':
+            "Validador: validar_certificado_autenticacion result ", 'data': dev, 'location': __file__})
         return dev
 
     def validar_servicio(self, servicio):
@@ -165,15 +166,14 @@ class ClienteValidador(object):
         :param servicio: tipo de servicio a validar, puede ser 'certificado' o 'documento'
         :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible
         """
-
-        logger.info("Validador: Validar servicio %r" % (servicio, ))
         dev = False
         if servicio.lower() == 'certificado':
             dev = self._validar_servicio_certificado()
         elif servicio.lower() == 'documento':
             dev = self._validar_servicio_documento()
 
-        logger.debug("Validador: Validar servicio %r %r" % (servicio, dev))
+        logger.info({'message': "Validador: Validar servicio",
+                     'data': {'servicio':servicio, 'result':dev}, 'location': __file__})
         return dev
 
     # Private methods
@@ -188,7 +188,7 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoXmlEnvelopedCoFirmaResult,
                 ERRORES_VALIDAR_XMLCOFIRMA)
         except Exception as e:
-            logger.error("Validador: validando  cofirma %r" % (e, ))
+            logger.error({'message':"Validador: validando  cofirma", 'data': e, 'location': __file__})
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
 
         return dev
@@ -204,7 +204,7 @@ class ClienteValidador(object):
                 ERRORES_VALIDAR_XMLCONTRAFIRMA)
         except Exception as e:
             traceback.print_exc()
-            logger.error("Validador: validando contrafirma %r" % (e, ))
+            logger.error({'message':"Validador: validando contrafirma", 'data': e, 'location': __file__})
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCONTRAFIRMA)
 
         return dev
@@ -219,7 +219,8 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoMSOfficeResult,
                 ERRORES_VALIDAR_MSOFFICE)
         except Exception as e:
-            logger.error("Validador: validando  MSOffice %r" % (e, ))
+            logger.error({'message':"Validador: validando  MSOffice",
+                         'data': e, 'location': __file__})
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_MSOFFICE)
 
         return dev
@@ -234,7 +235,7 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoOdfResult,
                 ERRORES_VALIDAR_ODF)
         except Exception as e:
-            logger.error("Validador: validando  ODF %r" % (e, ))
+            logger.error({'message':"Validador: validando  ODF", 'data':e, 'location': __file__})
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_ODF)
 
         return dev
@@ -249,7 +250,7 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoPdfResult,
                 ERRORES_VALIDAR_PDF)
         except Exception as e:
-            logger.error("Validador: validando  PDF %r" % (e, ))
+            logger.error({'message':"Validador: validando  PDF", 'data': e, 'location': __file__})
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_PDF)
 
         return dev
@@ -316,8 +317,8 @@ class ClienteValidador(object):
             status = stub.ValideElServicio(option)
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
-            logger.error(
-                "Validador: Servicio de validado de certificado fallando %s" % (e, ))
+            logger.error({'message': "Validador: Servicio de validado de certificado fallando",
+                         'data': e, 'location': __file__})
             dev = False
         return dev
 
@@ -328,8 +329,8 @@ class ClienteValidador(object):
             status = stub.ValideElServicio(option)
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
-            logger.error(
-                "Validador: Servicio de validado de documentos fallando %s" % (e, ))
+            logger.error({'message':
+                "Validador: Servicio de validado de documentos fallando", 'data': e, 'location': __file__})
             dev = False
 
         return dev

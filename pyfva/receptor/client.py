@@ -15,8 +15,8 @@ por ejemplo en django y agrear lo siguiente en urls.py
     ]
     
 '''
-import logging
-logger = logging.getLogger('pyfva')
+
+from pyfva import logger
 
 
 def reciba_notificacion(data):
@@ -33,8 +33,8 @@ def reciba_notificacion(data):
     No requiere retornar nada
 
     """
-    logger.debug("Receptor: reciba notificación %r" %
-                 (data,))
+    logger.debug({'message':"Receptor: reciba notificación", 'data':
+                 data, 'location': __file__})
 
 
 def valide_servicio():
@@ -47,6 +47,5 @@ def valide_servicio():
     """
 
     dev = True
-    logger.debug("Receptor: reciba notificación %r" %
-                 (dev, ))
+    logger.debug({'message':"Receptor: reciba notificación", 'data': dev, 'location': __file__})
     return dev

@@ -7,10 +7,9 @@ from pyfva.soap.verificador import ValideElServicio, VerificadorSoapServiceStub,
     ExisteUnaSolicitudDeFirmaCompleta
 
 from pyfva.soap import settings
-
-import logging
 from pyfva.constants import get_text_representation, ERRORES_VERIFICACION
-logger = logging.getLogger('pyfva')
+
+from pyfva import logger
 
 
 class ClienteVerificador(object):
@@ -56,17 +55,17 @@ class ClienteVerificador(object):
             **existe_firma:** Retorna True si hay un proceso de firma activo o False si no.
 
         """
-        logger.info("Verificador: existe solicitud de firma completa %s" %
-                    (identificacion, ))
+        logger.info({'message': "Verificador: existe solicitud de firma completa",
+                     'data': identificacion, 'location': __file__})
         try:
             dev = self._existe_solicitud_de_firma_completa(identificacion)
         except Exception as e:
-            logger.error(
-                "Verificador: existe_solicitud_de_firma_completa %s" % (e, ))
+            logger.error({'message':
+                "Verificador: existe_solicitud_de_firma_completa", 'data': e, 'location': __file__})
             dev = self.DEFAULT_ERROR
 
-        logger.debug("Verificador: existe solicitud de firma completa %s %r" %
-                     (identificacion, dev))
+        logger.debug({'message': "Verificador: existe solicitud de firma completa",
+                      'data': {'identification':identificacion, 'result': dev}, 'location': __file__})
         return dev
 
     def validar_servicio(self):
@@ -76,8 +75,7 @@ class ClienteVerificador(object):
         :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible
         """
         dev = self._validar_servicio()
-        logger.debug("Verificador: validar servicio %r" %
-                     (dev,))
+        logger.debug({'message': "Verificador: validar servicio", 'data':dev, 'location': __file__})
         return dev
 
     # Private methods
@@ -106,8 +104,9 @@ class ClienteVerificador(object):
             status = stub.ValideElServicio(option)
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
-            logger.error("Verificador: Servicio de verificación fallando %s" %
-                         (e,))
+            logger.error({'message':
+                "Verificador: Servicio de verificación fallando",
+                          'data': e, 'location': __file__})
 
             dev = False
         return dev

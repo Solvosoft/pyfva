@@ -17,7 +17,7 @@ import logging
 from pyfva.constants import ERRORES_AL_SOLICITAR_FIRMA, \
     get_text_representation
 
-logger = logging.getLogger('pyfva')
+from pyfva import logger
 
 
 class ClienteFirmador(object):
@@ -87,9 +87,9 @@ class ClienteFirmador(object):
             **id_solicitud:** Número de identificación de la solicitud
         """
 
-        logger.info("Firmador: firme %r %r %r" %
-                    (identidad, formato, hash_doc))
-        logger.debug("Firmador: firme %r" % (locals(), ))
+        logger.info({'message': "Firmador: firme ", 'data':
+            {'identity':identidad, 'format': formato, 'hash_doc': hash_doc}, 'location': __file__})
+        logger.debug({'message': "Firmador: firme", 'data': repr(locals()), 'location': __file__})
 
         algoritmo_hash = algoritmo_hash.title()
         if formato in ['xml_cofirma', 'xml_contrafirma']:
@@ -112,10 +112,10 @@ class ClienteFirmador(object):
                 id_funcionalidad=id_funcionalidad,
                 lugar=lugar, razon=razon)
         else:
-            logger.error("Formato de documento inválido")
+            logger.error({'message': "Formato de documento inválido", 'data': formato, 'location': __file__})
             dev = self.DEFAULT_ERROR
 
-        logger.debug("Firmador: firme result %r" % (dev, ))
+        logger.debug({'message':"Firmador: firme result", 'data': dev, 'location': __file__})
         return dev
 
     def firme_xml(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='',
@@ -129,18 +129,21 @@ class ClienteFirmador(object):
             de firme, además los resultados retornados son también idénticos.
         """
 
-        logger.info("Firmador: firme_xml %r %r %r" %
-                    (_type, identidad,  hash_doc))
-        logger.debug("Firmador: firme_xml %r" % (locals(), ))
+        logger.info({'message': "Firmador: firme_xml", 'data':{
+                    'type':_type, 'identity': identidad, 'hash_doc': hash_doc},
+                     'location': __file__})
+        logger.debug({'message': "Firmador: firme_xml", 'data': repr(locals()), 'location': __file__})
 
         request = self._construya_solicitud(
             identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
         try:
             dev = self._firme_xml(request, _type)
         except Exception as e:
-            logger.error("Firmador: firmando en xml %r %r" % (_type, e))
+            logger.error({'message': "Firmador: firmando en xml", 'data':
+                {'type': _type, 'data':e}, 'location': __file__})
             dev = self.DEFAULT_ERROR
-        logger.debug("Firmador: firme_xml result %r %r" % (_type, dev, ))
+        logger.debug({'message':"Firmador: firme_xml result",
+                      'data': {'type':_type, 'data':dev}, 'location': __file__})
         return dev
 
     def firme_odf(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
@@ -153,19 +156,19 @@ class ClienteFirmador(object):
             de firme, además los resultados retornados son también idénticos.
         """
 
-        logger.info("Firmador: firme_odf %r %r" %
-                    (identidad,  hash_doc))
-        logger.debug("Firmador: firme_odf %r" % (locals(), ))
+        logger.info({'message':"Firmador: firme_odf", 'data':
+            {'identity': identidad, 'hash_doc':  hash_doc}, 'location': __file__})
+        logger.debug({'message':"Firmador: firme_odf", 'data': repr(locals()), 'location': __file__})
 
         request = self._construya_solicitud(
             identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
         try:
             dev = self._firme_odf(request)
         except Exception as e:
-            logger.error("Firmador: firmando en odf %r" % (e,))
+            logger.error({'message':"Firmador: firmando en odf", 'data':e, 'location': __file__})
             dev = self.DEFAULT_ERROR
 
-        logger.debug("Firmador: firme_odf result %r" % (dev, ))
+        logger.debug({'message': "Firmador: firme_odf result", 'data': dev, 'location': __file__})
         return dev
 
     def firme_msoffice(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
@@ -178,19 +181,19 @@ class ClienteFirmador(object):
             de firme, además los resultados retornados son también idénticos.
         """
 
-        logger.info("Firmador: firme_msoffice %r %r" %
-                    (identidad,  hash_doc))
-        logger.debug("Firmador: firme_msoffice %r" % (locals(), ))
+        logger.info({'message': "Firmador: firme_msoffice", 'data':
+            {'identity': identidad, 'hash_doc': hash_doc}, 'location': __file__})
+        logger.debug({'message': "Firmador: firme_msoffice", 'data': repr(locals()), 'location': __file__})
 
         request = self._construya_solicitud(
             identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
         try:
             dev = self._firme_msoffice(request)
         except Exception as e:
-            logger.error("Firmador: firmando en msoffice %r" % (e, ))
+            logger.error({'message': "Firmador: firmando en msoffice", 'data': e, 'location': __file__})
             dev = self.DEFAULT_ERROR
 
-        logger.debug("Firmador: firme_msoffice result %r" % (dev, ))
+        logger.debug({'message': "Firmador: firme_msoffice result", 'data': dev, 'location': __file__})
         return dev
 
     def firme_pdf(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='',
@@ -204,9 +207,9 @@ class ClienteFirmador(object):
             de firme, además los resultados retornados son también idénticos.
         """
 
-        logger.info("Firmador: firme_pdf %r %r" %
-                    (identidad,  hash_doc))
-        logger.debug("Firmador: firme_pdf %r" % (locals(), ))
+        logger.info({'message': "Firmador: firme_pdf", 'data':
+                     {'identity': identidad, 'hash_doc': hash_doc}, 'location': __file__})
+        logger.debug({'message': "Firmador: firme_pdf", 'data':repr(locals()), 'location': __file__})
 
         request = self._construya_solicitud_pdf(
             identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad,
@@ -214,10 +217,10 @@ class ClienteFirmador(object):
         try:
             dev = self._firme_pdf(request)
         except Exception as e:
-            logger.error("Firmador: firmando en pdf %r" % (e, ))
+            logger.error({'message': "Firmador: firmando en pdf", 'data':e, 'location': __file__})
             dev = self.DEFAULT_ERROR
 
-        logger.debug("Firmador: firme_pdf result %r" % (dev, ))
+        logger.debug({'message': "Firmador: firme_pdf result", 'data': dev, 'location': __file__})
         return dev
 
     def suscriptor_conectado(self, identificacion):
@@ -228,7 +231,7 @@ class ClienteFirmador(object):
         """
 
         dev = self._suscriptor_conectado(identificacion)
-        logger.debug("Firmador: suscriptor conectado %r" % (dev, ))
+        logger.debug({'message': "Firmador: suscriptor conectado", 'data': dev, 'location': __file__})
         return dev
 
     def validar_servicio(self):
@@ -237,7 +240,7 @@ class ClienteFirmador(object):
         :returns: True si el servicio está disponible, False si no lo está.
         """
         dev = self._validar_servicio()
-        logger.debug("Firmador: validar servicio %r" % (dev, ))
+        logger.debug({'message': "Firmador: validar servicio", 'data': dev, 'location': __file__})
         return dev
 
     def extrae_resultado(self, solicitud,  resultado):
@@ -264,7 +267,7 @@ class ClienteFirmador(object):
         try:
             data = self._extrae_resultado(solicitud,  resultado)
         except Exception as e:
-            logger.error("Firmador: extrayendo resultados %r" % (e, ))
+            logger.error({'message': "Firmador: extrayendo resultados %r", 'data': e, 'location': __file__})
             data = self.DEFAULT_ERROR
         return data
 
@@ -368,8 +371,9 @@ class ClienteFirmador(object):
             status = stub.ElSuscriptorEstaConectado(options)
             dev = status.soap_body.ElSuscriptorEstaConectadoResult
         except Exception as e:
-            logger.error(
-                "Firmador: Servicio de firmado fallando en usuario conectado%s" % (e, ))
+            logger.error({'message':
+                "Firmador: Servicio de firmado fallando en usuario conectado",
+                         'data': e, 'location': __file__})
             dev = False
         return dev
 
@@ -380,7 +384,7 @@ class ClienteFirmador(object):
             status = stub.ValideElServicio(option)
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
-            logger.error(
-                "Firmador: Servicio de firmado fallando %s" % (e, ))
+            logger.error({'message':
+                "Firmador: Servicio de firmado fallando", 'data': e, 'location': __file__})
             dev = False
         return dev

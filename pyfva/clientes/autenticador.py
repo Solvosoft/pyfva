@@ -10,10 +10,9 @@ from pyfva.soap.autenticador import AutenticadorSoapServiceStub,\
 
 from datetime import datetime
 from pyfva.soap import settings
-import logging
 from pyfva.constants import ERRORES_AL_SOLICITAR_FIRMA, get_text_representation
 
-logger = logging.getLogger('pyfva')
+from pyfva import logger
 
 
 class ClienteAutenticador(object):
@@ -69,8 +68,8 @@ class ClienteAutenticador(object):
             **id_solicitud:** Número de identificación de la solicitud
 
         """
-        logger.info("Autenticador: Solicitar_autenticacion %s" %
-                    (identificacion, ))
+        logger.info({'message': "Autenticador: Solicitar_autenticacion",
+                     'data':identificacion, 'location': __file__})
         request = SolicitudDeAutenticacion.create(
             self.negocio,
             self.get_now(),
@@ -79,18 +78,18 @@ class ClienteAutenticador(object):
             identificacion
         )
 
-        logger.debug("Autenticador: Solicitar_autenticacion Fin %r %r %r %r" % (
-            self.negocio,
-            self.get_now().isoformat(),
-            self.entidad,
-            identificacion
-        ))
+        logger.debug({'message': "Autenticador: Solicitar_autenticacion Fin", 'data': {
+            'negocio': self.negocio,
+            'hora': self.get_now().isoformat(),
+            'entidad': self.entidad,
+            'identificacion': identificacion
+        }, 'location': __file__})
         try:
             dev = self._solicitar_autenticacion(request)
         except:
             dev = self.DEFAULT_ERROR
 
-        logger.debug("Autenticador: Solicitar_autenticacion %r" % (dev,))
+        logger.debug({"message":"Autenticador: Solicitar_autenticacion", 'data': dev, 'location': __file__})
         return dev
 
     def validar_servicio(self):
@@ -101,8 +100,7 @@ class ClienteAutenticador(object):
         """
 
         dev = self._validar_servicio()
-        logger.debug("Autenticador: validar_servicio %r" %
-                     (dev, ))
+        logger.debug({'message':"Autenticador: validar_servicio", 'data': dev, 'location': __file__})
 
         return dev
 
@@ -131,7 +129,7 @@ class ClienteAutenticador(object):
         try:
             data = self._extrae_resultado(solicitud,  resultado)
         except Exception as e:
-            logger.error('Autenticador: extrayendo datos %s' % (e, ))
+            logger.error({'message':'Autenticador: extrayendo datos', 'data': e, 'location': __file__})
             data = self.DEFAULT_ERROR
         return data
 
@@ -167,7 +165,7 @@ class ClienteAutenticador(object):
             status = stub.ValideElServicio(option)
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
-            logger.error("Autenticador: servicio validar autenticacion fallando %s" %
-                         (e,))
+            logger.error({'message':"Autenticador: servicio validar autenticacion fallando",
+                         'data': e, 'location': __file__})
             dev = False
         return dev
