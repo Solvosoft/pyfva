@@ -35,7 +35,7 @@ o usando el repositorio
 
 .. code:: bash
 
-    pip install git+https://github.com/luisza/pyfva.git
+    pip install git+https://github.com/solvo/pyfva.git
 
 Documentación
 ################

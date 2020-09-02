@@ -6,7 +6,7 @@ Instalación
 -------------------
 
 .. note:: 
-    Solo ha sido probado en python 3 en Debian 9 y Centos 7.5 con python3.6 .
+    Solo ha sido probado en python 3 en Debian 10 y Centos 7.5 con python3.6 .
 
 Instale mediante pypi
 
@@ -18,7 +18,7 @@ o usando el repositorio
 
 .. code:: bash
 
-    pip install "https://github.com/Solvosoft/soapfish/archive/v0.6.0.zip"
+    pip install "https://github.com/Solvosoft/soapfish/archive/v0.6.1.zip"
     pip install -e "git+https://github.com/solvo/pyfva.git#egg=pyfva"
 
 
@@ -34,7 +34,7 @@ Los siguientes pasos corresponden a como lograrlo instalar
 
 Es recomendable usar la terminal provista por git
 
-* pip install "https://github.com/Solvosoft/soapfish/archive/v0.6.0.zip"
+* pip install "https://github.com/Solvosoft/soapfish/archive/v0.6.1.zip"
 * pip install pyfva
 
 
