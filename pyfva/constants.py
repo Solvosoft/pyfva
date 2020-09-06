@@ -51,6 +51,23 @@ ERRORES_AL_NOTIFICAR_FIRMA = (
     (15, "El documento no es válido para ser contrafirmado.")
 )
 
+ERRORES_AL_SOLICITAR_SELLO = (
+    (0, 'Solicitud recibida correctamente.'),
+    (1, 'Ha ocurrido algún problema al solicitar la firma.'),
+    (2, 'Solicitud con campos incompletos.'),
+    (3, 'Existe una diferencia no permitida entre la fecha y hora del cliente y la del servidor.'),
+    (4, 'La entidad no se encuentra registrada.'),
+    (5, 'La entidad se encuentra en estado inactiva.'),
+    (6, 'El negocio no pertenece a la entidad solicitante.'),
+    (7, 'El negocio no cuenta con un sello electrónico configurado.'),
+    (8, 'El negocio cuenta con una configuración de sello electrónico deshabilitada.'),
+    (9, 'Documento no válido.'),
+    (10, 'El Hash enviado del documento no coincide con el hash calculado.'),
+    (11, 'El documento XML no es válido para ser contrafirmado.'),
+    (12, 'La longitud de la razón no es válida.'),
+    (13, 'El documento PDF posee firmas, para este tipo de documento, la firma de Certificación debe ser la primera.')
+)
+
 ERRORES_VALIDA_CERTIFICADO = (
     (0, 'Certificado válido.'),
     (1, 'Error interno al validar el certificado.'),
@@ -518,6 +535,15 @@ Código\tDescripción
 %s
 =======\t============
 
+ERRORES_AL_SOLICITAR_SELLO
+----------------------------
+
+=======\t============
+Código\tDescripción 
+=======\t============
+%s
+=======\t============
+
 
 ERRORES_VALIDA_CERTIFICADO
 ----------------------------
@@ -578,6 +604,8 @@ Código\tDescripción
                       for x, y in ERRORES_AL_SOLICITAR_FIRMA]),
            "\n".join(["%s\t%s" % (x, y)
                       for x, y in ERRORES_AL_NOTIFICAR_FIRMA]),
+           "\n".join(["%s\t%s" % (x, y)
+                      for x, y in ERRORES_AL_SOLICITAR_SELLO]),
            "\n".join(["%s\t%s" % (x, y)
                       for x, y in ERRORES_VALIDA_CERTIFICADO]),
            "\n".join(["%s\t%s" % (x, y)

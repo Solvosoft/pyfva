@@ -24,7 +24,7 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 
-version = '0.0.35'
+version = '0.0.37'
 
 
 setup(
@@ -37,11 +37,9 @@ setup(
     url='https://github.com/solvo/pyfva',
     license='GNU General Public License',
     platforms=['OS Independent'],
-    install_requires=[],
+    install_requires=['soapfish2'],
     classifiers=CLASSIFIERS,
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
 )
-
-print("Install dependecy from https://github.com/Solvosoft/soapfish/archive/v0.6.1.zip")
