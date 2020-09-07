@@ -63,6 +63,42 @@ Para ello debe utilizar el ClienteFirmador, por ejemplo:
 
 El formato de la identificación debe respetar los formatos de codificación del BCCR para :ref:`formato_identificacion`.
 
+Sello electrónico
+--------------------
+
+De momento se puede firmar documentos con sello electrónico los formatos con un tamaño menor a 20 MB(20480 Kb).
+
+- XML  (cofirma y contrafirma)
+- Open Document Format (.odt, .ods y .odp)
+- Microsoft Office (.docx, .xlsx y .pptx)
+- Portable Document Format (pdf)
+
+Para ello debe utilizar el ClienteSellador, por ejemplo:
+
+.. code:: python
+
+    from pyfva.clientes.sellador import ClienteSellador
+    import warnings
+
+    stampclient = ClienteSellador(
+        negocio=1,
+        entidad=1,
+    )
+    if stampclient.validar_servicio():
+        data = stampclient.firme(
+            """PG1vdmllPgogIDx0...CjwvbW92aWU+Cg==""",
+            "xml_cofirma",  # xml_cofirma, xml_contrafirma, odf, msoffice, pdf
+            algoritmo_hash='Sha512',  # Sha256, Sha384, Sha512
+            hash_doc="""637a7d07c5dbee59695aafbd3933b...bd3933b""",
+            id_funcionalidad=-1)
+
+    else:
+        warnings.warn("Firmador BCCR No disponible", RuntimeWarning)
+        data = stampclient.DEFAULT_ERROR
+
+El documento firmado es retornado por la función immediatamente, a diferencia de la firma de personas.
+
+
 Validación
 ---------------
 

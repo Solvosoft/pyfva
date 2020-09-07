@@ -24,6 +24,16 @@ Permite firmar documentos en formato xml, odf y Microsoft office usando los serv
     :undoc-members:
     :member-order: bysource
 
+Sello Electrónico
+--------------------
+
+Permite firmar documentos con sello electrónico en formato xml, odf y Microsoft office usando los servicios del BCCR
+
+.. autoclass:: pyfva.clientes.sellador.ClienteSellador
+    :members:
+    :undoc-members:
+    :member-order: bysource
+
 validador
 ----------------
 .. autoclass:: pyfva.clientes.validador.ClienteValidador

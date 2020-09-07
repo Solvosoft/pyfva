@@ -18,7 +18,6 @@ o usando el repositorio
 
 .. code:: bash
 
-    pip install "https://github.com/Solvosoft/soapfish/archive/v0.6.1.zip"
     pip install -e "git+https://github.com/solvo/pyfva.git#egg=pyfva"
 
 
@@ -34,7 +33,6 @@ Los siguientes pasos corresponden a como lograrlo instalar
 
 Es recomendable usar la terminal provista por git
 
-* pip install "https://github.com/Solvosoft/soapfish/archive/v0.6.1.zip"
 * pip install pyfva
 
 

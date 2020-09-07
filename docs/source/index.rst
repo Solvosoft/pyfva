@@ -6,7 +6,7 @@
 Bievenido a la documentación de pyfva's
 =========================================
 
-.. note:: This repository is for Costa Rican people so this documentation is in spanish. Also we code and test in Debian/Linux.
+.. note:: This repository is for Costa Rican citizen so this documentation is in spanish. Also we code and test in Debian/Linux.
 
 Pyfva es una biblioteca en python de interacción entre cualquier institución y los servicios de Firma, validación y autenticación del Banco Central de Costa Rica, pretende ser una herramienta que simplifique la comunicación, abstrayendo todo el protocolo SOAP y creando una interfaz común.
 

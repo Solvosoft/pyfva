@@ -69,3 +69,28 @@ Números de identificación en el servicio FVA. (en el simulador no son usados).
 * RECEPTOR_CLIENT = 'pyfva.receptor.client'
 
 Cliente para recibir las respuestas del FVA.
+
+
+Generar documentoación
+#############################
+
+Instale Sphinx mediante pypi
+
+.. code:: bash
+
+    pip install -U Sphinx sphinx_rtd_theme
+
+Cambiese de directorio y ejecute la creación de códigos
+
+.. code:: bash
+
+    cd docs
+    bash build_doc.sh
+
+Para regenerar la documentación, si no se tienen cambios en los códigos de error
+
+.. code:: bash
+
+    make html
+
+

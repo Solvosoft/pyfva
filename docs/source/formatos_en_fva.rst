@@ -14,7 +14,7 @@ HASH_METHODS
 Código	Descripción 
 =======	============
 Sha256	Sha256
-Sha384	Sha384
+Sha256	Sha256
 Sha512	Sha512
 =======	============
 
@@ -35,6 +35,7 @@ Código	Descripción
 8	El tamaño de la razón de firma de la solicitud de firma PAdES es inválida, este debe ser mayor a 1 y menor a  125 caracteres.
 9	El suscriptor se encuentra desconectado para recibir una solicitud.
 10	El formato de la identificación enviado no es válido, este debe tener un formato para un nacional 0#-####-#### para un DIDI 5########### para un DIMEX 1###########
+11	El tamaño del lugar de firma de la solicitud de firma PAdES es inválida, este debe ser mayor a 1 y menor a  150 caracteres.
 =======	============
 
 ERRORES_AL_NOTIFICAR_FIRMA
@@ -59,6 +60,28 @@ Código	Descripción
 13	El código de verificación es incorrecto
 14	El suscriptor bloqueo el pin de la tarjeta
 15	El documento no es válido para ser contrafirmado.
+=======	============
+
+ERRORES_AL_SOLICITAR_SELLO
+----------------------------
+
+=======	============
+Código	Descripción 
+=======	============
+0	Solicitud recibida correctamente.
+1	Ha ocurrido algún problema al solicitar la firma.
+2	Solicitud con campos incompletos.
+3	Existe una diferencia no permitida entre la fecha y hora del cliente y la del servidor.
+4	La entidad no se encuentra registrada.
+5	La entidad se encuentra en estado inactiva.
+6	El negocio no pertenece a la entidad solicitante.
+7	El negocio no cuenta con un sello electrónico configurado.
+8	El negocio cuenta con una configuración de sello electrónico deshabilitada.
+9	Documento no válido.
+10	El Hash enviado del documento no coincide con el hash calculado.
+11	El documento XML no es válido para ser contrafirmado.
+12	La longitud de la razón no es válida.
+13	El documento PDF posee firmas, para este tipo de documento, la firma de Certificación debe ser la primera.
 =======	============
 
 
