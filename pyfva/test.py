@@ -1,12 +1,27 @@
+from pyfva.clientes.sellador import ClienteSellador
 from pyfva.clientes.autenticador import ClienteAutenticador
 from pyfva.clientes.firmador import ClienteFirmador
 from pyfva.clientes.validador import ClienteValidador
 from pyfva.clientes.verificador import ClienteVerificador
 
+
 import warnings
 import logging
-logging.basicConfig(filename='pyfva.log',level=logging.DEBUG)
 
+logging.basicConfig(filename='pyfva.log',level=logging.DEBUG)
+## ---------------------SELLO ELECTRONICO---------------------------##
+selloclient = ClienteSellador(1,1)
+if selloclient.validar_servicio():
+    for formato in ['xml_cofirma', 'xml_contrafirma', 'odf', 'msoffice', 'pdf']:
+        data = selloclient.firme(
+        """PG1vdmllPgogIDx0...CjwvbW92aWU+Cg==""",
+        formato,  # xml, odf, msoffice
+        algoritmo_hash='Sha512',  # Sha256, Sha384, Sha512
+        hash_doc="""637a7d07c5dbee59695aafbd3933b...bd3933b""",
+        id_funcionalidad=-1)
+        print(formato,"\t-->\t", data)
+
+exit()
 ## ---------------------AUTENTICACIÓN ------------------------------##
 
 authclient = ClienteAutenticador(1,1) # negocio, entidad

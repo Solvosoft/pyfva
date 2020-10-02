@@ -184,19 +184,19 @@ class RecibaLaSolicitudDeSelladoElectronicoOdfResponse(xsd.ComplexType):
         return instance
 
 
-class ValideElServicio(xsd.ComplexType):
+class ElServicioEstaDisponible(xsd.ComplexType):
     pass
 
 
-class ValideElServicioResponse(xsd.ComplexType):
+class ElServicioEstaDisponibleResponse(xsd.ComplexType):
     INHERITANCE = None
     INDICATOR = xsd.Sequence
-    ValideElServicioResult = xsd.Element(xsd.Boolean, minOccurs=1)
+    ElServicioEstaDisponibleResult = xsd.Element(xsd.Boolean, minOccurs=1)
 
     @classmethod
-    def create(cls, ValideElServicioResult):
+    def create(cls, ElServicioEstaDisponibleResult):
         instance = cls()
-        instance.ValideElServicioResult = ValideElServicioResult
+        instance.ElServicioEstaDisponibleResult = ElServicioEstaDisponibleResult
         return instance
 
 
@@ -209,7 +209,7 @@ Schema_c49e7 = xsd.Schema(
     attributeGroups=[],
     groups=[],
     complexTypes=[SolicitudDeFirma, RespuestaDeLaSolicitud, SolicitudDeFirmaPdf],
-    elements={'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirmaResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirmaResponse()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResponse()), 'RecibaLaSolicitudDeSelladoElectronicoMSOffice': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoMSOffice()), 'RecibaLaSolicitudDeSelladoElectronicoMSOfficeResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoMSOfficeResponse()), 'RecibaLaSolicitudDeSelladoElectronicoPdf': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoPdf()), 'RecibaLaSolicitudDeSelladoElectronicoPdfResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoPdfResponse()), 'RecibaLaSolicitudDeSelladoElectronicoOdf': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoOdf()), 'RecibaLaSolicitudDeSelladoElectronicoOdfResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoOdfResponse()), 'ValideElServicio': xsd.Element(ValideElServicio()), 'ValideElServicioResponse': xsd.Element(ValideElServicioResponse())},
+    elements={'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirmaResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirmaResponse()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResponse()), 'RecibaLaSolicitudDeSelladoElectronicoMSOffice': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoMSOffice()), 'RecibaLaSolicitudDeSelladoElectronicoMSOfficeResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoMSOfficeResponse()), 'RecibaLaSolicitudDeSelladoElectronicoPdf': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoPdf()), 'RecibaLaSolicitudDeSelladoElectronicoPdfResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoPdfResponse()), 'RecibaLaSolicitudDeSelladoElectronicoOdf': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoOdf()), 'RecibaLaSolicitudDeSelladoElectronicoOdfResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoOdfResponse()), 'ElServicioEstaDisponible': xsd.Element(ElServicioEstaDisponible()), 'ElServicioEstaDisponibleResponse': xsd.Element(ElServicioEstaDisponibleResponse())},
 )
 
 
@@ -272,13 +272,13 @@ RecibaLaSolicitudDeSelladoElectronicoOdf_method = xsd.Method(
 )
 
 
-ValideElServicio_method = xsd.Method(
-    soapAction=settings.FVA_HOST + 'ValideElServicio',
-    input='ValideElServicio',
+ElServicioEstaDisponible_method = xsd.Method(
+    soapAction=settings.FVA_HOST + 'ElServicioEstaDisponible',
+    input='ElServicioEstaDisponible',
     inputPartName='parameters',
-    output='ValideElServicioResponse',
+    output='ElServicioEstaDisponibleResponse',
     outputPartName='parameters',
-    operationName='ValideElServicio',
+    operationName='ElServicioEstaDisponible',
     style='document',
 )
 
@@ -293,7 +293,7 @@ SelladorElectronicoConControlDeLlaveSoap_SERVICE = soap.Service(
     location='${scheme}://${host}/'+settings.SERVICE_URLS['sello'],
     schemas=[Schema_c49e7],
     version=soap.SOAPVersion.SOAP12,
-    methods=[RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma_method, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma_method, RecibaLaSolicitudDeSelladoElectronicoMSOffice_method, RecibaLaSolicitudDeSelladoElectronicoPdf_method, RecibaLaSolicitudDeSelladoElectronicoOdf_method, ValideElServicio_method],
+    methods=[RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma_method, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma_method, RecibaLaSolicitudDeSelladoElectronicoMSOffice_method, RecibaLaSolicitudDeSelladoElectronicoPdf_method, RecibaLaSolicitudDeSelladoElectronicoOdf_method, ElServicioEstaDisponible_method],
 )
 
 
@@ -321,8 +321,8 @@ class SelladorElectronicoConControlDeLlaveSoapServiceStub(soap.Stub):
     def RecibaLaSolicitudDeSelladoElectronicoOdf(self, RecibaLaSolicitudDeSelladoElectronicoOdf, header=None):
         return self.call('RecibaLaSolicitudDeSelladoElectronicoOdf', RecibaLaSolicitudDeSelladoElectronicoOdf, header=header)
 
-    def ValideElServicio(self, ValideElServicio, header=None):
-        return self.call('ValideElServicio', ValideElServicio, header=header)
+    def ElServicioEstaDisponible(self, ElServicioEstaDisponible, header=None):
+        return self.call('ElServicioEstaDisponible', ElServicioEstaDisponible, header=header)
 
 ##############################################################################
 # Methods
@@ -383,13 +383,13 @@ RecibaLaSolicitudDeSelladoElectronicoOdf_method = xsd.Method(
 )
 
 
-ValideElServicio_method = xsd.Method(
-    soapAction=settings.FVA_HOST + 'ValideElServicio',
-    input='ValideElServicio',
+ElServicioEstaDisponible_method = xsd.Method(
+    soapAction=settings.FVA_HOST + 'ElServicioEstaDisponible',
+    input='ElServicioEstaDisponible',
     inputPartName='parameters',
-    output='ValideElServicioResponse',
+    output='ElServicioEstaDisponibleResponse',
     outputPartName='parameters',
-    operationName='ValideElServicio',
+    operationName='ElServicioEstaDisponible',
     style='document',
 )
 
@@ -404,7 +404,7 @@ SelladorElectronicoConControlDeLlaveSoap12_SERVICE = soap.Service(
     location='${scheme}://${host}/'+settings.SERVICE_URLS['sello'],
     schemas=[Schema_c49e7],
     version=soap.SOAPVersion.SOAP12,
-    methods=[RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma_method, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma_method, RecibaLaSolicitudDeSelladoElectronicoMSOffice_method, RecibaLaSolicitudDeSelladoElectronicoPdf_method, RecibaLaSolicitudDeSelladoElectronicoOdf_method, ValideElServicio_method],
+    methods=[RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma_method, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma_method, RecibaLaSolicitudDeSelladoElectronicoMSOffice_method, RecibaLaSolicitudDeSelladoElectronicoPdf_method, RecibaLaSolicitudDeSelladoElectronicoOdf_method, ElServicioEstaDisponible_method],
 )
 
 
@@ -432,5 +432,5 @@ class SelladorElectronicoConControlDeLlaveSoap12ServiceStub(soap.Stub):
     def RecibaLaSolicitudDeSelladoElectronicoOdf(self, RecibaLaSolicitudDeSelladoElectronicoOdf, header=None):
         return self.call('RecibaLaSolicitudDeSelladoElectronicoOdf', RecibaLaSolicitudDeSelladoElectronicoOdf, header=header)
 
-    def ValideElServicio(self, ValideElServicio, header=None):
-        return self.call('ValideElServicio', ValideElServicio, header=header)
+    def ElServicioEstaDisponible(self, ElServicioEstaDisponible, header=None):
+        return self.call('ElServicioEstaDisponible', ElServicioEstaDisponible, header=header)
