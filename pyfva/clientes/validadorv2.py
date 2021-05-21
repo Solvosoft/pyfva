@@ -20,7 +20,7 @@ from pyfva.constants import get_text_representation, ERRORES_VALIDA_CERTIFICADO,
 import traceback
 
 from pyfva import logger
-from soap.validador_documento_v2 import ValidadorDeDocumentosSoapServiceStub
+from pyfva.soap.validador_documento_v2 import ValidadorDeDocumentosSoapServiceStub
 
 
 class ClienteValidador(object):

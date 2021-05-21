@@ -70,6 +70,17 @@ Números de identificación en el servicio FVA. (en el simulador no son usados).
 
 Cliente para recibir las respuestas del FVA.
 
+Configurando entorno del BCCR externo
+#######################################
+Las siguientes configuraciones son requeridas, los archivos deben estar en formato PEM
+
+* REQUESTS_CA_BUNDLE=/<ruta de archivo>/ca_nacional_de_CR.pem
+* REQUESTS_CA_PATH=/<ruta de archivo>/ca_nacional_de_CR.pem
+* REQUESTS_CERT_PATH=/<ruta de archivo>/bccr_agent.pem
+* REQUESTS_KEY_PATH=/<ruta de archivo>/bccr_agent_key.pem
+* STUB_SCHEME = 'https'
+* STUB_HOST = "firmadorexterno.bccr.fi.cr"
+
 
 Generar documentoación
 #############################
