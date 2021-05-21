@@ -34,9 +34,16 @@ Permite firmar documentos con sello electrónico en formato xml, odf y Microsoft
     :undoc-members:
     :member-order: bysource
 
-validador
+Validador Antiguo
 ----------------
 .. autoclass:: pyfva.clientes.validador.ClienteValidador
+    :members:
+    :undoc-members:
+    :member-order: bysource
+
+Validador
+----------------
+.. autoclass:: pyfva.clientes.validadorv2.ClienteValidador
     :members:
     :undoc-members:
     :member-order: bysource

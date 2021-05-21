@@ -1,11 +1,14 @@
-
-import logging
 import datetime
 import decimal
 import json
+import logging
 import uuid
 
+from .soap import settings
+
 logger = logging.getLogger('pyfva')
+
+
 def _get_duration_components(duration):
     days = duration.days
     seconds = duration.seconds
@@ -19,6 +22,7 @@ def _get_duration_components(duration):
 
     return days, hours, minutes, seconds, microseconds
 
+
 def duration_iso_string(duration):
     if duration < datetime.timedelta(0):
         sign = '-'
@@ -31,12 +35,12 @@ def duration_iso_string(duration):
     return '{}P{}DT{:02d}H{:02d}M{:02d}{}S'.format(sign, days, hours, minutes, seconds, ms)
 
 
-
 class DateTimeJSONEncoder(json.JSONEncoder):
     """
     JSONEncoder subclass that knows how to encode date/time, decimal types, and
     UUIDs.
     """
+
     def default(self, o):
         # See "Date Time String Format" in the ECMA-262 specification.
         if isinstance(o, datetime.datetime):
@@ -57,33 +61,46 @@ class DateTimeJSONEncoder(json.JSONEncoder):
             return r
         elif isinstance(o, datetime.timedelta):
             return duration_iso_string(o)
-        elif isinstance(o, (decimal.Decimal, uuid.UUID )):
+        elif isinstance(o, (decimal.Decimal, uuid.UUID)):
             return str(o)
         elif isinstance(o, Exception):
             return str(o)
         else:
             return super().default(o)
 
+
+def convert_data(data):
+    if not settings.LOGGING_PREFIX:
+        return data
+    datadev = {}
+    for x, y in data.items():
+        datadev[settings.LOGGING_PREFIX + str(x)] = y
+    return datadev
+
+
 def info(data):
     data['sector'] = 'pyfva'
     logger.info(
-        json.dumps(data, cls=DateTimeJSONEncoder)
+        json.dumps(convert_data(data), cls=DateTimeJSONEncoder)
     )
+
 
 def warning(data):
     data['sector'] = 'pyfva'
     logger.warning(
-        json.dumps(data, cls=DateTimeJSONEncoder)
+        json.dumps(convert_data(data), cls=DateTimeJSONEncoder)
     )
+
 
 def debug(data):
     data['sector'] = 'pyfva'
     logger.debug(
-        json.dumps(data, cls=DateTimeJSONEncoder)
+        json.dumps(convert_data(data), cls=DateTimeJSONEncoder)
     )
+
 
 def error(data):
     data['sector'] = 'pyfva'
     logger.error(
-        json.dumps(data, cls=DateTimeJSONEncoder)
+        json.dumps(convert_data(data), cls=DateTimeJSONEncoder)
     )

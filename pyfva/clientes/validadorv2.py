@@ -7,8 +7,8 @@ Created on 19 jul. 2017
 from pyfva.soap.validador_certificado import ValideElServicio as ValideServicioCertificado,\
     ValidadorDeCertificadoSoapServiceStub,\
     SoliciteLaValidacionDelCertificadoDeAutenticacion
-from pyfva.soap.validador_documento import ValideElServicio as ValideServicioDocumento,\
-    ValidadorDeDocumentoSoapServiceStub, ValideElDocumentoXmlEnvelopedCoFirma,\
+from pyfva.soap.validador_documento_v2 import ValideElServicio as ValideServicioDocumento,\
+    ValideElDocumentoXmlEnvelopedCoFirma,\
     ValideElDocumentoXmlEnvelopedContraFirma, ValideElDocumentoMSOffice, ValideElDocumentoOdf, \
     ValideElDocumentoPdf
 
@@ -20,6 +20,7 @@ from pyfva.constants import get_text_representation, ERRORES_VALIDA_CERTIFICADO,
 import traceback
 
 from pyfva import logger
+from soap.validador_documento_v2 import ValidadorDeDocumentosSoapServiceStub
 
 
 class ClienteValidador(object):
@@ -68,9 +69,6 @@ class ClienteValidador(object):
     def validar_documento(self, documento, formato):
         """Valida si el documento está firmado correctamente.
 
-        **NOTA:** Esta versión está obsoleta y tiene problemas de validación de algunos documentos, usar la versión V2
-        disponible ene este paquete.
-
         :param documento: documento xml en base64
         :param formato: tipo de documento a validar (cofirma, contrafirma, msoffice, odf).
 
@@ -81,20 +79,27 @@ class ClienteValidador(object):
             Observe que en caso de no ser exitosa la operación los atributos 'advertencias', 'errores_encontrados' y 'firmantes' retornarán None
 
         :returns:   
-            **codigo_error:** Número con el código de error 0 es éxito
+            **codigo_error**: Es 0 si el resultado fue exitoso, 1 si existe algún error.
 
-            **texto_codigo_error:** Descripción del error
+            **texto_codigo_error**:  Texto de información sobre el código de error.
 
-            **exitosa:** True si fue exitoso el verificado del documento, False si no lo fue
+            **exitosa**: La transacción fue exitosa.
 
-            **advertencias:** Lista de advertencias encontradas durante el proceso de validadación, algo como: ["adv1", "adv2"]
+            **firmas**: Listado de firmas en el documento.
 
-            **errores_encontrados:** Lista de errores encontrados y su respectivo detalle, ej  
-            [("código de error", "Detalle del error"), ...]
+                - es_valida: La firma encontrada es válida.
+                - es_avanzada: Es una firma avanzada.
+                - error: Ha ocurrido un error al validar la firma.
+                - detalle_de_error: Texto de detalle del error encontrado si existe.
+                - garantia_de_integridad_y_autenticidad: La firma garantiza la integridad y autenticidad del documento
+                - garantia_de_validez_tiempo: Datos de la garantía del tiempo.
+                - detalle: Detalle de la firma.
+                - autoria_del_firmante: La firma garantiza la autoría del firmante
 
-            **firmantes:** Lista de información del los firmantes, ej 
-            [ {'identificacion': "8-0888-0888", 'fecha_firma': datetime.now(),
-            'nombre': "Juanito Mora Porras"}, ... ]      
+            **resumen**: Resumen de resultados de validación del documento, contiene los elementos
+                'integridad', 'jerarquia_de_confianza', 'vigencia', 'tipo_de_certificado', 'revocacion', 'fecha_de_firma'
+                Cada uno de los elementos tiene los siguientes campos ('estado', 'se_evalua', 'respuesta', 'codigo')
+            **errores**: Errores encontrados al validar el documento
         """
         logger.debug({'message':"Validador: validar_documento", 'data':
             {'format': formato, 'data': repr(locals())}, 'location': __file__})
@@ -182,105 +187,208 @@ class ClienteValidador(object):
     # Private methods
 
     def _validar_documento_cofirma(self, documento):
-        stub = ValidadorDeDocumentoSoapServiceStub()
+        stub = ValidadorDeDocumentosSoapServiceStub()
+               
         options = ValideElDocumentoXmlEnvelopedCoFirma()
-        options.elDocumentoXml = documento
+        options.elDocumento = documento
         try:
             status = stub.ValideElDocumentoXmlEnvelopedCoFirma(options)
-            dev = self._extract_documento_xml(
+            dev = self._extract_documento(
                 status.soap_body.ValideElDocumentoXmlEnvelopedCoFirmaResult,
                 ERRORES_VALIDAR_XMLCOFIRMA)
         except Exception as e:
             logger.error({'message':"Validador: validando  cofirma", 'data': e, 'location': __file__})
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
-
+            dev['extrar_error'] = str(e)
         return dev
 
     def _validar_documento_contrafirma(self, documento):
-        stub = ValidadorDeDocumentoSoapServiceStub()
+        stub = ValidadorDeDocumentosSoapServiceStub()
         options = ValideElDocumentoXmlEnvelopedContraFirma()
-        options.elDocumentoXml = documento
+        options.elDocumento = documento
         try:
             status = stub.ValideElDocumentoXmlEnvelopedContraFirma(options)
-            dev = self._extract_documento_xml(
+            dev = self._extract_documento(
                 status.soap_body.ValideElDocumentoXmlEnvelopedContraFirmaResult,
                 ERRORES_VALIDAR_XMLCONTRAFIRMA)
         except Exception as e:
             traceback.print_exc()
             logger.error({'message':"Validador: validando contrafirma", 'data': e, 'location': __file__})
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCONTRAFIRMA)
-
+            dev['extrar_error'] = str(e)
         return dev
 
     def _validar_documento_msoffice(self, documento):
-        stub = ValidadorDeDocumentoSoapServiceStub()
+        stub = ValidadorDeDocumentosSoapServiceStub()
         options = ValideElDocumentoMSOffice()
-        options.elDocumentoOffice = documento
+        options.elDocumento = documento
         try:
             status = stub.ValideElDocumentoMSOffice(options)
-            dev = self._extract_documento_xml(
+            dev = self._extract_documento(
                 status.soap_body.ValideElDocumentoMSOfficeResult,
                 ERRORES_VALIDAR_MSOFFICE)
         except Exception as e:
             logger.error({'message':"Validador: validando  MSOffice",
                          'data': e, 'location': __file__})
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_MSOFFICE)
-
+            dev['extrar_error'] = str(e)
         return dev
 
     def _validar_documento_odf(self, documento):
-        stub = ValidadorDeDocumentoSoapServiceStub()
+        stub = ValidadorDeDocumentosSoapServiceStub()
         options = ValideElDocumentoOdf()
-        options.elDocumentoOdf = documento
+        options.elDocumento = documento
         try:
             status = stub.ValideElDocumentoOdf(options)
-            dev = self._extract_documento_xml(
+            dev = self._extract_documento(
                 status.soap_body.ValideElDocumentoOdfResult,
                 ERRORES_VALIDAR_ODF)
         except Exception as e:
             logger.error({'message':"Validador: validando  ODF", 'data':e, 'location': __file__})
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_ODF)
+            dev['extrar_error'] = str(e)
 
         return dev
 
     def _validar_documento_pdf(self, documento):
-        stub = ValidadorDeDocumentoSoapServiceStub()
+        stub = ValidadorDeDocumentosSoapServiceStub()
         options = ValideElDocumentoPdf()
         options.elDocumentoPdf = documento
         try:
             status = stub.ValideElDocumentoPdf(options)
-            dev = self._extract_documento_xml(
+            dev = self._extract_documento(
                 status.soap_body.ValideElDocumentoPdfResult,
                 ERRORES_VALIDAR_PDF)
         except Exception as e:
             logger.error({'message':"Validador: validando  PDF", 'data': e, 'location': __file__})
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_PDF)
+            dev['extrar_error'] = str(e)
+        return dev
+
+    def _extract_firma_detalle(self, Detalle):
+        dev = {
+            'integridad': None,
+            'jerarquia_de_confianza': None,
+            'vigencia': None,
+            'tipo_de_certificado': None,
+            'revocacion': None,
+            'fecha_de_firma': None
+        }
+
+        if Detalle.Integridad:
+            dev['integridad']={
+                'estado': Detalle.Integridad.EstadoRespuesta,
+                'se_evalua': Detalle.Integridad.SeEvalua,
+                'respuesta': Detalle.Integridad.Respuesta or '',
+                'codigo': Detalle.Integridad.CodigoRespuesta
+            }
+        if Detalle.JerarquiaDeConfianza:
+            dev['jerarquia_de_confianza'] = {
+                'estado': Detalle.JerarquiaDeConfianza.EstadoRespuesta,
+                'se_evalua': Detalle.JerarquiaDeConfianza.SeEvalua,
+                'respuesta': Detalle.JerarquiaDeConfianza.Respuesta or '',
+                'codigo': Detalle.JerarquiaDeConfianza.CodigoRespuesta
+                
+            }
+        if Detalle.Vigencia:
+            dev['vigencia'] = {
+                'estado': Detalle.Vigencia.EstadoRespuesta,
+                'se_evalua': Detalle.Vigencia.SeEvalua,
+                'respuesta': Detalle.Vigencia.Respuesta or '',
+                'codigo': Detalle.Vigencia.CodigoRespuesta
+            }
+        if Detalle.TipoDeCertificado:
+            dev['tipo_de_certificado'] = {
+                'estado': Detalle.TipoDeCertificado.EstadoRespuesta,
+                'se_evalua': Detalle.TipoDeCertificado.SeEvalua,
+                'respuesta': Detalle.TipoDeCertificado.Respuesta or '',
+                'codigo': Detalle.TipoDeCertificado.CodigoRespuesta
+            }
+        if Detalle.Revocacion:
+            dev['revocacion'] = {
+                'estado': Detalle.Revocacion.EstadoRespuesta,
+                'se_evalua': Detalle.Revocacion.SeEvalua,
+                'respuesta': Detalle.Revocacion.Respuesta or '',
+                'codigo': Detalle.Revocacion.CodigoRespuesta
+            }
+        if Detalle.FechaOficialDeLaFirma:
+            dev['fecha_de_firma'] = {
+                'estado': Detalle.FechaOficialDeLaFirma.EstadoRespuesta,
+                'se_evalua': Detalle.FechaOficialDeLaFirma.SeEvalua,
+                'respuesta': Detalle.FechaOficialDeLaFirma.Respuesta or '',
+                'codigo': Detalle.FechaOficialDeLaFirma.CodigoRespuesta,
+                'fecha_de_estama': Detalle.FechaOficialDeLaFirma.FechaDeLaEstamaDeTiempo
+            }
+        return dev
+    
+    def _extract_firmas(self, Firma):
+        dev = {
+          'es_valida': Firma.EsValida,
+          'es_avanzada': Firma.EsAvanzada,
+          'error': Firma.OcurrioUnError,
+          'detalle_de_error': Firma.DetalleDelError or '',
+          'garantia_de_integridad_y_autenticidad':  Firma.GarantiaDeIntegridadYAutenticidad,
+          'garantia_de_validez_tiempo': [],
+          'detalle': [],
+          'autoria_del_firmante': None,
+        }
+        if Firma.GarantiaDeValidezEnElTiempo:
+            dev['garantia_de_validez_tiempo'].append(Firma.GarantiaDeValidezEnElTiempo.Resultado)
+            dev['garantia_de_validez_tiempo'].append(Firma.GarantiaDeValidezEnElTiempo.MensajeDeAdvertencia or '')
+
+        if Firma.AutoriaDelFirmante:
+            dev['autoria_del_firmante'] = {
+                'nombre': Firma.AutoriaDelFirmante.Nombre,
+                'identificacion': Firma.AutoriaDelFirmante.Identificacion,
+                'tiene_autoria': Firma.AutoriaDelFirmante.SeObtuvoAutoria
+            }
+        if Firma.Detalle:
+            dev['detalle'] = self._extract_firma_detalle(Firma.Detalle)
+        return dev
+
+    def _extract_resumen(self, Resumen):
+        dev = {
+            'firmante': Resumen.Firmante,
+            'identificacion': Resumen.Identificacion,
+            'garantia_de_integridad_y_autenticidad': Resumen.GarantiaDeIntegridadYAutenticidad,
+            'garantia_validez_en_el_tiempo': Resumen.GarantiaDeValidezEnElTiempo,
+            'resultado': Resumen.ResultadoValidacion,
+            'fecha_estampa_de_tiempo': Resumen.FechaEstampaDeTiempo,
+            'tipo_identificacion': Resumen.TipoIdentificacion,
+            'tiene_fecha_estampa_de_tiempo': Resumen.TieneFechaEstampaDeTiempo
+        }
 
         return dev
 
-    def _extract_documento_xml(self, result, ERRORES_VALIDACION):
+    def _extract_resultado_resumen(self, Resumen):
+        dev = {
+            'garantia_de_integridad_y_autenticidad': Resumen.GarantiaDeIntegridadYAutenticidad,
+            'garantia_validez_en_el_tiempo': Resumen.GarantiaDeValidezEnElTiempo,
+            'resultado_de_validacion': Resumen.ResultadoValidacionDelDocumentoFirmado
+        }
+        if Resumen.ResumenDeFirmas:
+            dev['resumen'] = [self._extract_resumen(firma) for firma in Resumen.ResumenDeFirmas.ResumenDeFirma]
+        return dev
+
+    def _extract_documento(self, result, ERRORES_VALIDACION):
         dev = {}
-        #dev.update(self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDACION))
+ #       dev.update(self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDACION))
         dev['codigo_error'] = 0 if result.FueExitosa else 1
         dev['texto_codigo_error'] = get_text_representation(
             ERRORES_VALIDACION, dev['codigo_error']),
         dev['exitosa'] = result.FueExitosa
-        dev['advertencias'] = None
-        dev['errores_encontrados'] = None
-        dev['firmantes'] = None
+        dev['firmas'] = None
+        dev['resumen'] = None
+        dev['errores'] = None
 
-        if result.Advertencias:
-            dev['advertencias'] = result.Advertencias.string
+        if result.ErrorGeneradoAlValidar:
+            dev['errores'] = result.ErrorGeneradoAlValidar
 
-        if result.ErroresEncontrados:
-            dev['errores_encontrados'] = [(error.Codigo, error.Detalle)
-                                          for error in result.ErroresEncontrados.ErrorDeDocumento]
-        if result.Firmantes:
-            dev['firmantes'] = [
-                {'identificacion': x.Cedula,
-                 'fecha_firma': x.FechaDeFirma,
-                 'nombre': x.NombreCompleto} for x in
-                result.Firmantes.Firmante]
+        if result.Firmas:
+            dev['firmas'] = [self._extract_firmas(firma) for firma in result.Firmas.Firma]
+
+        if result.Resumen:
+            dev['resumen'] = self._extract_resultado_resumen(result.Resumen)
 
         return dev
 
@@ -326,7 +434,7 @@ class ClienteValidador(object):
         return dev
 
     def _validar_servicio_documento(self):
-        stub = ValidadorDeDocumentoSoapServiceStub()
+        stub = ValidadorDeDocumentosSoapServiceStub()
         option = ValideServicioDocumento()
         try:
             status = stub.ValideElServicio(option)

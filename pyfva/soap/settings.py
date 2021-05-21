@@ -7,6 +7,7 @@ import logging
 from collections import Iterable
 
 FVA_HOST = "http://bccr.fva.cr/"
+LOGGING_PREFIX = ''
 # FVA_HOST = 'http://bccr.fva.cr/'
 STUB_SCHEME = 'http'
 STUB_HOST = "localhost:8001"
@@ -23,6 +24,7 @@ SERVICE_URLS = {
     'firma': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/Firmador.asmx',
     'valida_certificado': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeCertificado.asmx',
     'valida_documento': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeDocumento.asmx',
+    'valida_docs_v2': 'WebServices/Bccr.Firma.Fva.Entidades.ValidarDocumento.Ws.SI/ValidadorDeDocumentos.asmx',
     'verifica': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/Verificador.asmx',
     'sello': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.SI/SelladorElectronicoConControlDeLlave.asmx'
 
@@ -33,6 +35,7 @@ TEST_SERVICE_URLS = {
     'firma': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/Firmador.asmx',
     'valida_certificado': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeCertificado.asmx',
     'valida_documento': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeDocumento.asmx',
+    'valida_docs_v2': 'WebServices/Bccr.Firma.Fva.Entidades.ValidarDocumento.Ws.SI/ValidadorDeDocumentos.asmx',
     'verifica': 'WebServices/Bccr.Fva.Entidades.AmbienteDePruebas.Ws.BS/Verificador.asmx',
     'sello': 'WebServices/Bccr.Fva.Entidades.AmbDePruebas.Sello.Ws.SI/SelladorElectronicoConControlDeLlave.asmx'
 }
@@ -52,7 +55,8 @@ def load_settings(settings):
                  'DEFAULT_BUSSINESS',
                  'DEFAULT_ENTITY',
                  'RECEPTOR_CLIENT',
-                 'WS_URL_NOTIFICATION']:
+                 'WS_URL_NOTIFICATION',
+                 'LOGGING_PREFIX']:
 
 
         if hasattr(settings, name):
