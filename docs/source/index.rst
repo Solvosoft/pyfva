@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Bievenido a la documentación de pyfva's
+Bienvenido a la documentación de pyfva's
 =========================================
 
 .. note:: This repository is for Costa Rican citizen so this documentation is in spanish. Also we code and test in Debian/Linux.
