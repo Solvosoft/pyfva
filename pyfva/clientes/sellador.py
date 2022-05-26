@@ -4,7 +4,7 @@ Created on 6 sept. 2020
 @author: luis
 '''
 from pyfva.soap.sellador import SolicitudDeFirma, SelladorElectronicoConControlDeLlaveSoapServiceStub, \
-    ElServicioEstaDisponible, RecibaLaSolicitudDeSelladoElectronicoOdf, RecibaLaSolicitudDeSelladoElectronicoPdf, \
+    ValideElServicio, RecibaLaSolicitudDeSelladoElectronicoOdf, RecibaLaSolicitudDeSelladoElectronicoPdf, \
     RecibaLaSolicitudDeSelladoElectronicoMSOffice, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma, \
     RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma, SolicitudDeFirmaPdf
 
@@ -266,7 +266,7 @@ class ClienteSellador(object):
         if lugar:
             request.Lugar = lugar
         if razon:
-            request.RazonDeFirma = razon
+            request.Razon = razon
 
         return request
 
@@ -327,10 +327,10 @@ class ClienteSellador(object):
 
     def _validar_servicio(self):
         stub = SelladorElectronicoConControlDeLlaveSoapServiceStub()
-        option = ElServicioEstaDisponible()
+        option = ValideElServicio()
         try:
-            status = stub.ElServicioEstaDisponible(option)
-            dev = status.soap_body.ElServicioEstaDisponibleResult
+            status = stub.ValideElServicio(option)
+            dev = status.soap_body.ValideElServicioResult
         except Exception as e:
             logger.error({'message': "Sellador: Servicio de firmado fallando", 'data': e,
                           'location': __file__})

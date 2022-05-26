@@ -33,3 +33,7 @@ python -m soapfish.wsdl2py -c WSDL/Receptor.xml > tmp/receptor.py
 meld pyfva/receptor/ws_service.py tmp/receptor.py
 
 
+python -m soapfish.wsdl2py -c WSDL/Sello.wsdl > tmp/sello.py
+meld pyfva/soap/sellador.py tmp/sellador.py
+
+
