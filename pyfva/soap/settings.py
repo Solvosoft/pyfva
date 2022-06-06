@@ -26,7 +26,7 @@ SERVICE_URLS = {
     'valida_documento': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/ValidadorDeDocumento.asmx',
     'valida_docs_v2': 'WebServices/Bccr.Firma.Fva.Entidades.ValidarDocumento.Ws.SI/ValidadorDeDocumentos.asmx',
     'verifica': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.BS/Verificador.asmx',
-    'sello': 'WebServices/Bccr.Firma.Fva.Entidades.Ws.SI/SelladorElectronicoConControlDeLlave.asmx'
+    'sello': 'WebServices/Bccr.Firma.Fva.Entidades.Sello.Ws.SI/SelladorElectronicoConControlDeLlave.asmx'
 
 }
 
