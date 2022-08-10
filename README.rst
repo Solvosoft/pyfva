@@ -192,6 +192,7 @@ Luego sobre pyfva se ejecuta
 Crear y correr con Docker las pruebas
 #######################################
 
+note:: El archivo run_test.sh debe modificar el negocio y la entidad antes de generar la imagen
 
 Para construir la imagen.
 
@@ -199,7 +200,7 @@ Para construir la imagen.
 
     docker build -t pyfva .
 
-Para correr la aplicación
+
 
 Para correr una instancia de pruebas.
 
@@ -207,8 +208,10 @@ Para correr una instancia de pruebas.
 
     docker run --name pyfvatest -v  `pwd`/certs:/app/certs -p 8443:8443 pyfva
 
-Para correr las pruebas
+Para correr las pruebas.
 
 .. code:: bash
 
     docker exec -ti  pyfvatest bash
+    cd /app
+    bash run_test.sh
