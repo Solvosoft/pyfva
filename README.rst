@@ -188,3 +188,27 @@ Luego sobre pyfva se ejecuta
 
     python -m unittest pyfva.tests
 
+
+Crear y correr con Docker las pruebas
+#######################################
+
+
+Para construir la imagen.
+
+.. code:: bash
+
+    docker build -t pyfva .
+
+Para correr la aplicación
+
+Para correr una instancia de pruebas.
+
+.. code:: bash
+
+    docker run --name pyfvatest -v  `pwd`/certs:/app/certs -p 8443:8443 pyfva
+
+Para correr las pruebas
+
+.. code:: bash
+
+    docker exec -ti  pyfvatest bash

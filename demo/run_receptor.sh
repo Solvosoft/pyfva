@@ -1,4 +1,5 @@
-#/usr/bin/bash
+#!/bin/bash
+
 NAME="pyfva"
 DJANGO_SETTINGS_MODULE=settings             # which settings file should Django use
 DJANGO_WSGI_MODULE=wsgi                     # WSGI module name

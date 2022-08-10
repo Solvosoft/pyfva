@@ -1,4 +1,5 @@
 #!/bin/bash
+
 CERTSDIR=`pwd`/certs
 
 export DEBUG_HTTP_SERVER=0    #para utilizar fva_simulador
