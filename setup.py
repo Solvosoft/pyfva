@@ -24,7 +24,7 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 
-version = '0.0.42'
+version = '0.0.43'
 
 
 setup(
@@ -37,7 +37,7 @@ setup(
     url='https://github.com/solvo/pyfva',
     license='GNU General Public License',
     platforms=['OS Independent'],
-    install_requires=['soapfish2'],
+    install_requires=['soapfish2', 'pytz'],
     classifiers=CLASSIFIERS,
     packages=find_packages(),
     include_package_data=True,

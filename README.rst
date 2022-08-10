@@ -135,7 +135,7 @@ Para leer un archivo se puede utilizar algo como esto
         HASH = get_hash_sum(FI, 'sha512', b64=True)
         data = stampclient.firme(ARCH, 'msoffice', hash_doc=HASH)
 
-Generar documentoación
+Generar documentación
 #############################
 
 Instale Sphinx mediante pypi
@@ -157,4 +157,34 @@ Para regenerar la documentación, si no se tienen cambios en los códigos de err
 
     make html
 
+
+
+Correr las pruebas
+#############################
+
+Cree una carpeta llamada  **certs** en la base del proyecto y ponga ahí los certificados y llaves privadas
+
+* ca_nacional_de_CR.pem
+* bccr_agent.pem
+* bccr_agent_key.pem
+
+Se necesita correr la aplicación que recibirá las peticiones desde el BCCR
+
+
+.. code:: bash
+
+    cd demo
+    ./run_receptor.sh
+
+En caso de correrse de forma local no olvidar
+
+.. code:: bash
+
+    python manage.py createcachetable
+
+Luego sobre pyfva se ejecuta
+
+.. code:: bash
+
+    python -m unittest pyfva.tests
 

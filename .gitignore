@@ -105,4 +105,5 @@ ENV/
 .pydevproject
 .settings/
 WSDL
-
+certs
+db.sqlite3

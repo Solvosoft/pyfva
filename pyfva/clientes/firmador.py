@@ -3,6 +3,8 @@ Created on 19 jul. 2017
 
 @author: luis
 '''
+from pytz import timezone
+
 from pyfva.soap.firmador import FirmadorSoapServiceStub,\
     RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma, RecibaLaSolicitudDeFirmaODF,\
     RecibaLaSolicitudDeFirmaMSOffice, ValideElServicio,\
@@ -48,13 +50,15 @@ class ClienteFirmador(object):
 
     def __init__(self,
                  negocio=settings.DEFAULT_BUSSINESS,
-                 entidad=settings.DEFAULT_ENTITY):
+                 entidad=settings.DEFAULT_ENTITY, time_manager=None):
         self.negocio = negocio
         self.entidad = entidad
+        self.time_manager = time_manager or datetime
 
 
     def get_now(self):
-        return datetime.now()
+        gtm6 = timezone('America/Costa_Rica')
+        return gtm6.localize(self.time_manager.now())
 
     def firme(self, identidad, documento, formato, algoritmo_hash='Sha512', hash_doc=None,
               resumen='', id_funcionalidad=-1, lugar=None, razon=None):

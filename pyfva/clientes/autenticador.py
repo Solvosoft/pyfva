@@ -8,6 +8,7 @@ Created on 18 jul. 2017
 from pyfva.soap.autenticador import AutenticadorSoapServiceStub,\
     RecibaLaSolicitudDeAutenticacion, SolicitudDeAutenticacion, ValideElServicio
 
+from pytz import timezone
 from datetime import datetime
 from pyfva.soap import settings
 from pyfva.constants import ERRORES_AL_SOLICITAR_FIRMA, get_text_representation
@@ -36,12 +37,14 @@ class ClienteAutenticador(object):
 
     def __init__(self,
                  negocio=settings.DEFAULT_BUSSINESS,
-                 entidad=settings.DEFAULT_ENTITY):
+                 entidad=settings.DEFAULT_ENTITY, time_manager=None):
         self.negocio = negocio
         self.entidad = entidad
+        self.time_manager = time_manager or datetime
 
     def get_now(self):
-        return datetime.now()
+        gtm6 = timezone('America/Costa_Rica')
+        return gtm6.localize(self.time_manager.now())
 
     def solicitar_autenticacion(self, identificacion, id_funcionalidad=-1):
         """Solicita al BCCR la autenticación de la identificacion, 
@@ -51,7 +54,6 @@ class ClienteAutenticador(object):
 
         :param identificacion: número de identificación de la persona ver  `Formato identificacion <formatos.html#formato-de-identificacion>`_.
         :param id_funcionalidad: Identificación de la funcionalidad del programa externo, se usa para dar seguimiento a la operación, * No obligatorio
-
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_ERROR**.
 
