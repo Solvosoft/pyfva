@@ -194,6 +194,9 @@ Crear y correr con Docker las pruebas
 
 note:: El archivo run_test.sh debe modificar el negocio y la entidad antes de generar la imagen
 
+El receptor escucha el puerto 0.0.0.0:8443/notifica, esto debería estar registrado en central directo con el nombre de dominio
+adecuado.
+
 Para construir la imagen.
 
 .. code:: bash
