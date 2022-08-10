@@ -3,7 +3,7 @@ import json
 import ssl
 import os
 import base64
-
+import time
 from pathlib import Path
 
 def read_files(_format,  post_read_fn=lambda x: base64.b64encode(x).decode(), name='test.'):
@@ -68,3 +68,22 @@ def http_get(request_url):
         if debug_server:
             return http_testing_get(request_url)
     return https_get(request_url)
+
+class CheckReception:
+    def check_reception(self, idtransaction):
+        request_url = '/check_transaction/' + str(idtransaction)
+        counter = 0
+        ok = False
+        response = {'codigo_error': 1}
+        while not ok and counter < 10:
+            try:
+                response = http_get(request_url)
+                if response['ok']:
+                    ok = True
+                else:
+                    counter += 1
+            except Exception as e:
+                print(e)
+                counter += 1
+                time.sleep(2)
+        return response

@@ -1,32 +1,14 @@
-import time
 import unittest
 from datetime import timedelta, datetime
 
 from pyfva.clientes.autenticador import ClienteAutenticador
-from .utils import http_get
+from .utils import CheckReception
 
 
-class TestAuthenticador(unittest.TestCase):
+class TestAuthenticador(unittest.TestCase, CheckReception):
     def setUp(self):
         self.client = ClienteAutenticador(1,1)
 
-    def check_reception(self, idtransaction):
-        request_url = '/check_transaction/' + str(idtransaction)
-        counter = 0
-        ok = False
-        response = {'codigo_error': 1}
-        while not ok and counter < 10:
-            try:
-                response = http_get(request_url)
-                if response['ok'] :
-                    ok = True
-                else:
-                    counter += 1
-            except Exception as e:
-                print(e)
-                counter += 1
-                time.sleep(2)
-        return response
 
     def test_valide_servicio(self):
         result = self.client.validar_servicio()

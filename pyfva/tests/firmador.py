@@ -3,9 +3,9 @@ from datetime import timedelta, datetime
 
 from pyfva.clientes.firmador import ClienteFirmador
 from .utils import read_files
+from .utils import CheckReception
 
-
-class TestFirmador(unittest.TestCase):
+class TestFirmador(unittest.TestCase, CheckReception):
     def setUp(self):
         self.client = ClienteFirmador(1,1)
 
@@ -98,3 +98,55 @@ class TestFirmador(unittest.TestCase):
         self.assertEqual(result['codigo_error'], 14)
 
 
+
+   #########################################################
+    #  A partir de aca son peticiones con respuestas
+    #########################################################
+
+    def test_auth_100000000000(self):
+        result = self.firme_documento_default("100000000000")
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 1)
+
+    def test_auth_0110102020(self):
+        result = self.firme_documento_default("01-1010-2020")
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 2)
+
+    def test_auth_0140405050(self):
+        result = self.firme_documento_default("01-4040-5050")
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 4)
+
+    def test_auth_0160607070(self):
+        result = self.firme_documento_default("01-6060-7070")
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 9)
+
+    def test_auth_0180809090(self):
+        result = self.firme_documento_default("01-8080-9090")
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 10)
+
+    def test_auth_0111002211(self):
+        result = self.firme_documento_default("01-1100-2211")
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 11)
+
+    def test_auth_0133445566(self):
+        result = self.firme_documento_default("01-3344-5566")
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 13)
+
+    def test_auth_0177889900(self):
+        result = self.firme_documento_default("01-7788-9900")
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 14)

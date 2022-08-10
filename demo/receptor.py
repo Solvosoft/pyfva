@@ -1,5 +1,16 @@
 from django.core.cache import cache
 
+
+def get_document(document):
+    """
+    Comprueba si el documento se puede leer o no, si el archivo es correcto lo retorna, si no retorna None
+    :param document:
+    :return:
+    """
+    if type(document) == str:
+        return document
+    return None
+
 def reciba_notificacion(data):
     """
     Recibe la notificación del BCCR
@@ -17,6 +28,9 @@ def reciba_notificacion(data):
 
     """
 
+
+    if 'documento' in data:
+        data['documento'] = get_document(data['documento'])
     cache.set(data['id_solicitud'], data)
 
 
