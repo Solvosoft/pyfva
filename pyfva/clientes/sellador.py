@@ -3,6 +3,8 @@ Created on 6 sept. 2020
 
 @author: luis
 '''
+from pytz import timezone
+
 from pyfva.soap.sellador import SolicitudDeFirma, SelladorElectronicoConControlDeLlaveSoapServiceStub, \
     ValideElServicio, RecibaLaSolicitudDeSelladoElectronicoOdf, RecibaLaSolicitudDeSelladoElectronicoPdf, \
     RecibaLaSolicitudDeSelladoElectronicoMSOffice, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma, \
@@ -48,12 +50,15 @@ class ClienteSellador(object):
         'id_algoritmo_hash': 'sha256'
     }
 
-    def __init__(self, negocio=settings.DEFAULT_BUSSINESS, entidad=settings.DEFAULT_ENTITY):
+    def __init__(self, negocio=settings.DEFAULT_BUSSINESS,
+                 entidad=settings.DEFAULT_ENTITY, time_manager=None):
         self.negocio = negocio
         self.entidad = entidad
+        self.time_manager = time_manager or datetime
 
     def get_now(self):
-        return datetime.now()
+        gtm6 = timezone(settings.PYFVA_TIMEZONE)
+        return gtm6.localize(self.time_manager.now())
 
     def firme(self, documento, formato, algoritmo_hash='Sha512', hash_doc=None,
               id_funcionalidad=-1, lugar=None, razon=None):

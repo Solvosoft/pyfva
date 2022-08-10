@@ -7,6 +7,8 @@ LOGDIR=/var/log/pyfva
 CERTSDIR=`pwd`/../certs
 test -d $LOGDIR || sudo mkdir -p $LOGDIR &&  sudo chown $USER $LOGDIR
 
+code=`pwd`/../
+export PYTHONPATH=$PYTHONPATH:$code
 export REQUESTS_CA_BUNDLE=$CERTSDIR/ca_nacional_de_CR.pem
 export REQUESTS_CA_PATH=$CERTSDIR/ca_nacional_de_CR.pem
 export REQUESTS_CERT_PATH=$CERTSDIR/bccr_agent.pem

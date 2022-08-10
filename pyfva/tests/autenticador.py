@@ -24,11 +24,11 @@ class TestAuthenticador(unittest.TestCase, CheckReception):
                 return datetime.now() + timedelta(days=1)
 
         client = ClienteAutenticador(1, 1, time_manager=FakeTimeManager())
-        result = client.solicitar_autenticacion("99-0003-0456")
+        result = client.solicitar_autenticacion("01-0003-0456")
         self.assertEqual(result['codigo_error'], 3)
 
     def test_auth_not_entity(self):
-        client = ClienteAutenticador(1,599)
+        client = ClienteAutenticador(negocio=13, entidad=1)
         result = client.solicitar_autenticacion("01-0123-0456")
         self.assertEqual(result['codigo_error'], 6)
 

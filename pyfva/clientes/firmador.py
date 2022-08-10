@@ -57,7 +57,7 @@ class ClienteFirmador(object):
 
 
     def get_now(self):
-        gtm6 = timezone('America/Costa_Rica')
+        gtm6 = timezone(settings.PYFVA_TIMEZONE)
         return gtm6.localize(self.time_manager.now())
 
     def firme(self, identidad, documento, formato, algoritmo_hash='Sha512', hash_doc=None,

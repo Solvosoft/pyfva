@@ -43,7 +43,7 @@ class ClienteAutenticador(object):
         self.time_manager = time_manager or datetime
 
     def get_now(self):
-        gtm6 = timezone('America/Costa_Rica')
+        gtm6 = timezone(settings.PYFVA_TIMEZONE)
         return gtm6.localize(self.time_manager.now())
 
     def solicitar_autenticacion(self, identificacion, id_funcionalidad=-1):

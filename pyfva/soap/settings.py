@@ -41,6 +41,7 @@ TEST_SERVICE_URLS = {
 }
 
 WS_URL_NOTIFICATION = 'wcfv2/Bccr.Sinpe.Fva.EntidadDePruebas.Notificador/ResultadoDeSolicitud.asmx'
+PYFVA_TIMEZONE = 'America/Costa_Rica'
 
 import sys
 import os
@@ -56,6 +57,7 @@ def load_settings(settings):
                  'DEFAULT_ENTITY',
                  'RECEPTOR_CLIENT',
                  'WS_URL_NOTIFICATION',
+                 'PYFVA_TIMEZONE',
                  'LOGGING_PREFIX']:
 
 

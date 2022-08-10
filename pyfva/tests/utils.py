@@ -5,15 +5,39 @@ import os
 import base64
 import time
 from pathlib import Path
+import hashlib
 
-def read_files(_format,  post_read_fn=lambda x: base64.b64encode(x).decode(), name='test.'):
+def get_digest(digest_name):
+    if 'sha256' == digest_name:
+        return hashlib.sha256()
+    elif 'sha384' == digest_name:
+        return hashlib.sha384()
+    elif 'sha512' == digest_name:
+        return hashlib.sha512()
+
+def get_hash_sum(data, algorithm, b64=False):
+    if type(data) == str:
+        data = data.encode()
+    digest = get_digest(algorithm)
+    digest.update(data)
+    if b64:
+        return base64.b64encode(digest.digest()).decode()
+    hashsum = digest.hexdigest()
+    return hashsum
+
+def read_files(_format,  post_read_fn=lambda x: base64.b64encode(x).decode(),
+               name='test.', b64=True):
     defaultpath = Path('testdata/')
     f = None
     fpath = None
     if _format == 'xml_cofirma':
         fpath = defaultpath / "test.xml"
+    elif _format == 'bom':
+        fpath = defaultpath / "bom.xml"
     elif _format == 'xml_contrafirma':
-        fpath = defaultpath / "ctest.xml"
+        fpath = defaultpath / "contrafirmado.xml"
+    elif _format == 'nocontrafirma':
+        fpath = defaultpath / "no_contrafirmado.xml"
     elif 'odf' == _format:
         fpath = defaultpath  / "test.odt"
     elif 'msoffice' == _format:
@@ -24,7 +48,9 @@ def read_files(_format,  post_read_fn=lambda x: base64.b64encode(x).decode(), na
         fpath = defaultpath / (name+_format)
     with open(fpath, 'rb') as arch:
         f = arch.read()
-    return post_read_fn(f)
+        HASH = get_hash_sum(f, 'sha512', b64=b64)
+    return post_read_fn(f), HASH
+
 
 def http_testing_get(request_url):
     host = 'localhost'
@@ -82,6 +108,7 @@ class CheckReception:
                     ok = True
                 else:
                     counter += 1
+                    time.sleep(1)
             except Exception as e:
                 print(e)
                 counter += 1
