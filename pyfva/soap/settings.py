@@ -4,7 +4,10 @@ Created on 24 jul. 2017
 @author: luis
 '''
 import logging
-from collections import Iterable
+try:
+    from collections.abc import Iterable
+except:
+    from collections import Iterable
 
 FVA_HOST = "http://bccr.fva.cr/"
 LOGGING_PREFIX = ''
