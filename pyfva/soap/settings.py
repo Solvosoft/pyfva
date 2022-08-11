@@ -16,6 +16,9 @@ RECEPTOR_HOST = 'http://bccr.fva.cr/'
 
 RECEPTOR_CLIENT = 'pyfva.receptor.client'
 
+SELLADOR_CERT_PATH = ''
+SELLADOR_KEY_PATH = ''
+
 DEFAULT_BUSSINESS = 1
 DEFAULT_ENTITY = 1
 
@@ -56,6 +59,8 @@ def load_settings(settings):
                  'DEFAULT_BUSSINESS',
                  'DEFAULT_ENTITY',
                  'RECEPTOR_CLIENT',
+                 'SELLADOR_CERT_PATH',
+                 'SELLADOR_KEY_PATH',
                  'WS_URL_NOTIFICATION',
                  'PYFVA_TIMEZONE',
                  'LOGGING_PREFIX']:

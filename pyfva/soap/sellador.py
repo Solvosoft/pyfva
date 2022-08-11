@@ -300,8 +300,12 @@ SelladorElectronicoConControlDeLlaveSoap_SERVICE = soap.Service(
 ##############################################################################
 # SOAP Service Stub
 
+class SSLContex:
+    REQUESTS_CERT_PATH = settings.SELLADOR_CERT_PATH
+    REQUESTS_KEY_PATH = settings.SELLADOR_KEY_PATH
 
-class SelladorElectronicoConControlDeLlaveSoapServiceStub(soap.Stub):
+
+class SelladorElectronicoConControlDeLlaveSoapServiceStub(soap.Stub, SSLContex):
     SERVICE = SelladorElectronicoConControlDeLlaveSoap_SERVICE
     SCHEME = settings.STUB_SCHEME
     HOST = settings.STUB_HOST
@@ -412,7 +416,7 @@ SelladorElectronicoConControlDeLlaveSoap12_SERVICE = soap.Service(
 # SOAP Service Stub
 
 
-class SelladorElectronicoConControlDeLlaveSoap12ServiceStub(soap.Stub):
+class SelladorElectronicoConControlDeLlaveSoap12ServiceStub(soap.Stub, SSLContex):
     SERVICE = SelladorElectronicoConControlDeLlaveSoap12_SERVICE
     SCHEME = settings.STUB_SCHEME
     HOST = settings.STUB_HOST

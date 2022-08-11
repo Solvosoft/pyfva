@@ -133,6 +133,9 @@ DEFAULT_BUSSINESS = int(os.getenv('DEFAULT_BUSSINESS', 1))
 DEFAULT_ENTITY = int(os.getenv('DEFAULT_ENTITY', 1))
 # - endfvabccr
 
+SELLADOR_CERT_PATH = os.getenv('SELLADOR_CERT_PATH', '')
+SELLADOR_KEY_PATH = os.getenv('SELLADOR_KEY_PATH', '')
+
 RECEPTOR_CLIENT = 'receptor'
 
 CACHES = {
