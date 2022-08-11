@@ -17,4 +17,5 @@ if [ $DEBUG_HTTP_SERVER -eq 0 ]; then
   export DEFAULT_ENTITY=1
   export FVA_TESTURLS=True
 fi
+
 python -m unittest pyfva.tests

@@ -7,7 +7,7 @@ from .utils import CheckReception
 
 class TestAuthenticador(unittest.TestCase, CheckReception):
     def setUp(self):
-        self.client = ClienteAutenticador(1,1)
+        self.client = ClienteAutenticador()
 
 
     def test_valide_servicio(self):
@@ -23,7 +23,7 @@ class TestAuthenticador(unittest.TestCase, CheckReception):
             def now(self):
                 return datetime.now() + timedelta(days=1)
 
-        client = ClienteAutenticador(1, 1, time_manager=FakeTimeManager())
+        client = ClienteAutenticador(time_manager=FakeTimeManager())
         result = client.solicitar_autenticacion("01-0003-0456")
         self.assertEqual(result['codigo_error'], 3)
 

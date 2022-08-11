@@ -44,6 +44,8 @@ def read_files(_format,  post_read_fn=lambda x: base64.b64encode(x).decode(),
         fpath = defaultpath / "test.docx"
     elif 'pdf' == _format:
         fpath = defaultpath / "test.pdf"
+    elif 'sellado' == _format:
+        fpath = defaultpath / "sellado.pdf"
     else:
         fpath = defaultpath / (name+_format)
     with open(fpath, 'rb') as arch:

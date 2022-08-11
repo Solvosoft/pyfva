@@ -7,7 +7,7 @@ from .utils import CheckReception
 
 class TestFirmador(unittest.TestCase, CheckReception):
     def setUp(self):
-        self.client = ClienteFirmador(1,1)
+        self.client = ClienteFirmador()
 
     def firme_documento_default(self, identidad, extension='odf', client=None, resumen='nd', lugar=None, razon=None):
         client = client or self.client
@@ -38,7 +38,7 @@ class TestFirmador(unittest.TestCase, CheckReception):
         class FakeTimeManager:
             def now(self):
                 return datetime.now() + timedelta(days=1)
-        client = ClienteFirmador(1,1, time_manager=FakeTimeManager())
+        client = ClienteFirmador(time_manager=FakeTimeManager())
 
         result = self.firme_documento_default("01-0123-0456", client=client)
         self.assertEqual(result['codigo_error'], 3)
