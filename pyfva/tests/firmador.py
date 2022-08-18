@@ -106,11 +106,19 @@ class TestFirmador(unittest.TestCase, CheckReception):
         data = self.check_reception(result['id_solicitud'])
         self.assertEqual(data['codigo_error'], 2)
 
+    def test_auth_0120203030(self):
+        result = self.firme_documento_default("01-2020-3030")
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 3)
+
     def test_auth_0140405050(self):
         result = self.firme_documento_default("01-4040-5050")
         self.assertEqual(result['codigo_error'], 0)
         data = self.check_reception(result['id_solicitud'])
         self.assertEqual(data['codigo_error'], 4)
+
+
 
     def test_auth_0160607070(self):
         result = self.firme_documento_default("01-6060-7070")

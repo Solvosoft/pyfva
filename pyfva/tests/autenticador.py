@@ -92,6 +92,13 @@ class TestAuthenticador(unittest.TestCase, CheckReception):
         data = self.check_reception(result['id_solicitud'])
         self.assertEqual(data['codigo_error'], 2)
 
+    def test_auth_0120203030(self):
+        result = self.client.solicitar_autenticacion("01-2020-3030")
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 3)
+
+
     def test_auth_0140405050(self):
         result = self.client.solicitar_autenticacion("01-4040-5050")
         self.assertEqual(result['codigo_error'], 0)
