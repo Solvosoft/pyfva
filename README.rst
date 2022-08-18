@@ -19,11 +19,25 @@ Abstrae la comunicación entre los servicios SOAP del BCCR_  y python creando cl
 
 .. _BCCR: http://www.bccr.fi.cr/
 
+Enlaces de interés
+#######################
+
+Los siguientes enlaces son de proyectos de interés relacionados con el desarrollo de firma digital.
+
+- `Receptor de Notificiaciones BCCR`_
+- `Ventanas de Usuario`_
+- `Pyfva: Cliente para integración con Python`_
+- `Firmador Libre, aplicación de escritorio`_
+
+
+.. _`Receptor de Notificiaciones BCCR`: https://git.ucr.ac.cr/firma_comunidad/receptor-de-notificaciones-del-bccr
+.. _`Ventanas de Usuario`: https://git.ucr.ac.cr/firma_comunidad/ventanas_usuario
+.. _`Pyfva: Cliente para integración con Python`: https://github.com/solvo/pyfva
+.. _`Firmador Libre, aplicación de escritorio`: https://gitlab.com/firmador/firmador
+
 Instalación
 ##############
 
-.. note:: 
-    Solo ha sido probado en python 3.
 
 Instale mediante pypi
 
