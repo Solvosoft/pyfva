@@ -33,7 +33,7 @@ def reciba_notificacion(data):
     if 'documento' in data:
         data['documento'] = get_document(data['documento'])
     if data.get('fue_exitosa', False):
-        documento = base64.b64decode(data['documento']).encode()
+        documento = base64.b64decode(data['documento']).decode()
         if '01-0129-0129' in documento:
             data['codigo_error'] = 12
     cache.set(data['id_solicitud'], data)
