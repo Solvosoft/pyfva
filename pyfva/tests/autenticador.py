@@ -80,6 +80,13 @@ class TestAuthenticador(unittest.TestCase, CheckReception):
     #  A partir de aca son peticiones con respuestas
     #########################################################
 
+    def test_auth_nonotificado(self):
+
+        result = self.client.solicitar_autenticacion('01-0129-0129')
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 12)
+
     def test_auth_100000000000(self):
         result = self.client.solicitar_autenticacion("100000000000")
         self.assertEqual(result['codigo_error'], 0)

@@ -19,3 +19,4 @@ if [ $DEBUG_HTTP_SERVER -eq 0 ]; then
 fi
 
 python -m unittest pyfva.tests
+#python -m unittest  pyfva.tests.autenticador.TestAuthenticador.test_auth_nonotificado
