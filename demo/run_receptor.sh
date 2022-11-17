@@ -6,7 +6,7 @@ DJANGO_WSGI_MODULE=wsgi                     # WSGI module name
 NUM_WORKERS=3
 LOGDIR=/var/log/pyfva
 CERTSDIR=`pwd`/../certs
-test -d $LOGDIR || sudo mkdir -p $LOGDIR &&  sudo chown $USER $LOGDIR
+test -d $LOGDIR || $(sudo mkdir -p $LOGDIR &&  sudo chown $USER $LOGDIR)
 
 code=`pwd`/../
 export PYTHONPATH=$PYTHONPATH:$code
@@ -23,7 +23,10 @@ gunicorn ${DJANGO_WSGI_MODULE}:application \
   --name $NAME  --timeout 180 \
   --workers $NUM_WORKERS \
   --bind=0.0.0.0:8443 \
-  --log-level=info \
+  --do-handshake-on-connect \
+  --ssl-version=TLSv1_2 \
+  --ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:AES256-GCM-SHA384:AES256-SHA256:AES128-SHA256 \
+  --log-level=debug \
   --access-logfile=$LOGDIR/access_gunicorn.log \
   --log-file=$LOGDIR/gunicorn.log \
   --keyfile $REQUESTS_KEY_PATH \

@@ -102,9 +102,23 @@ Para realizar pruebas de conexión es importante configurar una comunicación po
 
 1. Unifica la cadena de certificados de confianza 
 
+Puede descargarse desde
+
+- https://www.bccr.fi.cr/firma-digital/DocFirmaDigital/Jerarquia-Persona-Juridica-Produccion-entregar-entidades-externas.zip
+
+Convierta los archivos a PEM
+
 .. code:: bash
 
-    cat  CA RAIZ NACIONAL - COSTA RICA v2.pem CA POLITICA PERSONA JURIDICA - COSTA RICA v2.pem CA SINPE - PERSONA JURIDICA v2.pem >/ca_nacional_de_CR.pem
+    openssl x509 -in 'CA POLITICA PERSONA JURIDICA - COSTA RICA v2.cer' -out 'CA POLITICA PERSONA JURIDICA - COSTA RICA v2.pem' -inform DER
+    openssl x509 -in 'CA SINPE - PERSONA JURIDICA v2.cer' -out 'CA SINPE - PERSONA JURIDICA v2.pem' -inform DER
+    openssl x509 -in 'CA RAIZ NACIONAL - COSTA RICA v2.cer' -out 'CA RAIZ NACIONAL - COSTA RICA v2.pem' -inform DER
+    cp 'Certificado BANCO CENTRAL DE COSTA RICA (AGENTE ELECTRONICO).cer' 'Certificado BANCO CENTRAL DE COSTA RICA (AGENTE ELECTRONICO).pem'
+    cp 'CA SINPE - PERSONA JURIDICA v2(1).crt' 'CA SINPE - PERSONA JURIDICA v2(1).pem'
+
+.. code:: bash
+
+    cat  'CA RAIZ NACIONAL - COSTA RICA v2.pem' 'CA POLITICA PERSONA JURIDICA - COSTA RICA v2.pem' 'CA SINPE - PERSONA JURIDICA v2.pem' 'CA SINPE - PERSONA JURIDICA v2(1).pem' > ca_nacional_de_CR.pem
 
 2. Verifique que su certificado está validado por la CA que acaba de crear
 
@@ -117,6 +131,12 @@ Para realizar pruebas de conexión es importante configurar una comunicación po
 .. code:: bash
 
     curl --http1.1 --cert bccr_agent.pem --key bccr_agent_key.pem --cacert ca_nacional_de_CR.pem https://firmadorexterno.bccr.fi.cr:443/WebServices/Bccr.Fva.Entidades.AmbDePruebas.Sello.Ws.SI/SelladorElectronicoConControlDeLlave.asmx?wsdl
+
+4. Verifique que puede puede recibir notificaciones
+
+.. code:: bash
+
+   openssl s_server -key bccr_agent_key.pem -cert bccr_agent.pem -CAfile ca_nacional_de_CR.pem -accept 8443 -www -tlsextdebug -debug -cipher ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES128-SHA:AES128-SHA256:AES256-SHA256 -tls1_2 -named_curve P-256
 
 Las siguientes funciones pueden ser de ayuda para deteminar los cálculos 
 
