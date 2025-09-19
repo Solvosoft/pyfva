@@ -10,7 +10,7 @@
 from soapfish import soap, xsd
 
 BaseHeader = xsd.ComplexType
-from pyfva.soap import settings
+from pyfva.conf import settings
 
 from pyfva import load_module_responder
 
@@ -37,7 +37,7 @@ class ResultadoDeFirma(xsd.ComplexType):
 
     @classmethod
     def create(cls, IdDeLaSolicitud, DocumentoFirmado, FueExitosa,
-               CodigoDeError, IDAlgoritmoHashDocumentoFirmado, HashDocumentoFirmado=None, 
+               CodigoDeError, IDAlgoritmoHashDocumentoFirmado, HashDocumentoFirmado=None,
                HashDelDocumentoFirmadoEnBytes=None):
         instance = cls()
         instance.IdDeLaSolicitud = IdDeLaSolicitud

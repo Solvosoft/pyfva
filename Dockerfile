@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.9-bullseye
+FROM python:3.13-trixie
 ENV PYTHONUNBUFFERED 1
 #ENV REQUESTS_CA_BUNDLE=/app/certs/ca_nacional_de_CR.pem
 ENV REQUESTS_CA_PATH=/app/certs/ca_nacional_de_CR.pem

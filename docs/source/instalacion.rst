@@ -5,8 +5,8 @@ Instalación y Configuración
 Instalación
 -------------------
 
-.. note:: 
-    Solo ha sido probado en python 3 en Debian 10 y Centos 7.5 con python3.6 .
+.. note::
+    Solo ha sido probado en python 3 en Debian 13 y con python3.13 .
 
 Instale mediante pypi
 
@@ -14,22 +14,22 @@ Instale mediante pypi
 
     pip install pyfva
 
-o usando el repositorio 
+o usando el repositorio
 
 .. code:: bash
 
     pip install -e "git+https://github.com/solvo/pyfva.git#egg=pyfva"
 
 
-Instalación Windows 
+Instalación Windows
 ------------------------
 
 Pyfva se desarrolla y prueba en Linux por lo que se recomienda encarecidamente usarlo, aún así debería ser compatible con Windows.
 
 Los siguientes pasos corresponden a como lograrlo instalar
 
-* Instale python 3 desde https://www.python.org/downloads/, (versión usada 3.5.3)
-* Instale git  descargandolo desde https://git-scm.com/download/win 
+* Instale python 3 desde https://www.python.org/downloads/, (versión usada 3.13)
+* Instale git  descargandolo desde https://git-scm.com/download/win
 
 Es recomendable usar la terminal provista por git
 
@@ -41,7 +41,7 @@ Parámetros de ambiente
 
 Los siguientes parámetros pueden ser modificados usando variables de entorno o variables en django settings.
 
-Los valores por defecto son: 
+Los valores por defecto son:
 
 * FVA_HOST = "http://bccr.fva.cr/"
 * STUB_SCHEME = 'http'
@@ -51,6 +51,11 @@ Los valores por defecto son:
 * DEFAULT_ENTITY = 1
 * RECEPTOR_CLIENT = 'pyfva.receptor.client'
 * FVA_TESTURLS = ''
+
+Para usar el cliente de Rest usando api json se deben asignar las siguientes variables
+
+* RECEPTOR_CLIENT = 'pyfva.receptor.rest'
+* DEFAULT_CONNECTION_TYPE = 'rest'
 
 Para usarse en una consola en linux use por ejemplo:
 
@@ -67,16 +72,16 @@ el uso de las URL para producción.
 
     export FVA_TESTURLS="true"
 
-.. note:: 
+.. note::
     No usar FVA_TESTURLS="true" cuando se use con el simulador, ya que este de momento no soporta las rutas de prueba.
 
 En caso de usarse en conjunto con django puede agregar los parámetros en settings.py y serán cargados automáticamente.
 
-.. note:: 
+.. note::
     Las variables de entorno tiene prioridad con respecto a las variables en settings de django
 
 
-Comunicación SSL 
+Comunicación SSL
 --------------------------
 
 Para entablar comunicación entre la entidad y el BCCR se requiere autenticación mutua, para esto debe indicar a nivel de entorno que las rutas de los certificados a utilizar.

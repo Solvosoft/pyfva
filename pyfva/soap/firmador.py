@@ -8,7 +8,7 @@
 ##############################################################################
 
 from soapfish import soap, xsd
-from pyfva.soap import settings
+from pyfva.conf import settings
 BaseHeader = xsd.ComplexType
 
 ##############################################################################
@@ -79,7 +79,7 @@ class SolicitudDeFirmaPdf(SolicitudDeFirma):
     @classmethod
     def create(cls, CodNegocio, FechaDeReferenciaDeLaEntidad,
                 IDAlgoritmoHash, IdFuncionalidad, IdReferenciaEntidad,
-	            Lugar = None, 
+	            Lugar = None,
                 RazonDeFirma = None):
         instance = cls()
         instance.CodNegocio = CodNegocio

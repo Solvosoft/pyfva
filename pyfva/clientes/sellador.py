@@ -10,7 +10,7 @@ from pyfva.soap.sellador import SolicitudDeFirma, SelladorElectronicoConControlD
     RecibaLaSolicitudDeSelladoElectronicoMSOffice, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma, \
     RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma, SolicitudDeFirmaPdf
 
-from pyfva.soap import settings
+from pyfva.conf import settings
 
 from datetime import datetime
 
@@ -27,11 +27,11 @@ class ClienteSellador(object):
 
     * XML: con cofirma y contrafirma
     * MSOffice: .docx, .xlsx y .pptx
-    * ODF: .odt, .ods y .odp 
+    * ODF: .odt, .ods y .odp
     * PDF: .pdf
 
     .. note:: El número de entidad no se usa en sello electrónico
-    
+
     :param negocio: número de identificación del negocio (provisto por el BCCR)
     :param entidad: número de identificación de la entidad (provisto por el BCCR)
     """
@@ -77,7 +77,7 @@ class ClienteSellador(object):
         **DEFAULT_ERROR**.
 
 
-        :returns:   
+        :returns:
             **codigo_error:** Número con el código de error 1 es éxito
 
             **texto_codigo_error:** Descripción del error
@@ -115,11 +115,11 @@ class ClienteSellador(object):
 
     def firme_xml(self, documento, algoritmo_hash='Sha512', hash_doc=None, id_funcionalidad=-1, _type='cofirma'):
         """
-        Firma un documento XML, 
+        Firma un documento XML,
 
-        .. note:: 
+        .. note::
 
-            Los parámetros exceptuando formato (no existe en este método) son idénticos que los 
+            Los parámetros exceptuando formato (no existe en este método) son idénticos que los
             de firme, además los resultados retornados son también idénticos.
         """
 
@@ -142,9 +142,9 @@ class ClienteSellador(object):
         """
         Firma un documento del tipo ODF.
 
-        .. note:: 
+        .. note::
 
-            Los parámetros exceptuando formato (no existe en este método) son idénticos que los 
+            Los parámetros exceptuando formato (no existe en este método) son idénticos que los
             de firme, además los resultados retornados son también idénticos.
         """
 
@@ -166,9 +166,9 @@ class ClienteSellador(object):
         """
         Firma un documento del tipo Microsoft office.
 
-        .. note:: 
+        .. note::
 
-            Los parámetros exceptuando formato (no existe en este método) son idénticos que los 
+            Los parámetros exceptuando formato (no existe en este método) son idénticos que los
             de firme, además los resultados retornados son también idénticos.
         """
 
@@ -191,9 +191,9 @@ class ClienteSellador(object):
         """
         Firma un documento del tipo PDF.
 
-        .. note:: 
+        .. note::
 
-            Los parámetros exceptuando formato (no existe en este método) son idénticos que los 
+            Los parámetros exceptuando formato (no existe en este método) son idénticos que los
             de firme, además los resultados retornados son también idénticos.
         """
 
@@ -224,13 +224,13 @@ class ClienteSellador(object):
         """Convierte la infromación obtenida del servicio SOAP a python
 
         :param solicitud:  Objeto de solicitud del tipo *pyfva.soap.firmador.SolicitudDeFirma*
-        :param resultado: Objeto de respuesta del tipo *pyfva.soap.firmador.RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirmaResult* 
+        :param resultado: Objeto de respuesta del tipo *pyfva.soap.firmador.RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirmaResult*
 
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_ERROR**.
 
 
-        :returns:   
+        :returns:
             **codigo_error:** Número con el código de error 1 es éxito
 
             **texto_codigo_error:** Descripción del error

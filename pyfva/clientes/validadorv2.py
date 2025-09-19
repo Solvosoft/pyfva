@@ -12,7 +12,7 @@ from pyfva.soap.validador_documento_v2 import ValideElServicio as ValideServicio
     ValideElDocumentoXmlEnvelopedContraFirma, ValideElDocumentoMSOffice, ValideElDocumentoOdf, \
     ValideElDocumentoPdf
 
-from pyfva.soap import settings
+from pyfva.conf import settings
 from pyfva.constants import get_text_representation, ERRORES_VALIDA_CERTIFICADO,\
     ERRORES_VALIDAR_ODF, ERRORES_VALIDAR_MSOFFICE,\
     ERRORES_VALIDAR_XMLCONTRAFIRMA, ERRORES_VALIDAR_XMLCOFIRMA,\
@@ -31,10 +31,10 @@ class ClienteValidador(object):
     * Certificados digitales (CA nacional)
     * XML: con cofirma y contrafirma
     * MSOffice: .docx, .xlsx y .pptx
-    * ODF: .odt, .ods y .odp 
+    * ODF: .odt, .ods y .odp
     * PDF: .pdf
 
-    .. note:: 
+    .. note::
         Los parámetros negocio y entidad de momento no son requeridos, pero puede que en un futuro cercano
         lo sean, por lo que se recomienda suministrarlos.
 
@@ -75,10 +75,10 @@ class ClienteValidador(object):
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_DOCUMENT_ERROR**.
 
-        .. note:: 
+        .. note::
             Observe que en caso de no ser exitosa la operación los atributos 'advertencias', 'errores_encontrados' y 'firmantes' retornarán None
 
-        :returns:   
+        :returns:
             **codigo_error**: Es 0 si el resultado fue exitoso, 1 si existe algún error.
 
             **texto_codigo_error**:  Texto de información sobre el código de error.
@@ -137,7 +137,7 @@ class ClienteValidador(object):
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_CERTIFICATE_ERROR**.
 
-        :returns:   
+        :returns:
             **codigo_error:** Número con el código de error 0 es éxito
 
             **texto_codigo_error:** Descripción del error
@@ -169,7 +169,7 @@ class ClienteValidador(object):
         return dev
 
     def validar_servicio(self, servicio):
-        """Valida si el servicio está disponible.  
+        """Valida si el servicio está disponible.
 
         :param servicio: tipo de servicio a validar, puede ser 'certificado' o 'documento'
         :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible
@@ -188,7 +188,7 @@ class ClienteValidador(object):
 
     def _validar_documento_cofirma(self, documento):
         stub = ValidadorDeDocumentosSoapServiceStub()
-               
+
         options = ValideElDocumentoXmlEnvelopedCoFirma()
         options.elDocumento = documento
         try:
@@ -288,7 +288,7 @@ class ClienteValidador(object):
                 'se_evalua': Detalle.JerarquiaDeConfianza.SeEvalua,
                 'respuesta': Detalle.JerarquiaDeConfianza.Respuesta or '',
                 'codigo': Detalle.JerarquiaDeConfianza.CodigoRespuesta
-                
+
             }
         if Detalle.Vigencia:
             dev['vigencia'] = {
@@ -320,7 +320,7 @@ class ClienteValidador(object):
                 'fecha_de_estama': Detalle.FechaOficialDeLaFirma.FechaDeLaEstamaDeTiempo
             }
         return dev
-    
+
     def _extract_firmas(self, Firma):
         dev = {
           'es_valida': Firma.EsValida,

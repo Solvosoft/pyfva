@@ -14,6 +14,8 @@ def get_digest(digest_name):
         return hashlib.sha384()
     elif 'sha512' == digest_name:
         return hashlib.sha512()
+    return None
+
 
 def get_hash_sum(data, algorithm, b64=False):
     if type(data) == str:
@@ -69,13 +71,16 @@ def https_get(request_url):
 
     certificate_file = os.getenv('REQUESTS_CERT_PATH', '')
     certificate_secret = os.getenv('REQUESTS_KEY_PATH', '')
-
+    ca_file = os.getenv('REQUESTS_CA_PATH', '')
     host = 'localhost'
     request_headers = {'Content-Type': 'application/json'}
 
-    context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    context.minimum_version = ssl.TLSVersion.TLSv1_2
     context.load_cert_chain(certfile=certificate_file, keyfile=certificate_secret)
-
+    # No verification when we use in tests
+    context.check_hostname = False
+    context.load_verify_locations(cafile=ca_file)
     # Create a connection to submit HTTP requests
     connection = HTTPSConnection(host, port=8443, context=context)
 
@@ -112,7 +117,6 @@ class CheckReception:
                     counter += 1
                     time.sleep(1)
             except Exception as e:
-                print(e)
                 counter += 1
                 time.sleep(2)
         return response

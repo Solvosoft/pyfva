@@ -8,7 +8,7 @@
 ##############################################################################
 
 from soapfish import soap, xsd
-from pyfva.soap import settings
+from pyfva.conf import settings
 BaseHeader = xsd.ComplexType
 
 ##############################################################################
@@ -95,7 +95,7 @@ class Firmante(xsd.ComplexType):
         instance = cls()
         instance.FechaDeFirma = FechaDeFirma
         if NombreCompleto:
-            instance.NombreCompleto = NombreCompleto 
+            instance.NombreCompleto = NombreCompleto
         return instance
 
 
@@ -207,7 +207,7 @@ class ArrayOfErrorDeDocumentoOdf(xsd.ComplexType):
     def create(cls):
         instance = cls()
         return instance
-    
+
     @property
     def ErrorDeDocumento(self):
         return self.ErrorDeDocumentoOdf

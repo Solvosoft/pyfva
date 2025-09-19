@@ -2,7 +2,7 @@ import unittest
 
 from datetime import timedelta, datetime
 from pyfva.clientes.sellador import ClienteSellador
-from .utils import read_files
+from ..utils import read_files
 
 
 class TestSellador(unittest.TestCase):

@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
+
+from demo.views import json_wrapper
+from pyfva.receptor import rest
 from pyfva.receptor.ws_service import ResultadoDeSolicitudSoap_SERVICE
 from soapfish.django_ import django_dispatcher
 dispatcher = django_dispatcher(ResultadoDeSolicitudSoap_SERVICE)
@@ -25,4 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('check_transaction/<int:idtransaction>', views.check_transaction ),
     path(settings.DEFAULT_NOTIFICATION_URL, dispatcher),
+    path('rest/NotifiqueLaRespuesta', json_wrapper(rest.recibe_notificacion)),
+    path('rest/ValideElServicio', json_wrapper(rest.valide_servicio_view)),
 ]

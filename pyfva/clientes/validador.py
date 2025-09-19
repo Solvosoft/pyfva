@@ -12,7 +12,7 @@ from pyfva.soap.validador_documento import ValideElServicio as ValideServicioDoc
     ValideElDocumentoXmlEnvelopedContraFirma, ValideElDocumentoMSOffice, ValideElDocumentoOdf, \
     ValideElDocumentoPdf
 
-from pyfva.soap import settings
+from pyfva.conf import settings
 from pyfva.constants import get_text_representation, ERRORES_VALIDA_CERTIFICADO,\
     ERRORES_VALIDAR_ODF, ERRORES_VALIDAR_MSOFFICE,\
     ERRORES_VALIDAR_XMLCONTRAFIRMA, ERRORES_VALIDAR_XMLCOFIRMA,\
@@ -30,10 +30,10 @@ class ClienteValidador(object):
     * Certificados digitales (CA nacional)
     * XML: con cofirma y contrafirma
     * MSOffice: .docx, .xlsx y .pptx
-    * ODF: .odt, .ods y .odp 
+    * ODF: .odt, .ods y .odp
     * PDF: .pdf
 
-    .. note:: 
+    .. note::
         Los parámetros negocio y entidad de momento no son requeridos, pero puede que en un futuro cercano
         lo sean, por lo que se recomienda suministrarlos.
 
@@ -77,10 +77,10 @@ class ClienteValidador(object):
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_DOCUMENT_ERROR**.
 
-        .. note:: 
+        .. note::
             Observe que en caso de no ser exitosa la operación los atributos 'advertencias', 'errores_encontrados' y 'firmantes' retornarán None
 
-        :returns:   
+        :returns:
             **codigo_error:** Número con el código de error 0 es éxito
 
             **texto_codigo_error:** Descripción del error
@@ -89,12 +89,12 @@ class ClienteValidador(object):
 
             **advertencias:** Lista de advertencias encontradas durante el proceso de validadación, algo como: ["adv1", "adv2"]
 
-            **errores_encontrados:** Lista de errores encontrados y su respectivo detalle, ej  
+            **errores_encontrados:** Lista de errores encontrados y su respectivo detalle, ej
             [("código de error", "Detalle del error"), ...]
 
-            **firmantes:** Lista de información del los firmantes, ej 
+            **firmantes:** Lista de información del los firmantes, ej
             [ {'identificacion': "8-0888-0888", 'fecha_firma': datetime.now(),
-            'nombre': "Juanito Mora Porras"}, ... ]      
+            'nombre': "Juanito Mora Porras"}, ... ]
         """
         logger.debug({'message':"Validador: validar_documento", 'data':
             {'format': formato, 'data': repr(locals())}, 'location': __file__})
@@ -132,7 +132,7 @@ class ClienteValidador(object):
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_CERTIFICATE_ERROR**.
 
-        :returns:   
+        :returns:
             **codigo_error:** Número con el código de error 0 es éxito
 
             **texto_codigo_error:** Descripción del error
@@ -164,7 +164,7 @@ class ClienteValidador(object):
         return dev
 
     def validar_servicio(self, servicio):
-        """Valida si el servicio está disponible.  
+        """Valida si el servicio está disponible.
 
         :param servicio: tipo de servicio a validar, puede ser 'certificado' o 'documento'
         :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible

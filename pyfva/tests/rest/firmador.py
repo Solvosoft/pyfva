@@ -2,8 +2,7 @@ import unittest
 from datetime import timedelta, datetime
 
 from pyfva.clientes.firmador import ClienteFirmador
-from .utils import read_files
-from .utils import CheckReception
+from ..utils import read_files, CheckReception
 
 class TestFirmador(unittest.TestCase, CheckReception):
     def setUp(self):

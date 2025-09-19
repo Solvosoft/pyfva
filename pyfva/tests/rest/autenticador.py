@@ -2,7 +2,7 @@ import unittest
 from datetime import timedelta, datetime
 
 from pyfva.clientes.autenticador import ClienteAutenticador
-from .utils import CheckReception
+from ..utils import CheckReception
 
 
 class TestAuthenticador(unittest.TestCase, CheckReception):

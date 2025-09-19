@@ -10,7 +10,7 @@ Abstrae la comunicación entre los servicios SOAP del BCCR_  y python creando cl
     from pyfva.clientes.autenticador import ClienteAutenticador
 
     authclient = ClienteAutenticador(1,1) # negocio, entidad
-                                             
+
     if authclient.validar_servicio():
         data = authclient.solicitar_autenticacion('08-0888-0888')
     else:
@@ -43,13 +43,17 @@ Instale mediante pypi
 
 .. code:: bash
 
-    pip install pyfva
+    pip install pyfva[soap]
 
-o usando el repositorio 
+o usando el repositorio
 
 .. code:: bash
 
     pip install git+https://github.com/solvo/pyfva.git
+
+en caso de solo querer los servicios Rest
+
+   pip install pyfva
 
 Documentación
 ################
@@ -63,7 +67,7 @@ Parámetros de ambiente
 
 Los siguientes parámetros pueden ser modificados usando variables de entorno o variables en django settings.
 
-Los valores por defecto son: 
+Los valores por defecto son:
 
 * FVA_HOST = "http://bccr.fva.cr/"
 * RECEPTOR_HOST = 'http://bccr.fva.cr/'
@@ -78,7 +82,7 @@ Dirección y protocolo donde se ubica el servicio FVA.
 * DEFAULT_BUSSINESS = 1
 * DEFAULT_ENTITY = 1
 
-.. note:: En la mayoría de los casos el DEFAULT_ENTITY será 1 y el DEFAULT_BUSSINESS corresponde al 
+.. note:: En la mayoría de los casos el DEFAULT_ENTITY será 1 y el DEFAULT_BUSSINESS corresponde al
 
 Números de identificación en el servicio FVA. (en el simulador no son usados).
 
@@ -100,7 +104,7 @@ Las siguientes configuraciones son requeridas, los archivos deben estar en forma
 
 Para realizar pruebas de conexión es importante configurar una comunicación por ssl, los siguientes comándos pueden ser de ayuda
 
-1. Unifica la cadena de certificados de confianza 
+1. Unifica la cadena de certificados de confianza
 
 Puede descargarse desde
 
@@ -138,7 +142,7 @@ Convierta los archivos a PEM
 
    openssl s_server -key bccr_agent_key.pem -cert bccr_agent.pem -CAfile ca_nacional_de_CR.pem -accept 8443 -www -tlsextdebug -debug -cipher ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES128-SHA:AES128-SHA256:AES256-SHA256 -tls1_2 -named_curve P-256
 
-Las siguientes funciones pueden ser de ayuda para deteminar los cálculos 
+Las siguientes funciones pueden ser de ayuda para deteminar los cálculos
 
 .. code:: python
 
@@ -161,7 +165,7 @@ Las siguientes funciones pueden ser de ayuda para deteminar los cálculos
 
 Para leer un archivo se puede utilizar algo como esto
 
-.. code:: python 
+.. code:: python
 
     with open('/<ruta al archivo>/test.docx', 'rb') as arch:
         FI = arch.read()

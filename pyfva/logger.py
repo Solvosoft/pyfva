@@ -4,7 +4,7 @@ import json
 import logging
 import uuid
 
-from .soap import settings
+from pyfva.conf import settings
 
 logger = logging.getLogger('pyfva')
 

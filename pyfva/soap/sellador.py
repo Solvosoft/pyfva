@@ -6,7 +6,7 @@
 ##############################################################################
 
 from soapfish import soap, xsd
-from pyfva.soap import settings
+from pyfva.conf import settings
 BaseHeader = xsd.ComplexType
 
 ##############################################################################

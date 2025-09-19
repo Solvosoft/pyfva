@@ -1,7 +1,7 @@
 import base64
 
 from django.core.cache import cache
-
+from pyfva import logger
 
 def get_document(document):
     """
@@ -29,11 +29,15 @@ def reciba_notificacion(data):
     No requiere retornar nada
 
     """
-
+    logger.debug({'message': "Recibe notificacion", 'data': {"exitosa": data.get('fue_exitosa', False),
+                                                             "id": data['id_solicitud']}, 'location': __file__})
     if 'documento' in data:
         data['documento'] = get_document(data['documento'])
     if data.get('fue_exitosa', False):
-        documento = base64.b64decode(data['documento']).decode()
+        try:
+           documento = base64.b64decode(data['documento']).decode()
+        except:
+           documento = ''
         if '01-0129-0129' in documento:
             data['codigo_error'] = 12
     cache.set(data['id_solicitud'], data)
@@ -49,5 +53,6 @@ def valide_servicio():
         True si el servicio está disponible,
         False si no lo está
     """
+    logger.debug({'message': "Recibe valide el servicio", 'data': { }, 'location': __file__})
 
     return True

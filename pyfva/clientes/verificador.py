@@ -6,7 +6,7 @@ Created on 20 jul. 2017
 from pyfva.soap.verificador import ValideElServicio, VerificadorSoapServiceStub,\
     ExisteUnaSolicitudDeFirmaCompleta
 
-from pyfva.soap import settings
+from pyfva.conf import settings
 from pyfva.constants import get_text_representation, ERRORES_VERIFICACION
 
 from pyfva import logger
@@ -15,7 +15,7 @@ from pyfva import logger
 class ClienteVerificador(object):
     """Verifica si una firma ha sido completada
 
-    .. note:: 
+    .. note::
         Los parámetros negocio y entidad de momento no son requeridos, pero puede que en un futuro cercano
         lo sean, por lo que se recomienda suministrarlos.
 
@@ -45,7 +45,7 @@ class ClienteVerificador(object):
         Retorna una diccionario con los siguientes elementos, en caso de error retorna
         **DEFAULT_ERROR**.
 
-        :returns:   
+        :returns:
             **codigo_error:** Número con el código de error 0 es éxito
 
             **texto_codigo_error:** Descripción del error
@@ -70,7 +70,7 @@ class ClienteVerificador(object):
 
     def validar_servicio(self):
         """
-        Valida si el servicio está disponible.  
+        Valida si el servicio está disponible.
 
         :returns: True si lo está o False si ocurrió algún error contactando al BCCR o el servicio no está disponible
         """

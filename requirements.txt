@@ -1,2 +1,4 @@
 soapfish2
 pytz
+requests
+legacy-cgi

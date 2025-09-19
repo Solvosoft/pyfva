@@ -1,0 +1,55 @@
+[project]
+name = "pyfva"
+version = "1.0.0"
+description = "Cliente para conectar instituciones con BCCR FVA."
+keywords = ["firma", "digital", "gaudi"]
+readme = "README.rst"
+license = "GPL-3.0-or-later"
+requires-python = ">=3.11"
+dependencies = [
+    "pytz>=2025.2",
+    "requests>=2.31.0",
+]
+authors = [
+  {name = "Luis Zárate", email = "luis.zarate@solvosoft.com"},
+]
+
+maintainers = [
+   {name = "Luis Zárate", email = "luis.zarate@solvosoft.com"},
+]
+
+classifiers = [
+  # How mature is this project? Common values are
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 5 - Production/Stable",
+
+  # Indicate who your project is intended for
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+
+  # Specify the Python versions you support here.
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+
+[project.optional-dependencies]
+soap=["soapfish2>=0.7.2",]
+
+[project.urls]
+Homepage = "https://github.com/Solvosoft/pyfva"
+Documentation = "https://pyfva.readthedocs.org"
+Repository = "https://github.com/Solvosoft/pyfva.git"
+Issues = "https://github.com/Solvosoft/pyfva/issues"
+Changelog = "https://github.com/Solvosoft/pyfva/blob/master/CHANGELOG.md"
+
+[tool.uv.build-backend]
+module-name = "pyfva"
+module-root = ""
+
+[build-system]
+requires = ["uv_build>=0.8.17,<0.9.0"]
+build-backend = "uv_build"
