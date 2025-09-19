@@ -65,7 +65,7 @@ class RestAutenticador(BCCRRestClient):
                      'data':identificacion, 'location': __file__})
         logger.debug({'message': "Autenticador: Solicitar_autenticacion Fin", 'data': {
             'negocio': self.negocio,
-            'hora': self.get_now().isoformat(),
+            'hora': self.get_now(),
             'entidad': self.entidad,
             'identificacion': identificacion
         }, 'location': __file__})
@@ -73,13 +73,11 @@ class RestAutenticador(BCCRRestClient):
             response = requests.post(
                 settings.BASE_REST_URL + settings.SERVICE_URLS['autenticacion'],
                 json={
-                  #  'SolicitudDeAutenticacion': {
-                        'fechaDeReferenciaDeLaEntidad': self.get_now().isoformat(),
+                        'fechaDeReferenciaDeLaEntidad': self.get_now(),
                         'codNegocio': self.negocio,
                         'idReferenciaEntidad': self.entidad,
                         'idFuncionalidad': id_funcionalidad,
                         'identificacionDelSuscriptor': identificacion
-                   # }
                 },
                 **self.get_requests_extra_headers()
             )
@@ -103,8 +101,7 @@ class RestAutenticador(BCCRRestClient):
         response.raise_for_status()
         dev = response.json()
         logger.debug({'message':"Autenticador: validar_servicio", 'data': dev, 'location': __file__})
-        data = response.json()
-        return data['content']
+        return dev
 
     def extract_data(self, data):
         dev = {

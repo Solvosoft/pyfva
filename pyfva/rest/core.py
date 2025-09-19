@@ -18,4 +18,4 @@ class BCCRRestClient:
 
     def get_now(self):
         gtm6 = timezone(settings.PYFVA_TIMEZONE)
-        return gtm6.localize(self.time_manager.now()).isoformat() #.strftime('%Y-%m-%dT%H:%M:%S')
+        return gtm6.localize(self.time_manager.now()).strftime("%Y-%m-%dT%H:%M:%S.%f") + "Z" #.strftime('%Y-%m-%dT%H:%M:%S')

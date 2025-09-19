@@ -38,6 +38,12 @@ class RestFirmador(BCCRRestClient):
         'id_solicitud': 0
     }
 
+    MAP_ALGORITHMS = {
+        "Sha256": 1,
+        "Sha384": 2,
+        "Sha512": 3,
+    }
+
     def firme(self, identidad, documento, formato, algoritmo_hash='Sha512', hash_doc=None,
               resumen='', id_funcionalidad=-1, lugar=None, razon=None):
         """
@@ -237,18 +243,20 @@ class RestFirmador(BCCRRestClient):
     def _construya_solicitud(self, identidad, documento,
                              algoritmo_hash='Sha512', hash_doc=None, resumen='', id_funcionalidad=-1):
 
+
+
         dev = {
-            'SolicitudDeFirma' : {
-                'codNegocio': int(self.negocio),
-                'documento': documento,
-                'fechaDeReferenciaDeLaEntidad': self.get_now(),
-                'hashDocumento': hash_doc,
-                'idAlgoritmoHash': algoritmo_hash,
-                'identificacionDelSuscriptor': identidad,
-                'idFuncionalidad': id_funcionalidad,
-                'idReferenciaEntidad': int(self.entidad),
-                'resumenDocumento': resumen
-            }
+
+            'codNegocio': int(self.negocio),
+            'documento': documento,
+            'fechaDeReferenciaDeLaEntidad': self.get_now(),
+            'hashDocumento': hash_doc,
+            'idAlgoritmoHash': self.MAP_ALGORITHMS[algoritmo_hash],
+            'identificacionDelSuscriptor': identidad,
+            'idFuncionalidad': id_funcionalidad,
+            'idReferenciaEntidad': int(self.entidad),
+            'resumenDocumento': resumen
+
         }
         return dev
 
@@ -258,19 +266,17 @@ class RestFirmador(BCCRRestClient):
 
 
         dev = {
-            'SolicitudDeFirmaPdf' : {
                 'codNegocio': self.negocio,
                 'documento': documento,
                 'fechaDeReferenciaDeLaEntidad': self.get_now(),
                 'hashDocumento': hash_doc,
-                'idAlgoritmoHash': algoritmo_hash,
+                'idAlgoritmoHash': self.MAP_ALGORITHMS[algoritmo_hash],
                 'identificacionDelSuscriptor': identidad,
                 'idFuncionalidad': id_funcionalidad,
                 'idReferenciaEntidad': self.entidad,
                 'resumenDocumento': resumen,
                 'lugar': lugar,
                 'razonDeFirma': razon
-            }
         }
         return dev
 
@@ -324,8 +330,7 @@ class RestFirmador(BCCRRestClient):
             response = requests.post(
                 settings.BASE_REST_URL + settings.SERVICE_URLS['firma_suscriptor'], json=data, **self.get_requests_extra_headers())
             response.raise_for_status()
-            data = response.json()
-            dev = data['content']
+            dev = response.json()
         except Exception as e:
             logger.error({'message':
                 "Firmador: Servicio de firmado fallando en usuario conectado",
@@ -338,8 +343,7 @@ class RestFirmador(BCCRRestClient):
             response = requests.get(
                 settings.BASE_REST_URL + settings.SERVICE_URLS['valida_firma'],  **self.get_requests_extra_headers())
             response.raise_for_status()
-            data = response.json()
-            dev = data['content']
+            dev = response.json()
         except Exception as e:
             logger.error({'message':
                 "Firmador: Servicio de firmado fallando", 'data': e, 'location': __file__})
