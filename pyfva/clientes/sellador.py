@@ -132,7 +132,7 @@ class ClienteSellador(object):
             dev = self._firme_xml(request, _type)
         except Exception as e:
             logger.error({'message': "Sellador: firmando en xml", 'data': {'type': _type, 'data': e},
-                          'location': __file__})
+                          'location': __file__}, e=e)
             dev = self.DEFAULT_ERROR
         logger.debug({'message': "Sellador: firme_xml result", 'data': {'type': _type, 'data': dev},
                       'location': __file__})
@@ -156,7 +156,7 @@ class ClienteSellador(object):
         try:
             dev = self._firme_odf(request)
         except Exception as e:
-            logger.error({'message': "Sellador: firmando en odf", 'data': e, 'location': __file__})
+            logger.error({'message': "Sellador: firmando en odf", 'data': e, 'location': __file__}, e=e)
             dev = self.DEFAULT_ERROR
 
         logger.debug({'message': "Sellador: firme_odf result", 'data': dev, 'location': __file__})
@@ -180,7 +180,7 @@ class ClienteSellador(object):
         try:
             dev = self._firme_msoffice(request)
         except Exception as e:
-            logger.error({'message': "Sellador: firmando en msoffice", 'data': e, 'location': __file__})
+            logger.error({'message': "Sellador: firmando en msoffice", 'data': e, 'location': __file__}, e=e)
             dev = self.DEFAULT_ERROR
 
         logger.debug({'message': "Sellador: firme_msoffice result", 'data': dev, 'location': __file__})
@@ -205,7 +205,7 @@ class ClienteSellador(object):
         try:
             dev = self._firme_pdf(request)
         except Exception as e:
-            logger.error({'message': "Sellador: firmando en pdf", 'data': e, 'location': __file__})
+            logger.error({'message': "Sellador: firmando en pdf", 'data': e, 'location': __file__}, e=e)
             dev = self.DEFAULT_ERROR
 
         logger.debug({'message': "Sellador: firme_pdf result", 'data': dev, 'location': __file__})
@@ -246,7 +246,7 @@ class ClienteSellador(object):
         try:
             data = self._extrae_resultado(solicitud, resultado)
         except Exception as e:
-            logger.error({'message': "Sellador: extrayendo resultados %r", 'data': e, 'location': __file__})
+            logger.error({'message': "Sellador: extrayendo resultados %r", 'data': e, 'location': __file__}, e=e)
             data = self.DEFAULT_ERROR
         return data
 
@@ -338,6 +338,6 @@ class ClienteSellador(object):
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
             logger.error({'message': "Sellador: Servicio de firmado fallando", 'data': e,
-                          'location': __file__})
+                          'location': __file__}, e=e)
             dev = False
         return dev

@@ -144,7 +144,7 @@ class ClienteFirmador(object):
             dev = self._firme_xml(request, _type)
         except Exception as e:
             logger.error({'message': "Firmador: firmando en xml", 'data':
-                {'type': _type, 'data':e}, 'location': __file__})
+                {'type': _type, 'data':e}, 'location': __file__}, e=e)
             dev = self.DEFAULT_ERROR
         logger.debug({'message':"Firmador: firme_xml result",
                       'data': {'type':_type, 'data':dev}, 'location': __file__})
@@ -169,7 +169,7 @@ class ClienteFirmador(object):
         try:
             dev = self._firme_odf(request)
         except Exception as e:
-            logger.error({'message':"Firmador: firmando en odf", 'data':e, 'location': __file__})
+            logger.error({'message':"Firmador: firmando en odf", 'data':e, 'location': __file__}, e=e)
             dev = self.DEFAULT_ERROR
 
         logger.debug({'message': "Firmador: firme_odf result", 'data': dev, 'location': __file__})
@@ -194,7 +194,7 @@ class ClienteFirmador(object):
         try:
             dev = self._firme_msoffice(request)
         except Exception as e:
-            logger.error({'message': "Firmador: firmando en msoffice", 'data': e, 'location': __file__})
+            logger.error({'message': "Firmador: firmando en msoffice", 'data': e, 'location': __file__}, e=e)
             dev = self.DEFAULT_ERROR
 
         logger.debug({'message': "Firmador: firme_msoffice result", 'data': dev, 'location': __file__})
@@ -221,7 +221,7 @@ class ClienteFirmador(object):
         try:
             dev = self._firme_pdf(request)
         except Exception as e:
-            logger.error({'message': "Firmador: firmando en pdf", 'data':e, 'location': __file__})
+            logger.error({'message': "Firmador: firmando en pdf", 'data':e, 'location': __file__}, e=e)
             dev = self.DEFAULT_ERROR
 
         logger.debug({'message': "Firmador: firme_pdf result", 'data': dev, 'location': __file__})
@@ -271,7 +271,7 @@ class ClienteFirmador(object):
         try:
             data = self._extrae_resultado(solicitud,  resultado)
         except Exception as e:
-            logger.error({'message': "Firmador: extrayendo resultados %r", 'data': e, 'location': __file__})
+            logger.error({'message': "Firmador: extrayendo resultados %r", 'data': e, 'location': __file__}, e=e)
             data = self.DEFAULT_ERROR
         return data
 
@@ -377,7 +377,7 @@ class ClienteFirmador(object):
         except Exception as e:
             logger.error({'message':
                 "Firmador: Servicio de firmado fallando en usuario conectado",
-                         'data': e, 'location': __file__})
+                         'data': e, 'location': __file__}, e=e)
             dev = False
         return dev
 
@@ -389,6 +389,6 @@ class ClienteFirmador(object):
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
             logger.error({'message':
-                "Firmador: Servicio de firmado fallando", 'data': e, 'location': __file__})
+                "Firmador: Servicio de firmado fallando", 'data': e, 'location': __file__}, e=e)
             dev = False
         return dev

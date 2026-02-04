@@ -1,6 +1,6 @@
 [project]
 name = "pyfva"
-version = "1.0.0"
+version = "0.0.45"
 description = "Cliente para conectar instituciones con BCCR FVA."
 keywords = ["firma", "digital", "gaudi"]
 readme = "README.rst"
@@ -45,11 +45,3 @@ Documentation = "https://pyfva.readthedocs.org"
 Repository = "https://github.com/Solvosoft/pyfva.git"
 Issues = "https://github.com/Solvosoft/pyfva/issues"
 Changelog = "https://github.com/Solvosoft/pyfva/blob/master/CHANGELOG.md"
-
-[tool.uv.build-backend]
-module-name = "pyfva"
-module-root = ""
-
-[build-system]
-requires = ["uv_build>=0.8.17,<0.9.0"]
-build-backend = "uv_build"

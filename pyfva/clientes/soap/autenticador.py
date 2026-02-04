@@ -131,7 +131,7 @@ class ClienteAutenticador(object):
         try:
             data = self._extrae_resultado(solicitud,  resultado)
         except Exception as e:
-            logger.error({'message':'Autenticador: extrayendo datos', 'data': e, 'location': __file__})
+            logger.error({'message':'Autenticador: extrayendo datos', 'data': e, 'location': __file__}, e=e)
             data = self.DEFAULT_ERROR
         return data
 
@@ -168,6 +168,6 @@ class ClienteAutenticador(object):
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
             logger.error({'message':"Autenticador: servicio validar autenticacion fallando",
-                         'data': e, 'location': __file__})
+                         'data': e, 'location': __file__}, e=e)
             dev = False
         return dev

@@ -61,7 +61,7 @@ class ClienteVerificador(object):
             dev = self._existe_solicitud_de_firma_completa(identificacion)
         except Exception as e:
             logger.error({'message':
-                "Verificador: existe_solicitud_de_firma_completa", 'data': e, 'location': __file__})
+                "Verificador: existe_solicitud_de_firma_completa", 'data': e, 'location': __file__}, e=e)
             dev = self.DEFAULT_ERROR
 
         logger.debug({'message': "Verificador: existe solicitud de firma completa",
@@ -106,7 +106,7 @@ class ClienteVerificador(object):
         except Exception as e:
             logger.error({'message':
                 "Verificador: Servicio de verificación fallando",
-                          'data': e, 'location': __file__})
+                          'data': e, 'location': __file__}, e=e)
 
             dev = False
         return dev

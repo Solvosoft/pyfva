@@ -7,6 +7,7 @@ import uuid
 from pyfva.conf import settings
 
 logger = logging.getLogger('pyfva')
+logger_exc = logging.getLogger('pyfva_exception')
 
 
 def _get_duration_components(duration):
@@ -99,8 +100,9 @@ def debug(data):
     )
 
 
-def error(data):
+def error(data, e=None):
     data['sector'] = 'pyfva'
     logger.error(
-        json.dumps(convert_data(data), cls=DateTimeJSONEncoder)
+        json.dumps(convert_data(data), cls=DateTimeJSONEncoder),
     )
+    logger_exc.error(json.dumps(convert_data(data), cls=DateTimeJSONEncoder), exc_info=e)

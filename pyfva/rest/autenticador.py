@@ -85,7 +85,7 @@ class RestAutenticador(BCCRRestClient):
             dev = self.extract_data(response.json())
         except HTTPError as e:
             dev = self.DEFAULT_ERROR
-            logger.error({"message":"Autenticador: POST error autenticacion", 'data': e, 'location': __file__})
+            logger.error({"message":"Autenticador: POST error autenticacion", 'data': e, 'location': __file__}, e=e)
         logger.debug({"message":"Autenticador: Solicitar_autenticacion", 'data': dev, 'location': __file__})
         return dev
 

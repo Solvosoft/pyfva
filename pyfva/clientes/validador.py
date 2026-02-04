@@ -117,7 +117,7 @@ class ClienteValidador(object):
                 dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
         except Exception as e:
             logger.error({'message':"Validador: validando documento",
-                         'data': {'format': formato, 'message':  e}, 'location': __file__})
+                         'data': {'format': formato, 'message':  e}, 'location': __file__}, e=e)
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
 
         logger.info({'message': "Validador: validar_documento", 'data':
@@ -156,7 +156,7 @@ class ClienteValidador(object):
             dev = self._validar_certificado_autenticacion(certificado)
         except Exception as e:
             logger.error({'message': "Validador: validando certificado",
-                          'data': e, 'location': __file__})
+                          'data': e, 'location': __file__}, e=e)
             dev = self.DEFAULT_CERTIFICATE_ERROR
 
         logger.info({'message':
@@ -191,7 +191,7 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoXmlEnvelopedCoFirmaResult,
                 ERRORES_VALIDAR_XMLCOFIRMA)
         except Exception as e:
-            logger.error({'message':"Validador: validando  cofirma", 'data': e, 'location': __file__})
+            logger.error({'message':"Validador: validando  cofirma", 'data': e, 'location': __file__}, e=e)
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCOFIRMA)
 
         return dev
@@ -206,8 +206,7 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoXmlEnvelopedContraFirmaResult,
                 ERRORES_VALIDAR_XMLCONTRAFIRMA)
         except Exception as e:
-            traceback.print_exc()
-            logger.error({'message':"Validador: validando contrafirma", 'data': e, 'location': __file__})
+            logger.error({'message':"Validador: validando contrafirma", 'data': e, 'location': __file__}, e=e)
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_XMLCONTRAFIRMA)
 
         return dev
@@ -223,7 +222,7 @@ class ClienteValidador(object):
                 ERRORES_VALIDAR_MSOFFICE)
         except Exception as e:
             logger.error({'message':"Validador: validando  MSOffice",
-                         'data': e, 'location': __file__})
+                         'data': e, 'location': __file__}, e=e)
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_MSOFFICE)
 
         return dev
@@ -238,7 +237,7 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoOdfResult,
                 ERRORES_VALIDAR_ODF)
         except Exception as e:
-            logger.error({'message':"Validador: validando  ODF", 'data':e, 'location': __file__})
+            logger.error({'message':"Validador: validando  ODF", 'data':e, 'location': __file__}, e=e)
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_ODF)
 
         return dev
@@ -253,7 +252,7 @@ class ClienteValidador(object):
                 status.soap_body.ValideElDocumentoPdfResult,
                 ERRORES_VALIDAR_PDF)
         except Exception as e:
-            logger.error({'message':"Validador: validando  PDF", 'data': e, 'location': __file__})
+            logger.error({'message':"Validador: validando  PDF", 'data': e, 'location': __file__}, e=e)
             dev = self.DEFAULT_DOCUMENT_ERROR(ERRORES_VALIDAR_PDF)
 
         return dev
@@ -321,7 +320,7 @@ class ClienteValidador(object):
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
             logger.error({'message': "Validador: Servicio de validado de certificado fallando",
-                         'data': e, 'location': __file__})
+                         'data': e, 'location': __file__}, e=e)
             dev = False
         return dev
 
@@ -333,7 +332,7 @@ class ClienteValidador(object):
             dev = status.soap_body.ValideElServicioResult
         except Exception as e:
             logger.error({'message':
-                "Validador: Servicio de validado de documentos fallando", 'data': e, 'location': __file__})
+                "Validador: Servicio de validado de documentos fallando", 'data': e, 'location': __file__}, e=e)
             dev = False
 
         return dev
