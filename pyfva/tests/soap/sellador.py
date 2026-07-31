@@ -131,3 +131,22 @@ class TestSellador(unittest.TestCase):
         result = self.client.firme(doc, extension, algoritmo_hash='Sha512', hash_doc=hash_doc,
                                    id_funcionalidad=-1, razon='prueba sellado', lugar='otro lado')
         self.assertEqual(result['codigo_error'], 13)
+
+    def test_json_cofirma(self):
+        extension = 'json_cofirma'
+        doc, hash_doc = read_files(extension)
+        result = self.client.firme(doc, extension, algoritmo_hash='Sha512', hash_doc=hash_doc,
+                                   id_funcionalidad=-1)
+        self.assertEqual(result['codigo_error'], 0)
+        self.assertTrue(result['fue_exitosa'])
+
+    @unittest.skip("No se ha encontrado un JSON FHIR de muestra que el sandbox de BCCR acepte "
+                    "como valido, testdata/test_fhir.json siempre devuelve codigo_error 9 "
+                    "(documento no valido) sin importar la estructura del recurso probada")
+    def test_json_fhir(self):
+        extension = 'json_fhir'
+        doc, hash_doc = read_files(extension)
+        result = self.client.firme(doc, extension, algoritmo_hash='Sha512', hash_doc=hash_doc,
+                                   id_funcionalidad=-1)
+        self.assertEqual(result['codigo_error'], 0)
+        self.assertTrue(result['fue_exitosa'])

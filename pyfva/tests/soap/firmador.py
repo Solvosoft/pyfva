@@ -155,6 +155,23 @@ class TestFirmador(unittest.TestCase, CheckReception):
         data = self.check_reception(result['id_solicitud'])
         self.assertEqual(data['codigo_error'], 5)
 
+    def test_sign_json_cofirma(self):
+        result = self.firme_documento_default("01-0123-0456", extension='json_cofirma')
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 0)
+        self.assertTrue(data['fue_exitosa'])
+
+    @unittest.skip("No se ha encontrado un JSON FHIR de muestra que el sandbox de BCCR acepte "
+                    "como valido, testdata/test_fhir.json siempre devuelve codigo_error 6 "
+                    "(documento invalido) sin importar la estructura del recurso probada")
+    def test_sign_json_fhir(self):
+        result = self.firme_documento_default("01-0123-0456", extension='json_fhir')
+        self.assertEqual(result['codigo_error'], 0)
+        data = self.check_reception(result['id_solicitud'])
+        self.assertEqual(data['codigo_error'], 0)
+        self.assertTrue(data['fue_exitosa'])
+
     def test_documento_invalido(self):
         extension='odf'
         doc, hash_doc = read_files(extension)

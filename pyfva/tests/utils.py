@@ -40,6 +40,10 @@ def read_files(_format,  post_read_fn=lambda x: base64.b64encode(x).decode(),
         fpath = defaultpath / "contrafirmado.xml"
     elif _format == 'nocontrafirma':
         fpath = defaultpath / "no_contrafirmado.xml"
+    elif _format == 'json_cofirma':
+        fpath = defaultpath / "test.json"
+    elif _format == 'json_fhir':
+        fpath = defaultpath / "test_fhir.json"
     elif 'odf' == _format:
         fpath = defaultpath  / "test.odt"
     elif 'msoffice' == _format:

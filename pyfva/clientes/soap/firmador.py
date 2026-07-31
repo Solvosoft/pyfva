@@ -10,7 +10,9 @@ from pyfva.soap.firmador import FirmadorSoapServiceStub,\
     RecibaLaSolicitudDeFirmaMSOffice, ValideElServicio,\
     ElSuscriptorEstaConectado, SolicitudDeFirma,\
     RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma, \
-    RecibaLaSolicitudDeFirmaPdf, SolicitudDeFirmaPdf
+    RecibaLaSolicitudDeFirmaPdf, SolicitudDeFirmaPdf, \
+    RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma, \
+    RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR
 
 from pyfva.conf import settings
 
@@ -67,7 +69,7 @@ class ClienteFirmador(object):
 
         :param identidad: Identidad del suscriptor a firmar
         :param documento: Documento a firmar en base64
-        :param formato: Formato del documento, puede ser *xml_cofirma*, *xml_contrafirma*, *odf*, *msoffice*, *pdf*
+        :param formato: Formato del documento, puede ser *xml_cofirma*, *xml_contrafirma*, *json_cofirma*, *json_fhir*, *odf*, *msoffice*, *pdf*
         :param algoritmo_hash: Algoritmo utilizado para calcular el hash_doc, puede ser *sha256*, *sha384*, *sha512*
         :param hash_doc: hash del documento aplicando el algoritmo hash
         :param resumen: Información resumida para mostar al suscriptor que describe el documento
@@ -101,6 +103,11 @@ class ClienteFirmador(object):
             dev = self.firme_xml(identidad, documento,
                                  algoritmo_hash, hash_doc, resumen,
                                  id_funcionalidad, _type)
+        elif formato in ['json_cofirma', 'json_fhir']:
+            _type = formato.replace('json_', '')
+            dev = self.firme_json(identidad, documento,
+                                  algoritmo_hash, hash_doc, resumen,
+                                  id_funcionalidad, _type)
         elif formato == 'odf':
             dev = self.firme_odf(identidad, documento,
                                  algoritmo_hash, hash_doc, resumen,
@@ -147,6 +154,34 @@ class ClienteFirmador(object):
                 {'type': _type, 'data':e}, 'location': __file__}, e=e)
             dev = self.DEFAULT_ERROR
         logger.debug({'message':"Firmador: firme_xml result",
+                      'data': {'type':_type, 'data':dev}, 'location': __file__})
+        return dev
+
+    def firme_json(self, identidad, documento, algoritmo_hash='Sha512', hash_doc=None, resumen='',
+                   id_funcionalidad=-1, _type='cofirma'):
+        """
+        Firma un documento JSON, `_type` puede ser *cofirma* o *fhir*.
+
+        .. note::
+
+            Los parámetros exceptuando formato (no existe en este método) son idénticos que los
+            de firme, además los resultados retornados son también idénticos.
+        """
+
+        logger.info({'message': "Firmador: firme_json", 'data':{
+                    'type':_type, 'identity': identidad, 'hash_doc': hash_doc},
+                     'location': __file__})
+        logger.debug({'message': "Firmador: firme_json", 'data': repr(locals()), 'location': __file__})
+
+        request = self._construya_solicitud(
+            identidad, documento, algoritmo_hash, hash_doc, resumen, id_funcionalidad)
+        try:
+            dev = self._firme_json(request, _type)
+        except Exception as e:
+            logger.error({'message': "Firmador: firmando en json", 'data':
+                {'type': _type, 'data':e}, 'location': __file__}, e=e)
+            dev = self.DEFAULT_ERROR
+        logger.debug({'message':"Firmador: firme_json result",
                       'data': {'type':_type, 'data':dev}, 'location': __file__})
         return dev
 
@@ -342,6 +377,21 @@ class ClienteFirmador(object):
                 options)
             return self.extrae_resultado(request,
                                          status.soap_body.RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirmaResult)
+
+    def _firme_json(self, request, _type):
+        stub = FirmadorSoapServiceStub()
+        if _type == 'cofirma':
+            options = RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma()
+            options.laSolicitud = request
+            status = stub.RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma(options)
+            return self.extrae_resultado(request,
+                                         status.soap_body.RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirmaResult)
+        elif _type == 'fhir':
+            options = RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR()
+            options.laSolicitud = request
+            status = stub.RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR(options)
+            return self.extrae_resultado(request,
+                                         status.soap_body.RecibaLaSolicitudDeFirmaJsonParaArchivosFHIRResult)
 
     def _firme_odf(self, request):
         stub = FirmadorSoapServiceStub()

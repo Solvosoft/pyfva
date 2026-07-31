@@ -138,6 +138,50 @@ class RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirmaResponse(xsd.ComplexType):
         return instance
 
 
+class RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma(xsd.ComplexType):
+    INHERITANCE = None
+    INDICATOR = xsd.Sequence
+    laSolicitud = xsd.Element(SolicitudDeFirma, minOccurs=0)
+
+    @classmethod
+    def create(cls):
+        instance = cls()
+        return instance
+
+
+class RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirmaResponse(xsd.ComplexType):
+    INHERITANCE = None
+    INDICATOR = xsd.Sequence
+    RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirmaResult = xsd.Element(RespuestaDeLaSolicitud, minOccurs=0)
+
+    @classmethod
+    def create(cls):
+        instance = cls()
+        return instance
+
+
+class RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR(xsd.ComplexType):
+    INHERITANCE = None
+    INDICATOR = xsd.Sequence
+    laSolicitud = xsd.Element(SolicitudDeFirma, minOccurs=0)
+
+    @classmethod
+    def create(cls):
+        instance = cls()
+        return instance
+
+
+class RecibaLaSolicitudDeFirmaJsonParaArchivosFHIRResponse(xsd.ComplexType):
+    INHERITANCE = None
+    INDICATOR = xsd.Sequence
+    RecibaLaSolicitudDeFirmaJsonParaArchivosFHIRResult = xsd.Element(RespuestaDeLaSolicitud, minOccurs=0)
+
+    @classmethod
+    def create(cls):
+        instance = cls()
+        return instance
+
+
 class RecibaLaSolicitudDeFirmaODF(xsd.ComplexType):
     INHERITANCE = None
     INDICATOR = xsd.Sequence
@@ -252,7 +296,7 @@ Schema_c49e7 = xsd.Schema(
     attributeGroups=[],
     groups=[],
     complexTypes=[SolicitudDeFirma, ExtensionDataObject, RespuestaDeLaSolicitud, SolicitudDeFirmaPdf],
-    elements={'RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma': xsd.Element(RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma()), 'RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirmaResponse': xsd.Element(RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirmaResponse()), 'RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma': xsd.Element(RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma()), 'RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirmaResponse': xsd.Element(RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirmaResponse()), 'RecibaLaSolicitudDeFirmaODF': xsd.Element(RecibaLaSolicitudDeFirmaODF()), 'RecibaLaSolicitudDeFirmaODFResponse': xsd.Element(RecibaLaSolicitudDeFirmaODFResponse()), 'RecibaLaSolicitudDeFirmaMSOffice': xsd.Element(RecibaLaSolicitudDeFirmaMSOffice()), 'RecibaLaSolicitudDeFirmaMSOfficeResponse': xsd.Element(RecibaLaSolicitudDeFirmaMSOfficeResponse()), 'RecibaLaSolicitudDeFirmaPdf': xsd.Element(RecibaLaSolicitudDeFirmaPdf()), 'RecibaLaSolicitudDeFirmaPdfResponse': xsd.Element(RecibaLaSolicitudDeFirmaPdfResponse()), 'ElSuscriptorEstaConectado': xsd.Element(ElSuscriptorEstaConectado()), 'ElSuscriptorEstaConectadoResponse': xsd.Element(ElSuscriptorEstaConectadoResponse()), 'ValideElServicio': xsd.Element(ValideElServicio()), 'ValideElServicioResponse': xsd.Element(ValideElServicioResponse())},
+    elements={'RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma': xsd.Element(RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma()), 'RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirmaResponse': xsd.Element(RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirmaResponse()), 'RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma': xsd.Element(RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma()), 'RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirmaResponse': xsd.Element(RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirmaResponse()), 'RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma': xsd.Element(RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma()), 'RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirmaResponse': xsd.Element(RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirmaResponse()), 'RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR': xsd.Element(RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR()), 'RecibaLaSolicitudDeFirmaJsonParaArchivosFHIRResponse': xsd.Element(RecibaLaSolicitudDeFirmaJsonParaArchivosFHIRResponse()), 'RecibaLaSolicitudDeFirmaODF': xsd.Element(RecibaLaSolicitudDeFirmaODF()), 'RecibaLaSolicitudDeFirmaODFResponse': xsd.Element(RecibaLaSolicitudDeFirmaODFResponse()), 'RecibaLaSolicitudDeFirmaMSOffice': xsd.Element(RecibaLaSolicitudDeFirmaMSOffice()), 'RecibaLaSolicitudDeFirmaMSOfficeResponse': xsd.Element(RecibaLaSolicitudDeFirmaMSOfficeResponse()), 'RecibaLaSolicitudDeFirmaPdf': xsd.Element(RecibaLaSolicitudDeFirmaPdf()), 'RecibaLaSolicitudDeFirmaPdfResponse': xsd.Element(RecibaLaSolicitudDeFirmaPdfResponse()), 'ElSuscriptorEstaConectado': xsd.Element(ElSuscriptorEstaConectado()), 'ElSuscriptorEstaConectadoResponse': xsd.Element(ElSuscriptorEstaConectadoResponse()), 'ValideElServicio': xsd.Element(ValideElServicio()), 'ValideElServicioResponse': xsd.Element(ValideElServicioResponse())},
 )
 
 
@@ -278,6 +322,28 @@ RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma_method = xsd.Method(
     output='RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirmaResponse',
     outputPartName='parameters',
     operationName='RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma',
+    style='document',
+)
+
+
+RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma_method = xsd.Method(
+    soapAction=settings.FVA_HOST + 'RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma',
+    input='RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma',
+    inputPartName='parameters',
+    output='RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirmaResponse',
+    outputPartName='parameters',
+    operationName='RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma',
+    style='document',
+)
+
+
+RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR_method = xsd.Method(
+    soapAction=settings.FVA_HOST + 'RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR',
+    input='RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR',
+    inputPartName='parameters',
+    output='RecibaLaSolicitudDeFirmaJsonParaArchivosFHIRResponse',
+    outputPartName='parameters',
+    operationName='RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR',
     style='document',
 )
 
@@ -347,7 +413,7 @@ FirmadorSoap_SERVICE = soap.Service(
     location='${scheme}://${host}/'+settings.SERVICE_URLS['firma'],
     schemas=[Schema_c49e7],
     version=soap.SOAPVersion.SOAP12,
-    methods=[RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma_method, RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma_method, RecibaLaSolicitudDeFirmaODF_method, RecibaLaSolicitudDeFirmaMSOffice_method, RecibaLaSolicitudDeFirmaPdf_method, ElSuscriptorEstaConectado_method, ValideElServicio_method],
+    methods=[RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma_method, RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma_method, RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma_method, RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR_method, RecibaLaSolicitudDeFirmaODF_method, RecibaLaSolicitudDeFirmaMSOffice_method, RecibaLaSolicitudDeFirmaPdf_method, ElSuscriptorEstaConectado_method, ValideElServicio_method],
 )
 
 
@@ -365,6 +431,12 @@ class FirmadorSoapServiceStub(soap.Stub):
 
     def RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma(self, RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma, header=None):
         return self.call('RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma', RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma, header=header)
+
+    def RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma(self, RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma, header=None):
+        return self.call('RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma', RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma, header=header)
+
+    def RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR(self, RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR, header=None):
+        return self.call('RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR', RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR, header=header)
 
     def RecibaLaSolicitudDeFirmaODF(self, RecibaLaSolicitudDeFirmaODF, header=None):
         return self.call('RecibaLaSolicitudDeFirmaODF', RecibaLaSolicitudDeFirmaODF, header=header)
