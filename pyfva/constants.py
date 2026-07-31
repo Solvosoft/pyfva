@@ -471,6 +471,92 @@ ERRORES_VALIDAR_PDF=(
 (48, "La estampa de tiempo que cubre el documento tiene un algoritmo {0} que se considera como inseguro.")
 )
 
+#: Catálogo de errores para la validación de documentos JSON (json_cofirma/json_fhir).
+#: El BCCR reusa el mismo catálogo que para documentos XML enveloping cofirma.
+ERRORES_VALIDAR_JSON=(
+(0, "Documento válido."),
+(1, "Error interno al validar el documento."),
+(2, "La entidad no se encuentra registrada."),
+(3, "La entidad se encuentra en estado inactiva."),
+(4, "El documento no es un XML válido."),
+(5, "El documento XML no se encuentra firmado."),
+(6, "La firma con id [Identificador de la firma] no contiene el tag QualifyingProperties o no se ha definido el prefijo Etsi [http://uri.etsi.org/01903/v1.3.2#]."),
+(7, "La firma con id [Identificador de la firma] contiene una estructura no valida."),
+(8, "La firma con id [Identificador de la firma] contiene un certificado firmante con un formato no válido."),
+(9, "La firma con id [Identificador de la firma] contiene [Cantidad de certificados] certificados con un formato no válido."),
+(10, "La firma con id [Identificador de la firma] contiene una respuesta OCSP no válida."),
+(11, "La estampa de tiempo de la firma con id [Identificador de la firma] no es válida."),
+(12, "La segunda estampa de la firma con id [Identificador de la firma] tiempo no es válida."),
+(13, "La firma con id [Identificador de la firma] contiene [Cantidad de  CRL's] certificados CRL's con un formato no válido."),
+(14, "No se encontró la referencia que apunta al elemento KeyInfo en la firma con id [Identificador de la firma]."),
+(15, "No se encontró la referencia que apunta al elemento SignedProperties en la firma con id [Identificador de la firma]."),
+(16, "No se encontró la referencia que apunta al documento original en la firma con id [Identificador de la firma]."),
+(17, "La firma con id [Identificador de la firma] no contiene el tag Transform en la referencia al documento original."),
+(18, "La firma con id [Identificador de la firma] no cuenta con el atributo Type en la referencia a las propiedades firmadas."),
+(19, "El atributo Type no debe estar dentro de la referencia que apunta al documento original en la firma con id [Identificador de la firma]."),
+(20, "El atributo Type no debe estar dentro de la referencia que apunta a la sección KeyInfo en la firma con id [Identificador de la firma]."),
+(21, "El elemento Transform no debe estar dentro de la referencia que apunta a SignedProperties en la firma con id [Identificador de la firma]."),
+(22, "El elemento Transform no debe estar dentro de la referencia que apunta a la sección KeyInfo en la firma con id [Identificador de la firma]."),
+(23, "En la firma con id [Identificador de la firma] el DigestValue de la referencia relacionada con el elemento KeyInfo no coincide."),
+(24, "En la firma con id [Identificador de la firma] el DigestValue de la referencia relacionada con el elemento SignedProperties no coincide."),
+(25, "En la firma con id [Identificador de la firma] el DigestValue de la referencia relacionada con el documento original no coincide."),
+(26, "En la firma con id [Identificador de la firma] el valor de la firma en el tag SignatureValue,  no coincide con los elementos firmados del elemento SignedInfo,  puede ser que la integridad del documento haya sido comprometida."),
+(27, "En la firma con id [Identificador de la firma] los valores indicados en el elemento KeyValue no coinciden con la llave pública del certificado."),
+(28, "En la firma con id [Identificador de la firma] la respuesta OCSP del documento no coincide con el certificado firmante."),
+(29, "En la firma con id [Identificador de la firma] el certificado firmante se encontraba revocado al momento de realizar la firma."),
+(30, "En la firma con id [Identificador de la firma] el certificado firmante tenía un formato no válido al momento de realizar la firma."),
+(31, "En la firma con id [Identificador de la firma] el certificado firmante se encontraba vencido al momento de realizar la firma según la hora del servidor de estampa de tiempo. "),
+(32, "En la firma con id [Identificador de la firma] se usó un tipo de certificado no válido para realizar la firma."),
+(33, "En la firma con id [Identificador de la firma] el Target del elemento QualifyingProperties no coincide con el atributo id del tag Signature."),
+(34, "En la firma con id [Identificador de la firma] el SerialNumber de la sección SignedProperties no coincide con el del certificado firmante. "),
+(35, "En la firma con id [Identificador de la firma] el IssuerName de la sección SignedProperties no coincide con el del certificado firmante."),
+(36, "En la firma con id [Identificador de la firma] algún elemento MimeType no está dentro de los permitidos."),
+(37, "En la firma con id [Identificador de la firma] el MimeType utilizado sobrepasa la longitud máxima de caracteres (90 caracteres)."),
+(38, "En la firma con id [Identificador de la firma] algún encoding no está dentro de los permitidos."),
+(39, "En la firma con id [Identificador de la firma] la cantidad de DataObjectFormat es incorrecta."),
+(40, "En la firma con id [Identificador de la firma] algún elemento DataObjectFormat referencia a un elemento no válido en la sección SignedInfo."),
+(41, "En la firma con id [Identificador de la firma] el resumen hash del elemento DigestValue de la sección SignedProperties,  no coincide con el del certificado firmante."),
+(42, "En la firma con id [Identificador de la firma] el formato de la fecha/hora indicado en el SigningTime,  debe estar en el formato UTC."),
+(43, "En la firma con id [Identificador de la firma] la integridad de la estampa de tiempo de la firma está comprometida."),
+(44, "En la firma con id [Identificador de la firma] el certificado de la TSA contenido en la primera estampa de tiempo no coincide con el que se encuentra en el elemento CertificateValues."),
+(45, "En la firma con id [Identificador de la firma] la integridad de la segunda estampa de tiempo está comprometida."),
+(46, "En la firma con id [Identificador de la firma] el certificado de la TSA contenido en la segunda estampa de tiempo no coincide con el que se encuentra en el elemento CertificateValues."),
+(47, "En la firma con id [Identificador de la firma] el número de referencias indicadas en el elemento CompleteCertificateRefs,  no concuerda con la cantidad de certificados indicado en el elemento de CertificateValues."),
+(48, "En la firma con id [Identificador de la firma] existe una referencia en el elemento CompleteCertificateRefs,  que no coincide con ningún certificado de la sección CertificateValues."),
+(49, "En la firma con id [Identificador de la firma] el SerialNumber [Serial Number] de la sección CompleteCertificateRefs,  no coincide con el SerialNumber [Serial Number] del certificado referenciado de la sección CertificateValues."),
+(50, "En la firma con id [Identificador de la firma] el IssuerName  [Nombre del emisor] de la sección CompleteCertificateRefs,  no coincide con el emisor [Nombre del emisor] del certificado referenciado de la sección CertificateValues."),
+(51, "En la firma con id [Identificador de la firma] el tag ResponderID debe contener al menos un elemento ByKey o un elemento ByName."),
+(52, "En la firma con id [Identificador de la firma] el valor indicado en el elemento ByKey,  no coincide con el hash de la llave pública  del certificado de OCSP."),
+(53, "En la firma con id [Identificador de la firma] el valor indicado en el elemento ByName,  no coincide con el valor del campo CN del Subject del certificado de OCSP."),
+(54, "En la firma con id [Identificador de la firma] el número de referencias indicadas en el elemento de OcspRefs,  no concuerdan con la cantidad de datos de revocación indicados en el elemento OcspValues."),
+(55, "En la firma con id [Identificador de la firma] existe una referencia en el elemento OCSPRef,  que no coincide con ningún dato de revocación de la sección OCSPValues."),
+(56, "En la firma con id [Identificador de la firma] el valor del elemento ProduceAT,  no coincide con el de la respuesta OCSP."),
+(57, "En la firma con id [Identificador de la firma] el número de referencias indicadas en el elemento de CrlRefs,  no concuerdan con la cantidad de datos de revocación indicados en el elemento CrlValues."),
+(58, "En la firma con id [Identificador de la firma] existe una referencia en el elemento CRLRef,  que no coincide con ningún dato de revocación de la sección CRLValues."),
+(59, "En la firma con id [Identificador de la firma] un elemento Issuer de la sección CRLRef no coincide con el emisor del CRL referenciado en la sección CRLValues"),
+(60, "En la firma con id [Identificador de la firma] un elemento IssueTime de la sección CRLRef,  no coincide con el CRL referenciado en la sección CRLValues."),
+(61, "En la firma con id [Identificador de la firma] un elemento Number  de la sección CRLRef,  no coincide con el CRL referenciado en la sección CRLValues."),
+(62, "En la firma con id [Identificador de la firma] no se incluyó la totalidad de los certificados que componen la cadena de la jerarquía nacional del certificado del firmante."),
+(63, "En la firma con id [Identificador de la firma] la jerarquía que emitió el certificado del firmante [Cn del sujeto del certificado raíz] no es válida en Costa Rica."),
+(64, "En la firma con id [Identificador de la firma] no se incluyó la totalidad de los certificados que componen la cadena de la jerarquía nacional del certificado de [firma,  Tsa,  Ocsp]."),
+(65, "En la firma con id [Identificador de la firma] la jerarquía que emitió el certificado de [firma,  Tsa,  Ocsp] [Cn de la raíz que no es validad] no es válida en Costa Rica."),
+(66, "En la firma con id [Identificador de la firma] no se encontró  el certificado de TSA necesario para validar la firma."),
+(67, "En la firma con id [Identificador de la firma] no se encontró el certificado de OCSP necesario para validar la firma."),
+(68, "En la firma con id [Identificador de la firma] se encontraron certificados de más los cuales no son necesarios para la validación de la firma."),
+(69, "En la firma con id [Identificador de la firma] para el certificado [Cn del sujeto del certificado] no se encontró un CRL para verificar si estaba revocado en el momento de la firma."),
+(70, "En la firma con id [Identificador de la firma] el certificado  certificado [Cn del sujeto del certificado] estaba revocado en el momento de la firma."),
+(71, "En la firma con id [Identificador de la firma] el certificado  certificado [Cn del sujeto del certificado] estaba vencido en el momento de la firma."),
+(72, "En la firma con id [Identificador de la firma] el certificado contenido en la respuesta OCSP,  no coincide con el que se encuentra en el elemento CertificateValues."),
+(73, "En la firma con id [Identificador de la firma] la respuesta OCSP no se encontraba válida en el momento de la firma."),
+(74, "En la firma con id [Identificador de la firma] alguno de los CRLs no se encontraban válidos en el momento de la firma."),
+(75, "En la firma con id [Identificador de la firma] alguno de los CRLs no fueron emitidos por una CA de la jerarquía nacional."),
+(76, "En la firma con id [Identificador de la firma] se encontraron CRLs de más,  los cuales no son necesarios para la validación de la revocación."),
+(77, "En la firma con id [Identificador de la firma] el CRLIndicator del Crl Delta es mayor el CrlNumber del Crl Base."),
+(78, "Para la firma con id [Identificador de la firma] no se ha definido el prefijo DS [http://www.w3.org/2000/09/xmldsig#]."),
+(79, "En la firma con id [Identificador de la firma] para el certificado firmante [Sujeto] no se encontró una respuesta OCSP o los CRLs necesarios para validar el estado de revocación."),
+(80, "En la firma [Identificador de la firma] no se incluyó el CRL [Delta,  Base],  el cual es necesario para verificar el estado de revocación del certificado firmante de [Sujeto].")
+)
+
 
 ERRORES_VERIFICACION = (
     (0, 'Verificación recibida correctamente.'),
@@ -594,7 +680,16 @@ ERRORES_VALIDA_PDF
 --------------------------
 
 =======\t============
-Código\tDescripción 
+Código\tDescripción
+=======\t============
+%s
+=======\t============
+
+ERRORES_VALIDA_JSON
+--------------------------
+
+=======\t============
+Código\tDescripción
 =======\t============
 %s
 =======\t============
@@ -617,6 +712,8 @@ Código\tDescripción
            "\n".join(["%s\t%s" % (x, y)
                       for x, y in ERRORES_VALIDAR_ODF]),
            "\n".join(["%s\t%s" % (x, y)
-                      for x, y in ERRORES_VALIDAR_PDF])       
+                      for x, y in ERRORES_VALIDAR_PDF]),
+           "\n".join(["%s\t%s" % (x, y)
+                      for x, y in ERRORES_VALIDAR_JSON])
            )
     return __doc__

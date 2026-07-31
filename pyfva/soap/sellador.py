@@ -118,6 +118,50 @@ class RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResponse(xsd.C
         return instance
 
 
+class RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma(xsd.ComplexType):
+    INHERITANCE = None
+    INDICATOR = xsd.Sequence
+    laSolicitud = xsd.Element(SolicitudDeFirma, minOccurs=0)
+
+    @classmethod
+    def create(cls):
+        instance = cls()
+        return instance
+
+
+class RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirmaResponse(xsd.ComplexType):
+    INHERITANCE = None
+    INDICATOR = xsd.Sequence
+    RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirmaResult = xsd.Element(RespuestaDeLaSolicitud, minOccurs=0)
+
+    @classmethod
+    def create(cls):
+        instance = cls()
+        return instance
+
+
+class RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR(xsd.ComplexType):
+    INHERITANCE = None
+    INDICATOR = xsd.Sequence
+    laSolicitud = xsd.Element(SolicitudDeFirma, minOccurs=0)
+
+    @classmethod
+    def create(cls):
+        instance = cls()
+        return instance
+
+
+class RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIRResponse(xsd.ComplexType):
+    INHERITANCE = None
+    INDICATOR = xsd.Sequence
+    RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIRResult = xsd.Element(RespuestaDeLaSolicitud, minOccurs=0)
+
+    @classmethod
+    def create(cls):
+        instance = cls()
+        return instance
+
+
 class RecibaLaSolicitudDeSelladoElectronicoMSOffice(xsd.ComplexType):
     INHERITANCE = None
     INDICATOR = xsd.Sequence
@@ -209,7 +253,7 @@ Schema_c49e7 = xsd.Schema(
     attributeGroups=[],
     groups=[],
     complexTypes=[SolicitudDeFirma, RespuestaDeLaSolicitud, SolicitudDeFirmaPdf],
-    elements={'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirmaResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirmaResponse()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResponse()), 'RecibaLaSolicitudDeSelladoElectronicoMSOffice': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoMSOffice()), 'RecibaLaSolicitudDeSelladoElectronicoMSOfficeResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoMSOfficeResponse()), 'RecibaLaSolicitudDeSelladoElectronicoPdf': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoPdf()), 'RecibaLaSolicitudDeSelladoElectronicoPdfResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoPdfResponse()), 'RecibaLaSolicitudDeSelladoElectronicoOdf': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoOdf()), 'RecibaLaSolicitudDeSelladoElectronicoOdfResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoOdfResponse()), 'ValideElServicio': xsd.Element(ValideElServicio()), 'ValideElServicioResponse': xsd.Element(ValideElServicioResponse())},
+    elements={'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirmaResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirmaResponse()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma()), 'RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResponse()), 'RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma()), 'RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirmaResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirmaResponse()), 'RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR()), 'RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIRResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIRResponse()), 'RecibaLaSolicitudDeSelladoElectronicoMSOffice': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoMSOffice()), 'RecibaLaSolicitudDeSelladoElectronicoMSOfficeResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoMSOfficeResponse()), 'RecibaLaSolicitudDeSelladoElectronicoPdf': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoPdf()), 'RecibaLaSolicitudDeSelladoElectronicoPdfResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoPdfResponse()), 'RecibaLaSolicitudDeSelladoElectronicoOdf': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoOdf()), 'RecibaLaSolicitudDeSelladoElectronicoOdfResponse': xsd.Element(RecibaLaSolicitudDeSelladoElectronicoOdfResponse()), 'ValideElServicio': xsd.Element(ValideElServicio()), 'ValideElServicioResponse': xsd.Element(ValideElServicioResponse())},
 )
 
 
@@ -235,6 +279,28 @@ RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma_method = xsd.Method
     output='RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResponse',
     outputPartName='parameters',
     operationName='RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma',
+    style='document',
+)
+
+
+RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma_method = xsd.Method(
+    soapAction=settings.FVA_HOST + 'RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma',
+    input='RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma',
+    inputPartName='parameters',
+    output='RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirmaResponse',
+    outputPartName='parameters',
+    operationName='RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma',
+    style='document',
+)
+
+
+RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR_method = xsd.Method(
+    soapAction=settings.FVA_HOST + 'RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR',
+    input='RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR',
+    inputPartName='parameters',
+    output='RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIRResponse',
+    outputPartName='parameters',
+    operationName='RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR',
     style='document',
 )
 
@@ -293,7 +359,7 @@ SelladorElectronicoConControlDeLlaveSoap_SERVICE = soap.Service(
     location='${scheme}://${host}/'+settings.SERVICE_URLS['sello'],
     schemas=[Schema_c49e7],
     version=soap.SOAPVersion.SOAP12,
-    methods=[RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma_method, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma_method, RecibaLaSolicitudDeSelladoElectronicoMSOffice_method, RecibaLaSolicitudDeSelladoElectronicoPdf_method, RecibaLaSolicitudDeSelladoElectronicoOdf_method, ValideElServicio_method],
+    methods=[RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma_method, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma_method, RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma_method, RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR_method, RecibaLaSolicitudDeSelladoElectronicoMSOffice_method, RecibaLaSolicitudDeSelladoElectronicoPdf_method, RecibaLaSolicitudDeSelladoElectronicoOdf_method, ValideElServicio_method],
 )
 
 
@@ -315,6 +381,12 @@ class SelladorElectronicoConControlDeLlaveSoapServiceStub(soap.Stub, SSLContex):
 
     def RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma(self, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma, header=None):
         return self.call('RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma', RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma, header=header)
+
+    def RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma(self, RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma, header=None):
+        return self.call('RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma', RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma, header=header)
+
+    def RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR(self, RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR, header=None):
+        return self.call('RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR', RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR, header=header)
 
     def RecibaLaSolicitudDeSelladoElectronicoMSOffice(self, RecibaLaSolicitudDeSelladoElectronicoMSOffice, header=None):
         return self.call('RecibaLaSolicitudDeSelladoElectronicoMSOffice', RecibaLaSolicitudDeSelladoElectronicoMSOffice, header=header)
@@ -350,6 +422,28 @@ RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma_method = xsd.Method
     output='RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResponse',
     outputPartName='parameters',
     operationName='RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma',
+    style='document',
+)
+
+
+RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma_method = xsd.Method(
+    soapAction=settings.FVA_HOST + 'RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma',
+    input='RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma',
+    inputPartName='parameters',
+    output='RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirmaResponse',
+    outputPartName='parameters',
+    operationName='RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma',
+    style='document',
+)
+
+
+RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR_method = xsd.Method(
+    soapAction=settings.FVA_HOST + 'RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR',
+    input='RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR',
+    inputPartName='parameters',
+    output='RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIRResponse',
+    outputPartName='parameters',
+    operationName='RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR',
     style='document',
 )
 
@@ -408,7 +502,7 @@ SelladorElectronicoConControlDeLlaveSoap12_SERVICE = soap.Service(
     location='${scheme}://${host}/'+settings.SERVICE_URLS['sello'],
     schemas=[Schema_c49e7],
     version=soap.SOAPVersion.SOAP12,
-    methods=[RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma_method, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma_method, RecibaLaSolicitudDeSelladoElectronicoMSOffice_method, RecibaLaSolicitudDeSelladoElectronicoPdf_method, RecibaLaSolicitudDeSelladoElectronicoOdf_method, ValideElServicio_method],
+    methods=[RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma_method, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma_method, RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma_method, RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR_method, RecibaLaSolicitudDeSelladoElectronicoMSOffice_method, RecibaLaSolicitudDeSelladoElectronicoPdf_method, RecibaLaSolicitudDeSelladoElectronicoOdf_method, ValideElServicio_method],
 )
 
 
@@ -426,6 +520,12 @@ class SelladorElectronicoConControlDeLlaveSoap12ServiceStub(soap.Stub, SSLContex
 
     def RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma(self, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma, header=None):
         return self.call('RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma', RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma, header=header)
+
+    def RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma(self, RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma, header=None):
+        return self.call('RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma', RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma, header=header)
+
+    def RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR(self, RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR, header=None):
+        return self.call('RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR', RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR, header=header)
 
     def RecibaLaSolicitudDeSelladoElectronicoMSOffice(self, RecibaLaSolicitudDeSelladoElectronicoMSOffice, header=None):
         return self.call('RecibaLaSolicitudDeSelladoElectronicoMSOffice', RecibaLaSolicitudDeSelladoElectronicoMSOffice, header=header)

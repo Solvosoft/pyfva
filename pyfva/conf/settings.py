@@ -57,6 +57,8 @@ REST_SERVICE_URLS={
     'firma_pdf': 'Bccr.Firma.Fva.Entidades.FirmarDocumento.API/FirmadorDocumento/RecibaLaSolicitudDeFirmaPdf',
     'firma_xml_cofirma': 'Bccr.Firma.Fva.Entidades.FirmarDocumento.API/FirmadorDocumento/RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma',
     'firma_xml_contafirma': 'Bccr.Firma.Fva.Entidades.FirmarDocumento.API/FirmadorDocumento/RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma',
+    'firma_json_cofirma': 'Bccr.Firma.Fva.Entidades.FirmarDocumento.API/FirmadorDocumento/RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma',
+    'firma_json_fhir': 'Bccr.Firma.Fva.Entidades.FirmarDocumento.API/FirmadorDocumento/RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR',
     'valida_firma': 'Bccr.Firma.Fva.Entidades.FirmarDocumento.API/FirmadorDocumento/ValideElServicio'
 }
 
@@ -69,6 +71,8 @@ TEST_REST_SERVICE_URLS = {
     'firma_pdf': 'Bccr.Firma.Fva.AmbienteDePruebas.Entidades.FirmarDocumento.API/FirmadorDocumento/RecibaLaSolicitudDeFirmaPdf',
     'firma_xml_cofirma': 'Bccr.Firma.Fva.AmbienteDePruebas.Entidades.FirmarDocumento.API/FirmadorDocumento/RecibaLaSolicitudDeFirmaXmlEnvelopedCoFirma',
     'firma_xml_contafirma': 'Bccr.Firma.Fva.AmbienteDePruebas.Entidades.FirmarDocumento.API/FirmadorDocumento/RecibaLaSolicitudDeFirmaXmlEnvelopedContraFirma',
+    'firma_json_cofirma': 'Bccr.Firma.Fva.AmbienteDePruebas.Entidades.FirmarDocumento.API/FirmadorDocumento/RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma',
+    'firma_json_fhir': 'Bccr.Firma.Fva.AmbienteDePruebas.Entidades.FirmarDocumento.API/FirmadorDocumento/RecibaLaSolicitudDeFirmaJsonParaArchivosFHIR',
     'valida_firma': 'Bccr.Firma.Fva.AmbienteDePruebas.Entidades.FirmarDocumento.API/FirmadorDocumento/ValideElServicio'
 }
 

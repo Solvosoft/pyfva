@@ -8,7 +8,9 @@ from pytz import timezone
 from pyfva.soap.sellador import SolicitudDeFirma, SelladorElectronicoConControlDeLlaveSoapServiceStub, \
     ValideElServicio, RecibaLaSolicitudDeSelladoElectronicoOdf, RecibaLaSolicitudDeSelladoElectronicoPdf, \
     RecibaLaSolicitudDeSelladoElectronicoMSOffice, RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirma, \
-    RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma, SolicitudDeFirmaPdf
+    RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedCoFirma, SolicitudDeFirmaPdf, \
+    RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma, \
+    RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR
 
 from pyfva.conf import settings
 
@@ -66,7 +68,7 @@ class ClienteSellador(object):
         Firma con sello electrónico cualquier documento enviado distinguiendo por el parámtetro formato cual método de firma llamar
 
         :param documento: Documento a firmar en base64
-        :param formato: Formato del documento, puede ser *xml_cofirma*, *xml_contrafirma*, *odf*, *msoffice*, *pdf*
+        :param formato: Formato del documento, puede ser *xml_cofirma*, *xml_contrafirma*, *json_cofirma*, *json_fhir*, *odf*, *msoffice*, *pdf*
         :param algoritmo_hash: Algoritmo utilizado para calcular el hash_doc, puede ser *sha256*, *sha384*, *sha512*
         :param hash_doc: hash del documento aplicando el algoritmo hash
         :param id_funcionalidad: Identificación de la funcionalidad del programa externo, se usa para dar seguimiento a la operación, * No obligatorio
@@ -99,6 +101,9 @@ class ClienteSellador(object):
         if formato in ['xml_cofirma', 'xml_contrafirma']:
             _type = formato.replace('xml_', '')
             dev = self.firme_xml(documento, algoritmo_hash, hash_doc, id_funcionalidad, _type)
+        elif formato in ['json_cofirma', 'json_fhir']:
+            _type = formato.replace('json_', '')
+            dev = self.firme_json(documento, algoritmo_hash, hash_doc, id_funcionalidad, _type)
         elif formato == 'odf':
             dev = self.firme_odf(documento, algoritmo_hash, hash_doc, id_funcionalidad)
         elif formato == 'msoffice':
@@ -135,6 +140,31 @@ class ClienteSellador(object):
                           'location': __file__}, e=e)
             dev = self.DEFAULT_ERROR
         logger.debug({'message': "Sellador: firme_xml result", 'data': {'type': _type, 'data': dev},
+                      'location': __file__})
+        return dev
+
+    def firme_json(self, documento, algoritmo_hash='Sha512', hash_doc=None, id_funcionalidad=-1, _type='cofirma'):
+        """
+        Firma con sello electrónico un documento JSON, `_type` puede ser *cofirma* o *fhir*.
+
+        .. note::
+
+            Los parámetros exceptuando formato (no existe en este método) son idénticos que los
+            de firme, además los resultados retornados son también idénticos.
+        """
+
+        logger.info({'message': "Sellador: firme_json", 'data': {'type': _type, 'hash_doc': hash_doc},
+                     'location': __file__})
+        logger.debug({'message': "Sellador: firme_json", 'data': repr(locals()), 'location': __file__})
+
+        request = self._construya_solicitud(documento, algoritmo_hash, hash_doc, id_funcionalidad)
+        try:
+            dev = self._firme_json(request, _type)
+        except Exception as e:
+            logger.error({'message': "Sellador: firmando en json", 'data': {'type': _type, 'data': e},
+                          'location': __file__}, e=e)
+            dev = self.DEFAULT_ERROR
+        logger.debug({'message': "Sellador: firme_json result", 'data': {'type': _type, 'data': dev},
                       'location': __file__})
         return dev
 
@@ -305,6 +335,21 @@ class ClienteSellador(object):
                 options)
             return self.extrae_resultado(request,
                                          status.soap_body.RecibaLaSolicitudDeSelladoElectronicoXmlEnvelopedContraFirmaResult)
+
+    def _firme_json(self, request, _type):
+        stub = SelladorElectronicoConControlDeLlaveSoapServiceStub()
+        if _type == 'cofirma':
+            options = RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma()
+            options.laSolicitud = request
+            status = stub.RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma(options)
+            return self.extrae_resultado(request,
+                                         status.soap_body.RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirmaResult)
+        elif _type == 'fhir':
+            options = RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR()
+            options.laSolicitud = request
+            status = stub.RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIR(options)
+            return self.extrae_resultado(request,
+                                         status.soap_body.RecibaLaSolicitudDeSelladoElectronicoJsonParaArchivosFHIRResult)
 
     def _firme_odf(self, request):
         stub = SelladorElectronicoConControlDeLlaveSoapServiceStub()
