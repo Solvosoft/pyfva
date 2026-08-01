@@ -3,11 +3,12 @@ SHELL := /bin/bash
 
 PYTHON  ?= python3
 VERSION := $(shell grep -m1 '^version' pyproject.toml | sed -E 's/version = "(.*)"/\1/')
+BRANCH  := $(shell git branch --show-current)
 DIST    := dist
 SIGNER  ?=
 
 .PHONY: help venv install install-dev test lint format check \
-        build sign clean distclean version tag release
+        build sign clean distclean version tag publish release fuzzyrelease
 
 help: ## Muestra esta ayuda
 	@echo "pyfva - version actual: $(VERSION)"
@@ -20,8 +21,8 @@ venv: ## Crea el entorno virtual con uv (.venv)
 install: ## Instala las dependencias del proyecto
 	uv pip install -r requirements.txt
 
-install-dev: install ## Instala dependencias de desarrollo (test, lint)
-	uv pip install pytest ruff wheel
+install-dev: install ## Instala dependencias de desarrollo (test, lint, publicación)
+	uv pip install pytest ruff wheel twine
 
 test: ## Ejecuta la batería de pruebas (run_test.sh)
 	./run_test.sh
@@ -53,9 +54,21 @@ distclean: clean ## Además elimina dist/
 version: ## Muestra la versión actual del proyecto
 	@echo $(VERSION)
 
-tag: ## Crea el tag git de la version actual (v$(VERSION))
-	git tag -a v$(VERSION) -m "Version $(VERSION)"
-	@echo "Tag v$(VERSION) creado. Ejecute 'git push origin v$(VERSION)' para publicarlo."
+tag: ## Crea el tag git de la version actual (v$(VERSION)) si no existe
+	@if git rev-parse "v$(VERSION)" >/dev/null 2>&1; then \
+		echo "Tag v$(VERSION) ya existe, no se crea de nuevo."; \
+	else \
+		git tag -a v$(VERSION) -m "Version $(VERSION)"; \
+		echo "Tag v$(VERSION) creado."; \
+	fi
 
-release: check build ## Corre check y build para dejar todo listo antes de publicar
-	@echo "Artefactos listos en $(DIST)/ para la version $(VERSION)"
+publish: tag ## Empuja la rama actual y el tag, y sube los artefactos de dist/ a PyPI
+	git push origin $(BRANCH)
+	git push origin v$(VERSION)
+	uv run twine upload $(DIST)/*
+
+release: check build publish ## Corre check (lint+test), build, tag, push y publica en PyPI
+	@echo "Version $(VERSION) publicada en PyPI (tag v$(VERSION))"
+
+fuzzyrelease: build publish ## Como release pero sin check (lint+test): build, tag, push y publica
+	@echo "Version $(VERSION) publicada en PyPI sin correr check (tag v$(VERSION))"
