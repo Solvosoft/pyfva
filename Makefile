@@ -37,7 +37,7 @@ check: lint test ## Corre lint y pruebas
 build: clean ## Genera sdist y wheel en dist/
 	uv build
 
-sign: build ## Firma con GPG los artefactos generados (requiere SIGNER=usuario@correo)
+sign: build ## Firma con GPG los artefactos generados (requiere SIGNER=usuario@correo; PyPI ya no acepta .asc, usar para otros canales)
 	@for f in $(DIST)/*.tar.gz $(DIST)/*.whl; do \
 		gpg --detach-sign --armor $${SIGNER:+--local-user "$(SIGNER)"} "$$f"; \
 	done
@@ -57,5 +57,5 @@ tag: ## Crea el tag git de la version actual (v$(VERSION))
 	git tag -a v$(VERSION) -m "Version $(VERSION)"
 	@echo "Tag v$(VERSION) creado. Ejecute 'git push origin v$(VERSION)' para publicarlo."
 
-release: check build sign ## Corre check, build y sign para dejar todo listo antes de publicar
+release: check build ## Corre check y build para dejar todo listo antes de publicar
 	@echo "Artefactos listos en $(DIST)/ para la version $(VERSION)"
