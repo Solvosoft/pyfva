@@ -6,6 +6,8 @@ WSDL de `ValidadorDeDocumentos` y el OpenAPI de `Firmador`):
 
 * REST: `RestFirmador.firme_json()`/`firme(formato='json_cofirma'|'json_fhir')` usando los servicios
   `firma_json_cofirma`/`firma_json_fhir` ya declarados en `REST_SERVICE_URLS`.
+* SOAP Firmador: `ClienteFirmador.firme_json()`/`firme(formato='json_cofirma'|'json_fhir')` agrega las
+  operaciones `RecibaLaSolicitudDeFirmaJsonEnvelopingCoFirma`/`...JsonParaArchivosFHIR`.
 * SOAP Sello: `ClienteSellador.firme_json()` agrega las operaciones
   `RecibaLaSolicitudDeSelladoElectronicoJsonEnvelopingCoFirma`/`...JsonParaArchivosFHIR`.
 * SOAP Validación: `ClienteValidador.validar_documento(formato='json_cofirma'|'json_fhir')` agrega
